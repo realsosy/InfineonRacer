@@ -121,6 +121,12 @@
 #define REFRESH_TFT 2		// Refresh period in 100ms; 1x refresh ~0,8 % CPU load; for graphic-out: 4 colors ~ 1.2 % CPU load, 16 colors ~ 0.8 % CPU load
 							// Max refresh rate ~ 40 ms due to QSPI-load
 
+/* 다음 3개중의 하나만 정의해서 사용*/
+//#define CODE_HAND			// Hand code : default
+#define CODE_ERT			// Using embedded coder
+//#define CODE_SCILAB			// Using SciLab
+
+
 /**
  * \name Macros for Regression Runs
  * \{

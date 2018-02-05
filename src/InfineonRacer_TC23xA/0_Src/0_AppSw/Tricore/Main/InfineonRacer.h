@@ -12,7 +12,8 @@
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
 /******************************************************************************/
-
+#define IR_getLs0Margin()		IR_Ctrl.Ls0Margin
+#define IR_getLs1Margin()		IR_Ctrl.Ls1Margin
 
 /******************************************************************************/
 /*--------------------------------Enumerations--------------------------------*/
@@ -24,7 +25,8 @@
 /*-----------------------------Data Structures--------------------------------*/
 /******************************************************************************/
 typedef struct{
-	float32 dummy;
+	sint32 Ls0Margin;
+	sint32 Ls1Margin;
 	boolean basicTest;
 }InfineonRacer_t;
 
@@ -37,6 +39,7 @@ IFX_EXTERN InfineonRacer_t IR_Ctrl;
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
 IFX_EXTERN void InfineonRacer_init(void);
-IFX_EXTERN void InfineonRacer_run(void);
+IFX_EXTERN void InfineonRacer_detectLane(void);
+IFX_EXTERN void InfineonRacer_control(void);
 
 #endif

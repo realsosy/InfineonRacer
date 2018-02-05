@@ -3,15 +3,12 @@
 
 #include <Ifx_Types.h>
 
-#include "BasicTsl1401.h"
-#include "BasicPort.h"
-#include "BasicGtmTom.h"
-#include "BasicVadcBgScan.h"
-#include "BasicGpt12Enc.h"
+#include "Basic.h"
 #include "AsclinShellInterface.h"
 #include "tft_app.h"
 #include "Perf_Meas.h"
 #include "InfineonRacer.h"
+#include "IR_Controller.h"
 
 IFX_EXTERN boolean task_flag_1m;
 IFX_EXTERN boolean task_flag_10m;

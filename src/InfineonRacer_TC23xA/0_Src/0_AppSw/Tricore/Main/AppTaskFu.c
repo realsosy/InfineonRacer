@@ -22,6 +22,11 @@ void appTaskfu_init(void){
     tft_app_init(1);
     perf_meas_init();
 
+#ifdef CODE_ERT
+    IR_Controller_initialize();
+#else
+    InfineonRacer_init();
+#endif
 }
 
 void appTaskfu_1ms(void)
@@ -43,12 +48,20 @@ void appTaskfu_10ms(void)
 
 	if(task_cnt_10m%2 == 0){
 		BasicLineScan_run();
-	}
-	BasicPort_run();
-	BasicGtmTom_run();
-	BasicVadcBgScan_run();
+		InfineonRacer_detectLane();
+		BasicPort_run();
+		BasicGtmTom_run();
+		BasicVadcBgScan_run();
 
-	AsclinShellInterface_runLineScan();
+		if(IR_Ctrl.basicTest == FALSE){
+			#ifdef CODE_ERT
+				IR_Controller_step();
+			#else
+				InfineonRacer_control();
+			#endif
+		}
+		AsclinShellInterface_runLineScan();
+	}
 
 }
 

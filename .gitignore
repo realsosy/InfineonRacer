@@ -1,2 +1,4 @@
 /src/InfineonRacer_TC23xA/2_Out/Gnuc/0_Src
 /src/InfineonRacer_TC23xA/1_ToolEnv/0_Build/9_Make
+/src/matlab/work
+*.autosave

@@ -27,7 +27,7 @@
 /******************************************************************************/
 
 InfineonRacer_t IR_Ctrl  /**< \brief  global data */
-		={0.0, FALSE  };
+		={64, 64, FALSE  };
 /******************************************************************************/
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
@@ -43,6 +43,12 @@ void InfineonRacer_init(void){
 	;
 }
 
-void InfineonRacer_run(void){
+void InfineonRacer_detectLane(void){
+	/* IR_LineScan.adcResult 의 정보를 읽어들여서
+	 * IR_Ctrl.Ls0Margin, IR_Ctrl.Ls1Margin 정보를 계산한다
+	 */
+}
+
+void InfineonRacer_control(void){
 	;
 }

@@ -1,9 +1,3 @@
----
-title: README
-author: Wootaik Lee (wootaik@gmail.com)  
-date: 2018-01-30
----
-
 # README
 
 ## Purpose & Scope

@@ -1,0 +1,384 @@
+----------------------------------------------------------
+
+  Connection Failed Report from
+  Basic UDE Target Interface, Version: 1.12.10
+  created: 03/25/18, 22:32:33
+
+----------------------------------------------------------
+
+Windows version:
+  Win7 (Service Pack 1)
+  Admin: yes
+
+UDE version:
+  Release:  4.04.07
+  Build:    11594
+  Path:     C:\Program Files (x86)\pls\UDE 4.4
+
+Target configuration file:
+  D:\workspace_ude\AppKit_TC237.cfg
+
+Error messages:
+  Tc2CoreTargIntf: Connection to target lost !
+  Tc2CoreTargIntf: Failed to start user application !
+  Tc2CoreTargIntf: Failed to download user trigger setup to target !
+
+Settings:
+  PortType:  DAS
+  CommDevSel:  
+  TargetPort:  Default
+  TargetPortId:  553582592
+  DasIsDefault:  n
+  MaxJtagClk:  5000
+  CheckJtagId:  y
+  ScanJTAG:  n
+  Ocds1ViaPod:  n
+  EtksArbiterMode:  None
+  RefreshJtag:  n
+  RefreshHarr:  n
+  ReenableOcds:  n
+  ReduceJtagClock:  n
+  UseDap:  y
+  DapMode:  2PIN
+  JtagMuxPort:  -1
+  UseNewJtagEngine:  y
+  ConnOption:  Default
+  SetDebugEnableAb1DisablePin:  n
+  ResetWaitTime:  500
+  ResetMode:  Default
+  OpenDrainReset:  n
+  DiswdtOnReset:  n
+  SetPllOnReset:  0x00000000
+  SetPllOnReset2:  0x00000000
+  ExecInitCmds:  y
+  InitScript Script:
+    ; Workaround for TLE35584 A-Step Bug
+    SET 0xF0001E00  0x8
+    SET 0xF0001E10  0x03C04
+    SET 0xF0001E04  0x1
+    SET 0xF0001E14  0x14000000
+    SET 0xF0001E24  0x501
+    SET 0xF0001E48  0x00020000
+    SET 0xF003B310  0x80000000
+    SET 0xF003B300  0x00
+    SET 0xF003B510  0x98000000
+    SET 0xF003B514  0x10009800
+    SET 0xF003B540  0x33030333
+    SET 0xF003B410  0x10980000
+    SET 0xF003B440  0x33333033
+    
+    SET 0xF0001E54  0xFFF
+    SET 0xF0001E60  0x17A10001
+    SET 0xF0001E10  0x01003C04
+    SET 0xF0001E64 0x8756
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x87DE
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x86AD
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8625
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8D27
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8811
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x87BE
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8668
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x877D
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8795
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    
+    ; switch off FLASH error traps
+    SET 0xF80020A8 0x8000
+    SET 0xF80020AC 0x8000
+    
+  ExecOnConnectCmds:  n
+  OnConnectScript Script:
+    Script is empty
+  FailOnResetMalfunction:  n
+  ResetPulseLen:  10
+  AddResetDelay:  0
+  UseTrstOnReset:  n
+  ExecEmemInitOnReset:  0x00000000
+  SimHsmBootEnabled:  n
+  UnlockInterface:  n
+  BootPasswd0:  0x00000000
+  BootPasswd1:  0x00000000
+  BootPasswd2:  0x00000000
+  BootPasswd3:  0x00000000
+  BootPasswd4:  0x00000000
+  BootPasswd5:  0x00000000
+  BootPasswd6:  0x00000000
+  BootPasswd7:  0x00000000
+  HandleBmiHeader:  n
+  MaxTry:  1
+  ForceEdMode:  -1
+  UseTranslateAddr:  y
+  DownloadToAllRams:  y
+  HaltAfterReset:  y
+  TargetAppHandshakeMode:  None
+  TargetAppHandshakeTimeout:  100
+  TargetAppHandshakeParameter0:  0x00000000
+  TargetAppHandshakeParameter1:  0x00000000
+  TargetAppHandshakeParameter2:  0x00000000
+  TargetAppHandshakeParameter3:  0x00000000
+  SimioAddr:  g_JtagSimioAccess
+  UseStmForPtm:  1
+  ExecOnStartCmds:  n
+  OnStartScript Script:
+    
+  ExecOnHaltCmds:  n
+  OnHaltScript Script:
+    
+  UseTriggerToBreak:  y
+  UseIoinfoHalt:  y
+  UseOstateStable:  y
+  AllowJtagResetWhileRunning:  y
+  MaxAccRetry:  1
+  AccRetryDelay:  100
+  DefOcdsReserved:  
+  UseRestartWhileRunningHandling:  n
+  DebugResetOnDisconnect:  n
+  IgnoreEmemAccessErrors:  n
+  RemapEmemAccess:  n
+  EnableAutomaticHsmStart:  n
+  EnableAutomaticHsmRunControl:  n
+  ReadPmcsrWhileRunning:  n
+  IvIcacheOnHalt:  y
+  IvPlbOnHalt:  y
+  SuspendSlaveCores:  n
+  FilterMemAcc:  y
+  DasDllPath:  das_api.dll
+  DasHost:  
+  DasTryStartSrv:  y
+  DasSrvPath:  servers\udas\udas.exe
+  DasStopSrv:  y
+  DasResetHelperBreakAddr:  main
+  DasResetMode:  2
+  DasRemoveLogFile:  n
+  DasForwardSerNum:  n
+  DasSrvSel:  -1
+  DasPortType:  0
+  DasPortSel:  0
+
+Settings:
+  PortType:  DAS
+  CommDevSel:  
+  TargetPort:  Default
+  TargetPortId:  553582592
+  DasIsDefault:  n
+  MaxJtagClk:  5000
+  CheckJtagId:  y
+  ScanJTAG:  n
+  Ocds1ViaPod:  n
+  EtksArbiterMode:  None
+  RefreshJtag:  n
+  RefreshHarr:  n
+  ReenableOcds:  n
+  ReduceJtagClock:  n
+  UseDap:  y
+  DapMode:  2PIN
+  JtagMuxPort:  -1
+  UseNewJtagEngine:  y
+  ConnOption:  Default
+  SetDebugEnableAb1DisablePin:  n
+  ResetWaitTime:  500
+  ResetMode:  Default
+  OpenDrainReset:  n
+  DiswdtOnReset:  n
+  SetPllOnReset:  0x00000000
+  SetPllOnReset2:  0x00000000
+  ExecInitCmds:  y
+  InitScript Script:
+    ; Workaround for TLE35584 A-Step Bug
+    SET 0xF0001E00  0x8
+    SET 0xF0001E10  0x03C04
+    SET 0xF0001E04  0x1
+    SET 0xF0001E14  0x14000000
+    SET 0xF0001E24  0x501
+    SET 0xF0001E48  0x00020000
+    SET 0xF003B310  0x80000000
+    SET 0xF003B300  0x00
+    SET 0xF003B510  0x98000000
+    SET 0xF003B514  0x10009800
+    SET 0xF003B540  0x33030333
+    SET 0xF003B410  0x10980000
+    SET 0xF003B440  0x33333033
+    
+    SET 0xF0001E54  0xFFF
+    SET 0xF0001E60  0x17A10001
+    SET 0xF0001E10  0x01003C04
+    SET 0xF0001E64 0x8756
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x87DE
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x86AD
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8625
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8D27
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8811
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x87BE
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8668
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x877D
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    SET 0xF0001E64 0x8795
+    
+    SET 0xF0001E54 0x200
+    
+    SET 0xF0001E54 0x400
+    
+    ; switch off FLASH error traps
+    SET 0xF80020A8 0x8000
+    SET 0xF80020AC 0x8000
+    
+  ExecOnConnectCmds:  n
+  OnConnectScript Script:
+    Script is empty
+  FailOnResetMalfunction:  n
+  ResetPulseLen:  10
+  AddResetDelay:  0
+  UseTrstOnReset:  n
+  ExecEmemInitOnReset:  0x00000000
+  SimHsmBootEnabled:  n
+  UnlockInterface:  n
+  BootPasswd0:  0x00000000
+  BootPasswd1:  0x00000000
+  BootPasswd2:  0x00000000
+  BootPasswd3:  0x00000000
+  BootPasswd4:  0x00000000
+  BootPasswd5:  0x00000000
+  BootPasswd6:  0x00000000
+  BootPasswd7:  0x00000000
+  HandleBmiHeader:  n
+  MaxTry:  1
+  ForceEdMode:  -1
+  UseTranslateAddr:  y
+  DownloadToAllRams:  y
+  HaltAfterReset:  y
+  TargetAppHandshakeMode:  None
+  TargetAppHandshakeTimeout:  100
+  TargetAppHandshakeParameter0:  0x00000000
+  TargetAppHandshakeParameter1:  0x00000000
+  TargetAppHandshakeParameter2:  0x00000000
+  TargetAppHandshakeParameter3:  0x00000000
+  SimioAddr:  g_JtagSimioAccess
+  UseStmForPtm:  1
+  ExecOnStartCmds:  n
+  OnStartScript Script:
+    
+  ExecOnHaltCmds:  n
+  OnHaltScript Script:
+    
+  UseTriggerToBreak:  y
+  UseIoinfoHalt:  y
+  UseOstateStable:  y
+  AllowJtagResetWhileRunning:  y
+  MaxAccRetry:  1
+  AccRetryDelay:  100
+  DefOcdsReserved:  
+  UseRestartWhileRunningHandling:  n
+  DebugResetOnDisconnect:  n
+  IgnoreEmemAccessErrors:  n
+  RemapEmemAccess:  n
+  EnableAutomaticHsmStart:  n
+  EnableAutomaticHsmRunControl:  n
+  ReadPmcsrWhileRunning:  n
+  IvIcacheOnHalt:  y
+  IvPlbOnHalt:  y
+  SuspendSlaveCores:  n
+  FilterMemAcc:  y
+  DasDllPath:  das_api.dll
+  DasHost:  
+  DasTryStartSrv:  y
+  DasSrvPath:  servers\udas\udas.exe
+  DasStopSrv:  y
+  DasResetHelperBreakAddr:  main
+  DasResetMode:  2
+  DasRemoveLogFile:  n
+  DasForwardSerNum:  n
+  DasSrvSel:  -1
+  DasPortType:  0
+  DasPortSel:  0
+
+JTAG target infos:
+  JTAG-ID:           0x10200083
+  UsedJtagClk:       5000 kHz
+  ExtVoltage:        0.0 V
+  IntVoltageUsed:    n
+  STSTAT:            0x24192C3C
+
+DAS related information:
+  DAS DLL Version:        
+  Server started by UDE:  C:\Program Files (x86)\DAS\servers\udas\udas.exe
+  Server name:            UDAS
+  Server manufacturer:    Infineon
+  Server version:         V3.8
+  DAS-API version:        V4.1
+  Server lib version:     V3.0
+
+

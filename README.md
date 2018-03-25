@@ -24,8 +24,8 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
 2.  [How to use Software Framework Tools?](./docs/HowToUseSoftwareFrameworkTools.md)  eclipse, make, doxygen, graphviz
 3.  [How to study AURIX?](./docs/HowToStudyAurix.md)
-4.  [What is iLLD](./docs/WhatIsIlld.md)
-5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM & PORT
+4.  [What is iLLD](./docs/WhatIsIlld.md) PORT
+5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM 
 6.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
 7.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan + Bluetooth terminal
 8.  [My own cheap oscilloscope](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot

@@ -167,7 +167,7 @@
 	
 	<!-- Toolchain configurations -->
 	<selection>
-		<variant rootPaths="*/Main" branches ="Release"/>
+		<variant rootPaths="*/Main" branches ="TestPort"/>
 	</selection>
 	
 	<specificInclude internalPaths= "*/Sfr/*, */BaseSw/*/Tricore, */BaseSw/*/Platform, */BaseSw/*/CpuGeneric, */CDrv/Tricore"  />

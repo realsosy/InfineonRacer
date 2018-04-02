@@ -2,7 +2,6 @@
  * \file BasicGpt12Enc.h
  * \brief Demo BasicGpt12Enc
  *
- * \version iLLD_Demos_1_0_0_11_0
  */
 
 #ifndef BASICGPT12ENC_H

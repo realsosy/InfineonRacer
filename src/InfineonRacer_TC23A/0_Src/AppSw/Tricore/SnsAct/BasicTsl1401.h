@@ -2,10 +2,6 @@
  * \file BasicTsl1401.h
  * \brief BasicTsl1401
  *
- * \version iLLD_Demos_1_0_0_11_0
- *
- * \defgroup BasicTsl1401
- * \ingroup BasicTsl1401
  */
 
 #ifndef BASICTSL1401_H

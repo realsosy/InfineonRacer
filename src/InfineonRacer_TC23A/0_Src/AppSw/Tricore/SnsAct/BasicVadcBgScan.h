@@ -2,10 +2,6 @@
  * \file BasicVadcBgScan.h
  * \brief  BasicVadcBgScan
  *
- * \version iLLD_Demos_1_0_0_11_0
- *
- * \defgroup BasicVadcBgScan Demo Source
- * \ingroup BasicVadcBgScan
  */
 
 #ifndef BASICVADCBGSCAN_H

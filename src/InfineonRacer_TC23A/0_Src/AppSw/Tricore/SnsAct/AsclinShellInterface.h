@@ -2,7 +2,6 @@
  * \file AsclinShellInterface.h
  * \brief ASCLIN Shell interface demo
  *
- * \version iLLD_Demos_1_0_0_11_0
  */
 
 #ifndef ASCLINSHELLINTERFACE_H

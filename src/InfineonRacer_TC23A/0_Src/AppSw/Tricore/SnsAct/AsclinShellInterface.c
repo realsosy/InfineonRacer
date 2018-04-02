@@ -2,7 +2,6 @@
  * \file AsclinShellInterface.c
  * \brief ASCLIN Shell interface demo
  *
- * \version iLLD_Demos_1_0_0_11_0
  */
 
 /******************************************************************************/

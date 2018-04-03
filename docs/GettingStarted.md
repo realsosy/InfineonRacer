@@ -19,7 +19,7 @@ date: 2018-01-30
 
 ## References
 * 개발환경 관련
-* ​
+
 
 ##Example Description 
 *

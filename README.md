@@ -19,10 +19,22 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 | iLLD          | Infineon Low-Level Driver |
 |               |                           |
 
+##What we need
+* Application Kit TC2X7 V1.0; Evaluation board
+* DC Motor Control Kit; Infineon Released
+* HighTec Free TriCore™ Entry Tool Chain V4.6.6.0-infineon-1.1 (later): Compiler & Debugger
+* BIFACES_V1_0_0_Win32.zip; Build and Integration Framework for Automotive Controller Embedded Software
+* BaseProjects_AURIX1G_V1_0_1_2_0.zip; BIFACES Base Template Project
+* iLLD_1_0_1_4_0_TC2xx_Release.zip; iLLD source and doc
+* iLLD_Demos_1_0_1_4_0_TC2xx.zip; iLLD examples
+
+
+
+
 ## ToC
 
 1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
-2.  [How to use Software Framework Tools?](./docs/HowToUseSoftwareFrameworkTools.md)  eclipse, make, doxygen, graphviz
+2.  [How to use BIFACES?](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
 3.  [How to study AURIX?](./docs/HowToStudyAurix.md)
 4.  [What is iLLD](./docs/WhatIsIlld.md) PORT
 5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM 

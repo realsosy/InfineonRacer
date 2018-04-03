@@ -7,7 +7,7 @@ date: 2018-01-30
 
 1. 개발환경 설치
 2. InfineonRacer 코드 다운 받고 빌드, 다운로드하기
-3. 각 모듈 동작 확인하기 
+3. 각 모듈 동작 확인하기 ( Shell, TFT)
 ---
 
 # Getting Started

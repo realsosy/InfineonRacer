@@ -33,6 +33,20 @@
 #define IFX_CFG_SCU_PLL_FREQUENCY		(200000000) /**<allowed values 80000000, 133000000, 160000000 or 200000000 */
 
 /*______________________________________________________________________________
+** Configuration for Ifx_Assert.h
+**____________________________________________________________________________*/
+/**
+ * \name Assert configuration
+ * \{
+ */
+
+#define IFX_CFG_ASSERT_VERBOSE_LEVEL_DEFAULT (IFX_VERBOSE_LEVEL_INFO)   /**< \copydoc IFX_CFG_ASSERT_VERBOSE_LEVEL_DEFAULT */
+#define IFX_CFG_ASSERT_STDIO                 (1)                        /**< \copydoc IFX_CFG_ASSERT_STDIO */
+#define IFX_CFG_ASSERT_INCLUDE               "SysSe/Bsp/Assert.h"       /**< \copydoc IFX_CFG_ASSERT_INCLUDE */
+
+/** \} */
+
+/*______________________________________________________________________________
 ** Configuration for Software managed interrupt
 **____________________________________________________________________________*/
 

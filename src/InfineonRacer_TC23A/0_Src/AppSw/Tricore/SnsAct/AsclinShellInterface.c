@@ -605,19 +605,8 @@ void AsclinShellInterface_init(void)
     /** - Enable the global interrupts of this CPU */
     restoreInterrupts(TRUE);
 
-//    Ifx_SizeT count = 52;
-
     Ifx_Console_print(ENDL);
 
-//    /** - Simple print using IfxAsclin_Asc_write API */
-//    IfxAsclin_Asc_write(&g_AsclinShellInterface.drivers.asc, "Hello world!  => print using IfxAsclin_Asc_write()\n", &count, TIME_INFINITE);
-//
-//    /** - Simple print using Ifx_Console_print API */
-//    Ifx_Console_print(ENDL "Hello world!  => print using Ifx_Console_print()"ENDL);
-//
-//    /** - Simple print using IfxStdIf_DPipe_print API */
-//    IfxStdIf_DPipe_print(&g_AsclinShellInterface.stdIf.asc, ENDL "Hello world!  => print using IfxStdIf_DPipe_print()"ENDL);
-//
     /** - Show the welcome screen using the standard DPipe interface */
     welcomeScreen(&g_AsclinShellInterface, &g_AsclinShellInterface.stdIf.asc);
 

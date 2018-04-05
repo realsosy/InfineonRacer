@@ -1,11 +1,11 @@
 /**
- * \file BasicTsl1401.h
- * \brief BasicTsl1401
+ * \file BasicLineScan.h
+ * \brief BasicLineScan
  *
  */
 
-#ifndef BASICTSL1401_H
-#define BASICTSL1401_H 1
+#ifndef BASICLINESCAN_H
+#define BASICLINESCAN_H 1
 
 /******************************************************************************/
 /*----------------------------------Includes----------------------------------*/

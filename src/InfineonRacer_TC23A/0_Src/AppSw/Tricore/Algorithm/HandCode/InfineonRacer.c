@@ -2,12 +2,7 @@
 /*----------------------------------Includes----------------------------------*/
 /******************************************************************************/
 #include "InfineonRacer.h"
-#include "BasicStm.h"
-#include "BasicGpt12Enc.h"
-#include "BasicGtmTom.h"
-#include "BasicPort.h"
-#include "BasicTsl1401.h"
-#include "BasicVadcBgScan.h"
+#include "Basic.h"
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/

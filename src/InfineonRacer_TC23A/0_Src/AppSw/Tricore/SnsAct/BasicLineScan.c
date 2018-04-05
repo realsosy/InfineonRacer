@@ -1,6 +1,6 @@
 /**
- * \file BasicTsl1401.c
- * \brief BasicTsl1401
+ * \file BasicLineScan.c
+ * \brief BasicLineScan
  *
  */
 
@@ -15,7 +15,7 @@
 #include <SysSe/Bsp/Bsp.h>
 #include <Port/Std/IfxPort.h>
 
-#include "BasicTsl1401.h"
+#include "BasicLineScan.h"
 #include "Configuration.h"
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/

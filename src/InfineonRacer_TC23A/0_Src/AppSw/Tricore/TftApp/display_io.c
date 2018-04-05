@@ -4,11 +4,7 @@
 
 #include "display_io.h"
 #include "Tft/conio_tft.h"
-#include "BasicTsl1401.h"
-#include "BasicPort.h"
-#include "BasicGtmTom.h"
-#include "BasicVadcBgScan.h"
-#include "BasicGpt12Enc.h"
+#include "Basic.h"
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/

@@ -13,7 +13,7 @@
 #include "SysSe/Bsp/Bsp.h"
 #include "IfxScuWdt.h"
 #include "BasicStm.h"
-#include "AsclinShellInterface.h"
+
 #include <Tft/conio_tft.h>
 #include "tft_app.h"
 #include "background_light.h"

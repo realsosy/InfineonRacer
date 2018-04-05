@@ -156,7 +156,7 @@ void VadcBackgroundScanDemo_run(void)
 			uint32 actual = conversionResult.B.RESULT;
 
 			/* FIXME result verification pending ?? */
-			printf("Group %d Channel %d: result : %u\n", group, channel, actual);
+			printf("Group %d Channel %d : %u\n", group, channel, actual);
 		}
 	}
 

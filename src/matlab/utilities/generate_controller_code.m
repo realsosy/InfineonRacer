@@ -15,11 +15,11 @@ end
 slbuild(controllerModel);
 %coder.report.generate(controllerModel);
 
-!cp ./work/IR_Controller_ert_rtw/IR_Controller.c ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
-!cp ./work/IR_Controller_ert_rtw/IR_Controller.h ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
-!cp ./work/IR_Controller_ert_rtw/IR_Controller_data.c ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
-!cp ./work/IR_Controller_ert_rtw/IR_Controller_private.h ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
-!cp ./work/IR_Controller_ert_rtw/IR_Controller_types.h ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
-!cp ./work/IR_Controller_ert_rtw/rtwtypes.h ../InfineonRacer_TC23xA/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/IR_Controller.c ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/IR_Controller.h ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/IR_Controller_data.c ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/IR_Controller_private.h ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/IR_Controller_types.h ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
+!cp ./work/IR_Controller_ert_rtw/rtwtypes.h ../InfineonRacer_TC23A/0_Src/0_AppSw/Tricore/ert
 end
 

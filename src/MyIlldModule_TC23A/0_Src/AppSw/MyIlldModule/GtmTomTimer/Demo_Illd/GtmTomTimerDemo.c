@@ -1,6 +1,6 @@
 /**
- * \file GtmAtomPwmHlDemo.c
- * \brief Demo GtmAtomPwmHlDemo
+ * \file GtmTomTimerDemo.c
+ * \brief Demo GtmTomTimerDemo
  *
  * \version iLLD_Demos_1_0_1_4_0
  * \copyright Copyright (c) 2014 Infineon Technologies AG. All rights reserved.

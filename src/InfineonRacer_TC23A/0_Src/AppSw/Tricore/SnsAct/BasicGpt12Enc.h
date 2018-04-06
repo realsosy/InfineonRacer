@@ -11,6 +11,7 @@
 /*----------------------------------Includes----------------------------------*/
 /******************************************************************************/
 #include <Ifx_Types.h>
+#include "Configuration.h"
 #include "ConfigurationIsr.h"
 #include "Gpt12/IncrEnc/IfxGpt12_IncrEnc.h"
 
@@ -45,6 +46,9 @@ IFX_EXTERN IR_Encoder_t IR_Encoder;
 IFX_EXTERN void BasicGpt12Enc_init(void);
 IFX_EXTERN void BasicGpt12Enc_run(void);
 
+#ifdef ENCODER_EMUL
 IFX_EXTERN void EncoderEmul_init(void);
 IFX_EXTERN void EncoderEmul_run(void);
+#endif
+
 #endif

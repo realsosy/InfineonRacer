@@ -24,39 +24,13 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/*-----------------------------Data Structures--------------------------------*/
+/*------------------Data Structures & Global Var -----------------------------*/
 /******************************************************************************/
 typedef struct
 {
     IfxGpt12_IncrEnc incrEnc;
 } Basic_Gpt12Enc_t;
 
-typedef struct
-{
-    struct
-    {
-        IfxPort_Pin A;            /**< \brief A */
-        IfxPort_Pin B;            /**< \brief B */
-        IfxPort_Pin Z;            /**< \brief Z */
-    } interface;
-    struct
-    {
-        boolean          run;                  /* Status: TRUE: the encoder turn */
-        IfxStdIf_Pos_Dir direction;            /* Direction*/
-        uint32           step;                 /* Current step */
-        sint32           rawPosition;          /* Expected rawPosition */
-        sint32           positionMask;         /* Mask for rawPosition value */
-        uint32           resolution;           /* Encoder resolution */
-        uint32           multiplicationFactor; /* Encoder multiplication factor */
-        float32          updatePeriod;         /* Refresh period */
-        float32          speed;                /* Requested encoder speed in rad/s */
-    } control;
-} EncEmul_t;
-
-/******************************************************************************/
-/*------------------------------Global variables------------------------------*/
-/******************************************************************************/
-EncEmul_t g_EncEmul; /**< \brief Demo information */
 Basic_Gpt12Enc_t g_Gpt12Enc;
 IR_Encoder_t IR_Encoder;
 
@@ -64,11 +38,10 @@ IR_Encoder_t IR_Encoder;
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
 
-void EncoderEmul_step(void);
-
 /******************************************************************************/
 /*------------------------Private Variables/Constants-------------------------*/
 /******************************************************************************/
+
 /******************************************************************************/
 /*-------------------------Function Implementations---------------------------*/
 /******************************************************************************/
@@ -120,7 +93,7 @@ void BasicGpt12Enc_init(void)
         /* Test implementation with T3 as core */
         config.base.offset                    = 0;
         config.base.reversed                  = FALSE;
-        config.base.resolution                = 256; //1024; //2^n 개수만 허용
+        config.base.resolution                = 32; //1024; //2^n 개수만 허용
         config.base.periodPerRotation         = 1;
         config.base.resolutionFactor          = IfxStdIf_Pos_ResolutionFactor_fourFold;
         config.base.updatePeriod              = 1.00e-3;//100e-6;
@@ -134,7 +107,7 @@ void BasicGpt12Enc_init(void)
         config.pinZ                           = &IfxGpt120_T4INA_P02_8_IN;
         config.pinMode                        = IfxPort_InputMode_noPullDevice;
 
-        config.base.speedFilterEnabled        = TRUE;//TRUE;
+        config.base.speedFilterEnabled        = TRUE;
         config.base.speedFilerCutOffFrequency = config.base.maxSpeed / 2 * IFX_PI * 2;
     }
 #else
@@ -163,11 +136,71 @@ void BasicGpt12Enc_init(void)
     IFX_VALIDATE(IFX_VERBOSE_LEVEL_ERROR, IfxGpt12_IncrEnc_init(&g_Gpt12Enc.incrEnc, &config));
 }
 
+/** Demo run API
+ *
+ * This function is call from the main, background loop
+ */
+
+void BasicGpt12Enc_run(void){
+	IfxGpt12_IncrEnc_update(&g_Gpt12Enc.incrEnc);
+
+	IR_Encoder.speed       = IfxGpt12_IncrEnc_getSpeed(&g_Gpt12Enc.incrEnc);
+	IR_Encoder.rawPosition = (float32) IfxGpt12_IncrEnc_getRawPosition(&g_Gpt12Enc.incrEnc);
+	IR_Encoder.direction   = IfxGpt12_IncrEnc_getDirection(&g_Gpt12Enc.incrEnc);
+}
+
+
+/******************************************************************************/
+/* The following code is conditional compiled area.
+ * ENCODER_EMUL in Configuration.h will be defined for test purpose only
+ * In Release it should be undefined.
+ */
+/******************************************************************************/
+#ifdef ENCODER_EMUL
+
+/******************************************************************************/
+/*------------------Data Structures & Global Var -----------------------------*/
+/******************************************************************************/
+
+typedef struct
+{
+    struct
+    {
+        IfxPort_Pin A;            /**< \brief A */
+        IfxPort_Pin B;            /**< \brief B */
+        IfxPort_Pin Z;            /**< \brief Z */
+    } interface;
+    struct
+    {
+        boolean          run;                  /* Status: TRUE: the encoder turn */
+        IfxStdIf_Pos_Dir direction;            /* Direction*/
+        uint32           step;                 /* Current step */
+        sint32           rawPosition;          /* Expected rawPosition */
+        sint32           positionMask;         /* Mask for rawPosition value */
+        uint32           resolution;           /* Encoder resolution */
+        uint32           multiplicationFactor; /* Encoder multiplication factor */
+        float32          updatePeriod;         /* Refresh period */
+        float32          speed;                /* Requested encoder speed in rad/s */
+    } control;
+} EncEmul_t;
+
+EncEmul_t g_EncEmul;
+
+/******************************************************************************/
+/*-------------------------Function Prototypes--------------------------------*/
+/******************************************************************************/
+
+void EncoderEmul_step(void);
+
+/******************************************************************************/
+/*-------------------------Function Implementations---------------------------*/
+/******************************************************************************/
+
 void EncoderEmul_init(void)
 {
     g_EncEmul.control.run                  = TRUE;
     g_EncEmul.control.direction            = IfxStdIf_Pos_Dir_forward;
-    g_EncEmul.control.resolution           = 256;
+    g_EncEmul.control.resolution           = 32; // 1024;
     g_EncEmul.control.step                 = 3;
     g_EncEmul.control.rawPosition          = 0;
     g_EncEmul.control.speed                = IFX_PI * 2.0;
@@ -269,28 +302,15 @@ void EncoderEmul_step(void)
     }
 }
 
-void BasicGpt12Enc_run(void){
-	IfxGpt12_IncrEnc_update(&g_Gpt12Enc.incrEnc);
-
-	IR_Encoder.speed       = IfxGpt12_IncrEnc_getSpeed(&g_Gpt12Enc.incrEnc);
-	IR_Encoder.rawPosition = (float32) IfxGpt12_IncrEnc_getRawPosition(&g_Gpt12Enc.incrEnc);
-	IR_Encoder.direction   = IfxGpt12_IncrEnc_getDirection(&g_Gpt12Enc.incrEnc);
-}
-
-/** Demo run API
- *
- * This function is call from the main, background loop
- */
-
 void EncoderEmul_run(void)
 {
     Ifx_TickTime tickPeriod;
     Ifx_TickTime tickDeadLine;
 
-    Ifx_TickTime refreshPeriod;
+//    Ifx_TickTime refreshPeriod;
     Ifx_TickTime refreshDeadLine;
 
-    refreshPeriod     = g_EncEmul.control.updatePeriod * TimeConst_1s;
+//    refreshPeriod     = g_EncEmul.control.updatePeriod * TimeConst_1s;
 
     refreshDeadLine = now();
     tickDeadLine    = refreshDeadLine;
@@ -324,5 +344,7 @@ void EncoderEmul_run(void)
 
     }
 }
+
+#endif
 
 

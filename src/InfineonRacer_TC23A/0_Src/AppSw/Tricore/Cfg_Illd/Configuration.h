@@ -61,6 +61,9 @@
 #define TSL1401_AO_1				9
 #define TSL1401_AO_2				10
 
+/* Encoder Emulation for Gpt12Enc Test */
+#define ENCODER_EMUL
+
 /* set here the used pins for QSPI0 */
 #define QSPI0_MAX_BAUDRATE          50000000  // maximum baudrate which is possible to get a small timequantum
 #define QSPI0_SCLK_PIN	            IfxQspi0_SCLK_P20_11_OUT

@@ -16,7 +16,6 @@ void appTaskfu_init(void){
     BasicGtmTom_init();
     BasicVadcBgScan_init();
     BasicGpt12Enc_init();
-//    EncoderEmul_init();	/* Test purpose only, should be removed in normal operation */
     AsclinShellInterface_init();
 
     tft_app_init(1);
@@ -86,8 +85,7 @@ void appTaskfu_1000ms(void)
 }
 
 void appTaskfu_idle(void){
-//	EncoderEmul_run(); /* Test purpose only, should be removed in normal operation */
-    AsclinShellInterface_run();
+	AsclinShellInterface_run();
 	perf_meas_idle();
 
 }

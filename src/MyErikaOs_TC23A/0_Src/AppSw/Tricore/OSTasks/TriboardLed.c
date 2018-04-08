@@ -38,6 +38,7 @@ static uint32 TriboardLed_dimmerCount= 0;
 //#define IFX_TRIBOARD_TYPE_TC2X4         //This define is required for Triboard Type TC2X4
 //#define IFX_TRIBOARD_TYPE_TC2X9         //This define is required for Triboard Type TC2X9
 
+#define IFX_APPBOARD_TYPE_TC23         //This define is required for Appboard Type TC23
 
 #if defined(IFX_TRIBOARD_TYPE_TC2X2)
 //For Triboard type TC2X2
@@ -144,6 +145,31 @@ static uint32 TriboardLed_dimmerCount= 0;
 #define IFX_TRIBOARD_LED_DIM_DUTY_OFF() {							\
 			P33_OUT.U |= (TriboardLed_sweeper & 0x0FU) << 4;		\
 			P20_OUT.U |= (TriboardLed_sweeper & 0xF0U) << (11-4); }
+
+#elif defined(IFX_APPBOARD_TYPE_TC23)
+//For Appboard type TC2X3
+#define IFX_TRIBOARD_LED_PORT_INIT() {																	\
+		IfxPort_setPinModeOutput(&MODULE_P13,0,IfxPort_OutputMode_pushPull,IfxPort_OutputIdx_general);	\
+		IfxPort_setPinModeOutput(&MODULE_P13,1,IfxPort_OutputMode_pushPull,IfxPort_OutputIdx_general);	\
+		IfxPort_setPinModeOutput(&MODULE_P13,2,IfxPort_OutputMode_pushPull,IfxPort_OutputIdx_general);	\
+		IfxPort_setPinModeOutput(&MODULE_P13,3,IfxPort_OutputMode_pushPull,IfxPort_OutputIdx_general);  \
+		}
+
+
+
+
+#define IFX_TRIBOARD_LED_SWEEP() {									\
+			P13_OUT.U &= ~(0x0FU << 0);								\
+			P13_OUT.U |= (TriboardLed_sweeper & 0x0FU) << 0; }
+
+#define IFX_TRIBOARD_LED_DIM_DUTY_ON() {							\
+			P13_OUT.U &= ~(0x0FU << 0); }
+//			P13_OUT.U &= ~(0x0FU << 0); }
+
+#define IFX_TRIBOARD_LED_DIM_DUTY_OFF() {							\
+		P13_OUT.U |= (TriboardLed_sweeper & 0x0FU) << 0; }
+//			P13_OUT.U |= (TriboardLed_sweeper & 0xF0U) << 0; }
+
 
 #else
 //For Triboard type TC2X5, TC2X7 and TC2X8

@@ -1,0 +1,234 @@
+CPU TC27X {
+    OS IFX_TRICORE {
+        MCU_DATA = TRICORE {
+            MODEL = TC27x;
+        };
+        
+        CPU_DATA = TRICORE {
+            CPU_CLOCK = 200.0;
+            COMPILER_TYPE = GNU;
+            MULTI_STACK = TRUE {
+                IRQ_STACK = TRUE {
+                    SYS_SIZE = 256;
+                };
+            };
+        };
+        STATUS = EXTENDED; 
+        PRETASKHOOK = FALSE;
+        POSTTASKHOOK = FALSE;
+        USERESSCHEDULER = FALSE;
+        KERNEL_TYPE = ECC2;
+    };
+    
+    APPMODE TRICORE_CPU {
+        EVENT = IFX_OSCFG_EVENT1;
+        EVENT = IFX_OSCFG_EVENT2;
+        EVENT = IFX_OSCFG_EVENT3;
+        TASK = IFX_OSTASK_EVENT1;
+        TASK = IFX_OSTASK_EVENT2;
+        TASK = IFX_OSTASK_EVENT3;
+        TASK = IFX_OSTASK_1MS;
+        TASK = IFX_OSTASK_5MS;
+        TASK = IFX_OSTASK_10MS;
+        TASK = IFX_OSTASK_20MS;
+        TASK = IFX_OSTASK_50MS;
+        TASK = IFX_OSTASK_100MS;
+        TASK = IFX_OSTASK_BACKGROUND;
+        TASK = IFX_OSTASK_INIT;
+        COUNTER = HW_COUNTER;
+        ALARM = IFX_OSTASK_ALARM_1MS;
+        ALARM = IFX_OSTASK_ALARM_5MS;
+        ALARM = IFX_OSTASK_ALARM_10MS;
+        ALARM = IFX_OSTASK_ALARM_20MS;
+        ALARM = IFX_OSTASK_ALARM_50MS;
+        ALARM = IFX_OSTASK_ALARM_100MS;
+    };
+
+    EVENT IFX_OSCFG_EVENT1 {
+        MASK = 0x01;
+    };
+    
+    EVENT IFX_OSCFG_EVENT2 {
+        MASK = 0x02;
+    };
+    
+    EVENT IFX_OSCFG_EVENT3 {
+        MASK = 0x04;
+    };
+    
+    TASK IFX_OSTASK_EVENT1 { 
+        PRIORITY = 64; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE;
+        EVENT = IFX_OSCFG_EVENT1;
+        SCHEDULE = FULL;
+        STACK = PRIVATE {
+            SYS_SIZE = 256;
+        };
+    };
+    
+    TASK IFX_OSTASK_EVENT2 { 
+        PRIORITY = 64; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE;
+        EVENT = IFX_OSCFG_EVENT2;
+        SCHEDULE = FULL;
+        STACK = PRIVATE {
+            SYS_SIZE = 256;
+        };
+    };
+    
+    TASK IFX_OSTASK_EVENT3 { 
+        PRIORITY = 64; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE;
+        EVENT = IFX_OSCFG_EVENT3;
+        SCHEDULE = FULL;
+        STACK = PRIVATE {
+            SYS_SIZE = 256;
+    };
+    };
+    
+    TASK IFX_OSTASK_1MS{ 
+        PRIORITY = 64; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE;
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_5MS{ 
+        PRIORITY = 32; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_10MS{ 
+        PRIORITY = 16; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_20MS{ 
+        PRIORITY = 8; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_50MS{ 
+        PRIORITY = 4; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_100MS{ 
+        PRIORITY = 2; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    
+    TASK IFX_OSTASK_BACKGROUND{ 
+        PRIORITY = 1; 
+        ACTIVATION = 1;
+        AUTOSTART = FALSE; 
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    TASK IFX_OSTASK_INIT{ 
+        PRIORITY = 2; 
+        ACTIVATION = 1;
+        AUTOSTART = TRUE { APPMODE = TRICORE_CPU; };
+        SCHEDULE = FULL;
+        STACK = SHARED;
+    };
+    
+    COUNTER IFX_OSTASK_COUNTER {
+        MINCYCLE = 5;
+        MAXALLOWEDVALUE = 10000;
+        TICKSPERBASE = 1;
+    };
+            
+    ALARM IFX_OSTASK_ALARM_1MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_1MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE { 
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 5;
+            CYCLETIME = 10;
+        };
+    };
+    
+    ALARM IFX_OSTASK_ALARM_5MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_5MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE {
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 25;
+            CYCLETIME = 50;
+        };
+    };
+    
+    ALARM IFX_OSTASK_ALARM_10MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_10MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE {
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 50;
+            CYCLETIME = 100;
+        };
+    };
+    
+     ALARM IFX_OSTASK_ALARM_20MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_20MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE {
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 100;
+            CYCLETIME = 200;
+        };
+    };
+    
+    ALARM IFX_OSTASK_ALARM_50MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_50MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE {
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 250;
+            CYCLETIME = 500;
+        };
+    };
+    
+    ALARM IFX_OSTASK_ALARM_100MS {
+        ACTION = ACTIVATETASK {
+            TASK = IFX_OSTASK_100MS;
+        };
+        COUNTER = IFX_OSTASK_COUNTER;
+        AUTOSTART = TRUE {
+            APPMODE = TRICORE_CPU;
+            ALARMTIME = 500;
+            CYCLETIME = 1000;
+        };
+    };
+};

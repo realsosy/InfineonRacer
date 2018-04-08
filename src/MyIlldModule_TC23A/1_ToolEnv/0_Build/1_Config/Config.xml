@@ -167,7 +167,7 @@
 	
 	<!-- Toolchain configurations -->
 	<selection>
-		<variant rootPaths="*/MyIlldModule" branches ="Stm"/>
+		<variant rootPaths="*/MyIlldModule" branches ="Tft"/>
 	</selection>
-	<specificInclude internalPaths= "*/Sfr/*, */BaseSw/*/Tricore, */BaseSw/*/Platform, */BaseSw/*/CpuGeneric" />
+	<specificInclude internalPaths= "*/Sfr/*, */BaseSw/*/Tricore, */BaseSw/*/Platform, */BaseSw/*/CpuGeneric, */CDrv/Tricore" />
 </root>

@@ -7,7 +7,10 @@ date: 2018-01-30
 * ADC의 일반적인 구조
 * VADC의 특징
 * iLLD로 VADC활용하기
-* Example
+
+EXAMPLE: 
+	MyIlldModule_TC23A - VadcBackgroundScan
+	InfineonRacer_TC23A - TestVadcBgScan
 ---
 
 # Multi channel voltmeter

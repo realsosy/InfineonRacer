@@ -7,7 +7,9 @@ date: 2018-01-30
 * AUTO SCAN의 필요성과 장점
 * VADC AUTO SCAN 구조
 * iLLD 활용하기
-* 예제
+EXAMPLE: 
+	MyIlldModule_TC23A - VadcAutoScan
+	InfineonRacer_TC23A - 
 ---
 
 # My own cheap oscilloscope

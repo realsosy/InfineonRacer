@@ -8,6 +8,9 @@ date: 2018-01-30
 * GtmTomPwm 설명
 * iLLD 활용하기
 * 예제 - DC 모터 양방향 구동
+EXAMPLE: 
+	MyIlldModule_TC23A - GtmTomPwmHl
+	InfineonRacer_TC23A - TestGtm
 ---
 
 # Synchronized PWM

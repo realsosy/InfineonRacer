@@ -7,6 +7,9 @@ date: 2018-01-30
 * Line Scan Camera 이해하기
 * Timing 설계
 * 구현하기
+EXAMPLE: 
+	MyIlldModule_TC23A - 
+	InfineonRacer_TC23A - TestLineScan
 ---
 
 # Line Scan Camera

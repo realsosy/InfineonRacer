@@ -8,7 +8,9 @@ date: 2018-01-30
 * GtmTom 특징
 * iLLD 활용하기
 * 예제 Beeper, Servo
-
+EXAMPLE: 
+	MyIlldModule_TC23A - GtmTomTimer, GtmTomServo
+	InfineonRacer_TC23A - TestGtm
 ---
 
 # Chronos ruler

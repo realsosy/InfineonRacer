@@ -8,6 +8,7 @@ date: 2018-01-30
 * STM 구조 설명
 * STM iLLD 설명
 * 예제 설명
+EXAMPLE: MyStm_TC23A, MyIlldModule_TC23A - Stm
 ---
 
 # Twinkle twinkle little star

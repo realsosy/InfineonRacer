@@ -6,6 +6,9 @@ date: 2018-01-30
 * 필요성은 말할 것도 없고
 * 활용하는 방법 - Case by case
 * Library 활용 방법과 UI 구성 방법에 집중
+EXAMPLE: 
+	MyIlldModule_TC23A - Tft
+	InfineonRacer_TC23A - TftApp
 ---
 
 # TFT as modern Man-Machine Interface

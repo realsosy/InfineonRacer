@@ -7,6 +7,9 @@ date: 2018-01-30
 * 타이밍 다이어 그램
 * SW 구조
 * 사용 방법
+EXAMPLE: 
+	MyIlldModule_TC23A - 
+	InfineonRacer_TC23A - TestStm
 ---
 
 # Multiple infinite loops

@@ -8,6 +8,9 @@ date: 2018-01-30
 * Asc 모듈 설명
 * Asc iLLD 설명
 * 예제 설명
+EXAMPLE: 
+	MyIlldModule_TC23A - AsclinAsc
+	InfineonRacer_TC23A - 
 ---
 
 # Hello world

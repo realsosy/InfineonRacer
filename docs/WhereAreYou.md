@@ -6,6 +6,9 @@ date: 2018-01-30
 * 회전체의 위치 측정 방법: 
 * Gpt12 Encoder config
 * iLLD
+EXAMPLE: 
+	MyIlldModule_TC23A - Gpt12
+	InfineonRacer_TC23A - TestGtp12
 ---
 
 # Where are you?

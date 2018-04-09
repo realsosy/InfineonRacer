@@ -8,7 +8,10 @@ date: 2018-01-30
 * eclipse 중요 기능 - 프로젝트, 
 * makefile, doxygen & graphviz
 * XML & Project configuration
+EXAMPLE: _MyBaseFramework_TC23A
 ---
+
+
 
 # How to use BIFACES?
 

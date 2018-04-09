@@ -18,7 +18,7 @@ date: 2018-01-30
 
 ## Connection Diagram
 * *DC Motor Control Kit* 과 *Application Kit TC2X7 V1.0* 의 경우 별도의 하드웨어 작업 없이 커넥터 연결
-* USB/Blutooth 모듈은 *Application Kit TC2X7 V1.0* 에 내장되어 있는 Micro-5Pin connector를 이용하여 연결 가능
+* USB/Blutooth 모듈은 *Application Kit TC2X7 V1.0* 에 내장되어 있는 Micro-5Pin connector를 이용하여 연결
 
 ![ConnectionDiagram](images/ConnectionDiagram.png)
 
@@ -29,6 +29,6 @@ date: 2018-01-30
 ![MotorDriver](images/ConnectionGuide_MotorDriver.png)
 
 * !ToDo
-  * 실물의 모델 정보 정확하게 반영 - 모터와 서보모터 스펙 필요
-  * 외부 구성 요소와 보드와의 연결 핀 정보 구체적으로 기술 o
-  * Board 에서 수정할 사항 o
+  * 실물의 모델 정보 정확하게 반영 [X] - 모터와 서보모터 스펙 필요
+  * 외부 구성 요소와 보드와의 연결 핀 정보 구체적으로 기술 [O]
+  * Board 에서 수정할 사항 [O]

@@ -72,6 +72,8 @@ sequenceDiagram
 	end
 ```
 
+![MultiChannelVoltmeter_delay](images/MultiChannelVoltmeter_delay.svg)
+
 ## 여러개의 Timer Interrupt 활용한 주기적 실행
 
 
@@ -115,6 +117,8 @@ sequenceDiagram
 		deactivate Task
 	end
 ```
+
+![MultiChannelVoltmeter_interrupt](images/MultiChannelVoltmeter_interrupt.svg)
 
 ## 간단한 Scheduler 활용하기
 
@@ -172,6 +176,8 @@ sequenceDiagram
     end
 ```
 
+![MultiChannelVoltmeter_user](images/MultiChannelVoltmeter_user.svg)
+
 #### Scheduler 구현
 
 *   Stm 를 사용하여 가장 기본이 되는 주기신호를 발생시킨다.  일반적으로 이것을 Tick 이라 부른다.
@@ -202,7 +208,7 @@ sequenceDiagram
 	end
 ```
 
-
+![MultiChannelVoltmeter_developer](images/MultiChannelVoltmeter_developer.svg)
 
 ```c
 /******** BasicStm.c ***********/

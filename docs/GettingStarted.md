@@ -5,7 +5,6 @@ date: 2018-04-10
 
 [기술할 내용들 - 기술하고 나면 해당 항목 지우기]
 
-1. 개발환경 설치
 2. InfineonRacer 코드 다운 받고 빌드, 다운로드하기
 3. 각 모듈 동작 확인하기 ( Shell, TFT)
 ---
@@ -50,9 +49,16 @@ date: 2018-04-10
 ### 1.2 BIFACES Installation
 * BIFACES [Download](추후입력)
 1. 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
+
+
 2. BIFACES_V1_0_0.exe 실행
+
+
 3. 설치 진행
+
 ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
+
+
 4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행 확인
 
 ---
@@ -103,23 +109,40 @@ date: 2018-04-10
     * *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 Edit 창에서 편집 가능
 
 1. *Project explorer* 를 통한 build
-    * *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭 (이미지)
-    *
+    1.1 *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
+
+    ![GettingStarted_11Build](images/GettingStarted_11Build.png)
+
+    1.2 Build 후 결과
+         - *0_Build* 폴더에 *9_Make* 폴더 생성됨
+         - *2_Out* 폴더 생성됨
+         - *2_Out/Tricore_Gnuc/Gnuc_Files* 에 elf 파일과 hex파일 그리고 map파일 생성됨
+
+    ![GettingStarted_12Build](images/GettingStarted_12Build.png)
+
 2. *Make Target* 기능을 통한 build
+    2.1 우측 *Make Target* 탭에서 *InfineonRacer_TC23A* 우클릭 한 뒤 **New...** 클릭
+
+    ![GettingStarted_13New](images/GettingStarted_13New.png)
+
+    2.2 *Target name* 에 *all* 을 입력하고 **OK** 를 클릭하면 프로젝트 하위에 *all* 파일 생성 확인
+
+    ![GettingStarted_14All](images/GettingStarted_14All.png)
+    (추가로 지원되는 build option은 *tool/Makefile* 에서 확인 가능)
+
+    2.3 *all* 더블클릭 하여 build 수행 후 *1.2* 와 같이 파일들이 생성되었는지 확인
+
+    ![GettingStarted_15All](images/GettingStarted_15All.png)
+
 
 ---
 ## 3. 프로그램 다운로드 및 동작확인
-
-## Hardware
-* ​
-
-## iLLD - related
-*
+###3.0 Tera Term 설치 및 shell 실행
 
 ## 추가적인 설명
 
 
 * !ToDo
-    * 설치과정 이미지 포함
+    * 설치과정 이미지 포함 [O]
     * 라이센스 문제 해결법
     * BIFACES 다운로드 링크

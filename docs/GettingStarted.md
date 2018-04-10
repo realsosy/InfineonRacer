@@ -71,7 +71,7 @@ date: 2018-04-10
 
 3. 설치 완료 후 실행
 
-    ![GettingStarted_17Teraterm](images/GettingStarted_17Teraterm.png)    
+    ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
 ---
 ## 2. InfineonRacer Project Build

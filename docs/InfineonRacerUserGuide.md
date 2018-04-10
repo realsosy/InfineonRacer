@@ -22,3 +22,12 @@ date: 2018-01-30
 *
 
 ## 추가적인 설명
+
+
+
+![InfineonRacerUserGuide_SwArch](images/InfineonRacerUserGuide_SwArch.png)
+
+
+
+![InfineonRacerUserGuide_BasicModuleArch](images/InfineonRacerUserGuide_BasicModuleArch.png)
+

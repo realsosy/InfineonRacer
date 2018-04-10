@@ -30,3 +30,9 @@ EXAMPLE:
 
 ## 추가적인 설명
 
+
+
+![WhereAreYou_32PPR_10Hz_part](images/WhereAreYou_32PPR_10Hz_part.png)
+
+![WhereAreYou_32PPR_10Hz_1Period](images/WhereAreYou_32PPR_10Hz_1Period.png)
+

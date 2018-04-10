@@ -1,0 +1,33 @@
+site_name: InfineonRacer
+
+pages:
+- Home: 'index.md'
+- InfineonRacer Guide:
+    - Getting Started: GettingStarted.md
+    - InfineonRacer User Guide: InfineonRacerUserGuide.md
+    - Connection Guide for InfineonRacer: ConnectionGuide.md
+- Dive into AURIX world:
+    - How to use BIFACES?: HowToUseBIFACES.md
+    - How to study AURIX?: HowToStudyAurix.md
+    - What is iLLD?: WhatIsIlld.md
+    - Twinkle twinkle little star: TwinkleTwinkleLittleStar.md
+    - Hello world: HelloWorld.md
+#    - My own terminal: MyOwnTerminal.md
+#    - Multi channel voltmeter: MultiChannelVoltmeter.md
+#    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
+#    - Line Scan Camera(Optional): LineScanCamera.md
+#    - Chronos ruler: ChronosRuler.md
+#    - Synchronized PWM: SynchronizedPwm.md
+#    - Where are you?: WhereAreYou.md
+#    - TFT as modern Man-Machine Interface: TftAsModernMmi.md 
+    - Multiple infinite loops: MultipleInfiniteLoops.md 
+#    - OSEK-Certified ErikaOS & RT-Druid: OsekCertificedErikaOsRtDruid.md
+
+- References: 'References.md'
+
+theme: readthedocs
+
+extra_javascript:
+    - http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+use_directory_urls: false

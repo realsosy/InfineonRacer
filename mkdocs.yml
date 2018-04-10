@@ -8,10 +8,10 @@ pages:
     - Connection Guide for InfineonRacer: ConnectionGuide.md
 - Dive into AURIX world:
     - How to use BIFACES?: HowToUseBIFACES.md
-    - How to study AURIX?: HowToStudyAurix.md
+#    - How to study AURIX?: HowToStudyAurix.md
     - What is iLLD?: WhatIsIlld.md
     - Twinkle twinkle little star: TwinkleTwinkleLittleStar.md
-    - Hello world: HelloWorld.md
+#    - Hello world: HelloWorld.md
 #    - My own terminal: MyOwnTerminal.md
 #    - Multi channel voltmeter: MultiChannelVoltmeter.md
 #    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md

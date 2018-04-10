@@ -145,7 +145,7 @@ void appTaskfu_10ms(void)
 
 
 
-
+![InfineonRacerUserGuide_Matlab](images/InfineonRacerUserGuide_Matlab.png)
 
 ## Configuration
 

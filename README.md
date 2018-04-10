@@ -48,13 +48,13 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 3.  [What is iLLD](./docs/WhatIsIlld.md) PORT
 4.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM 
 5.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
-6.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan + Bluetooth terminal
-7.  [My own cheap oscilloscope](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
-8.  [Line Scan Camera](./docs/LineScanCamera.md) TSL1401
-9.  [Chronos ruler](./docs/ChronosRuler.md) GtmTomTimer + Beeper, Servo
-10.  [Synchronized PWM](./docs/SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
-11.  [Where are you?](./docs/WhereAreYou.md) Gpt12 + Encoder
-12.  [My own terminal](./docs/MyOwnTerminal.md) Shell
+6.  [My own terminal](./docs/MyOwnTerminal.md) Shell
+7.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan + Bluetooth terminal
+8.  [My own cheap oscilloscope](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
+9.  [Line Scan Camera](./docs/LineScanCamera.md) TSL1401
+10.  [Chronos ruler](./docs/ChronosRuler.md) GtmTomTimer + Beeper, Servo
+11.  [Synchronized PWM](./docs/SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
+12.  [Where are you?](./docs/WhereAreYou.md) Gpt12 + Encoder
 13.  [TFT as modern Man-Machine Interface](./docs/TftAsModernMmi.md) 
 14.  [Multiple infinite loops](./docs/MultipleInfiniteLoops.md) Static Cyclic Scheduler
 15.  [OSEK-Certified ErikaOS & RT-Druid](./docs/OsekCertificedErikaOsRtDruid.md)

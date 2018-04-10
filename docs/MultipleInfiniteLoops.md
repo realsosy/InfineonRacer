@@ -1,196 +1,266 @@
 ---
-title: Multiple infinite loops.md
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* Foreground / Background 스케쥴러
-* 타이밍 다이어 그램
-* SW 구조
-* 사용 방법
-EXAMPLE: 
-	MyIlldModule_TC23A - 
-	InfineonRacer_TC23A - TestStm
+title: Multiple infinite loops.md  
+author: Wootaik Lee(wootaik@changwon.ac.kr)  
+date: 2017-09-01  
 ---
 
 # Multiple infinite loops
 
 ## Objectives
-*
 
-## References
-*
+* 실행주기가 다른 여러개의 함수들을 실행시킬 수 있는 방법
 
-## Example Description 
-*
+## Infinite-loop을 활용한 실행
 
-## Hardware
-* ​
+* **MyIlldModule_TC23A - VadcAutoScan **  예제의 main 함수를 살펴보자.
 
-## iLLD - related
-*
+  ```c
+  #include "SysSe/Bsp/Bsp.h"
+  #include "VadcAutoScanDemo.h"
+  /* 중간 생략 */
 
-## 추가적인 설명
+  int core0_main(void)
+  {
+      /* 중간 생략 */
+      IfxCpu_enableInterrupts();
 
-### 간단한 Scheduler 활용하기
+      /* Demo init */
+      VadcAutoScanDemo_init();
+
+      initTime(); // Initialize time constants
+
+      while (TRUE)
+      {
+      	VadcAutoScanDemo_run();
+          wait(TimeConst_100ms*5);  /* Waste CPU time for 500ms */
+      }
+  }
+  ```
+
+  ​
+
+* main 함수에 있는 Infinite-loop 에서 필요한 실행 코드들을 순차적으로 무한반복으로 실행하도록 구성되어 있다. 
+
+* 전체 실행 주기를 맞추기 위해서 wait()함수를 만들어 loop 의 끝부분에서 실행하도록 되어 있다.
+
+  * `initTime( )`함수를 호출하여 `TimeConst_100ms`를 초기화 한다.
+  * `wait(TimeConst_100ms*5)`를 실행하여 약 500msec 의 시간지연을 발생시킨다.
+
+* wait 함수(delay 함수)의 문제점1 : CPU Time의 낭비 
+
+  * 이 예제에서 CPU는 다른 코드를 실행할 필요가 없으므로 문제가 없지만, 
+  * 복잡한 다른 일을 실행해야 한다면 귀중한 CPU의 시간을 낭비
+
+* wait 함수(delay 함수)의 문제점2 : 서로다른 여러 주기의 일을 실행시킬 수 없음
+
+  * 간단하게 한 주기의 일을 시킬 경우에는 문제가 없지만,
+  * 복잡한 여러 주기의 일을 실행시킬 경우에는 loop을 복잡하게 구성해야 한다.
+
+```mermaid
+sequenceDiagram
+	Main ->> BSP: initTime( )
+	Main ->> VadcAutoScanDemo: VadcAutoScanDemo_init( )
+	loop Every Cycle
+		Main ->> VadcAutoScanDemo: VadcAutoScanDemo_run()
+	    activate VadcAutoScanDemo
+	    VadcAutoScanDemo -->> Main: 
+	    deactivate VadcAutoScanDemo
+	    Main ->> BSP: wait(TimeConst_100ms*5)
+	    activate BSP
+	    BSP -->> Main: 
+	    deactivate BSP
+	end
+```
+
+## 여러개의 Timer Interrupt 활용한 주기적 실행
+
+
+* Timer interrupt을 사용하여서 특정 함수(혹은 태스크)를 개별적인 주기마다 수행 시킬 수 있다.
+
+  ```c
+  void ISR_Timer_1ms(void){
+      /* 중간생략*/
+      Task1ms();
+  }
+
+  void ISR_Timer_10ms(void){
+      /* 중간생략*/
+      Task10ms();
+  }
+  ```
+
+* 특정 함수(혹은 태스크)가 Interrupt context로 실행된다.
+
+
+  * 위의 예에서  `Task1ms()` , `Task10ms()`
+
+  * 간단한 함수, 즉 실행시간이 길지 않을 경우에는 문제가 없지만, 
+
+  * 복잡한 연산이나 반복등으로 실행시간이 길다면 다른 Interrupt의 실행을 방해할 수 있게 된다.
+
+    ​
+
+```mermaid
+sequenceDiagram
+	opt Every TIMER INTERRUPT 1ms
+		TIMER ->> Task: Task1ms()
+		activate Task
+		Note right of Task: Long Task1ms() blocks other timing		
+		deactivate Task
+	end
+	opt Every TIMER INTERRUPT 10ms
+		TIMER ->> Task: Task10ms()
+		activate Task
+		Note right of Task: Long Task10ms() blocks other timing		
+		deactivate Task
+	end
+```
+
+## 간단한 Scheduler 활용하기
 
 *   Scheduler 란 개발자가 원하는 조건(주기, 혹은 이벤트)에 따라서 해당하는 Task 를 실행시키는 프로그램이다.
-*   infinite-loop 와 SystemTimer를 조합하여 프로그램의 실행을 흐트러트리지 않는 작은 Scheduler 를 만들 수 있다.
+*   infinite-loop 와 Hardware Timer(Stm)를 조합하여 프로그램의 실행을 흐트러트리지 않는 작은 Scheduler 를 만들 수 있다.
 
 #### 사용자 측면
 
 *   Main 함수에서 
-    *   초기화 함수 Scheduler_Init() 함수를 호출하고
-    *   Scheduler_Loop() 함수를 무한루프에서 호출한다.
-*   Scheduler_Init() 함수는 TaskInit() 함수를 호출한다.
-    *   사용자는 TaskInit() 함수에 필요한 초기화 동작에 대한 프로그래밍을 한다.
-*   Scheduler_Loop() 함수는 설정된 주기 정보에 따라 Task 들을 호출한다.
+    *   Scheduler 초기화 함수(`BasicStm_init( )`)를 호출하고
+    *   무한루프에서 Scheduler Loop() 함수(`BasicStm_run( )`)를 호출한다.
+*   Scheduler 초기화 함수는 Task 초기화 함수 (`appTaskFu_init()`)를 호출한다.
+    *   사용자는 Task 초기화 함수에 필요한 초기화 동작을 프로그래밍 한다.
+*   Scheduler Loop() 함수는 설정된 주기 정보에 따라 Task 들(`appTaskFu_xxxs`)을 호출한다.
     *   사용자는 실행주기에 맞는 Task에 해당 동작을 프로그래밍 한다.
-
+*   Interrupt Context로 실행되어야 하는 부분은 Callback 함수 영역(`appIsrCb_1ms()`)에 프로그래밍 한다.
 
 ```mermaid
 sequenceDiagram
-	Main ->> Scheduler: Scheduler_Init()
+	Main ->> BasicStm: BasicStm_init()
+	activate BasicStm
+	BasicStm ->> appTaskFu: appTaskfu_init()
+	deactivate BasicStm
 	loop Every Cycle
-		Main ->> Scheduler: Scheduler_Loop()
+		activate BasicStm
+		BasicStm ->> BasicStm: STM_Int0Handler()
+		BasicStm ->> appTaskFu: appIsrCb_1ms()
+            activate appTaskFu
+            deactivate appTaskFu
+		deactivate BasicStm
+		Main ->> BasicStm: BasicStm_run()
         opt Every1ms
-        	Scheduler ->> Tasks: Task1ms()
+        	BasicStm ->> appTaskFu: appTaskfu_1ms()
+            activate appTaskFu
+            deactivate appTaskFu
         end
         opt Every10ms
-        	Scheduler ->> Tasks: Task10ms()
+        	BasicStm ->> appTaskFu: appTaskfu10ms()
+            activate appTaskFu
+            deactivate appTaskFu
         end
         opt Every100ms
-        	Scheduler ->> Tasks: Task100ms()
+        	BasicStm ->> appTaskFu: appTaskfu_100ms()
+            activate appTaskFu
+            deactivate appTaskFu
         end
         opt Every1000ms
-        	Scheduler ->> Tasks: Task1000ms()
+        	BasicStm ->> appTaskFu: appTaskfu_1000ms()
+            activate appTaskFu
+            deactivate appTaskFu
         end
-       	Scheduler ->> Tasks: TaskIdle()
-
+       	BasicStm ->> appTaskFu: appTaskfu_Idle()
+            activate appTaskFu
+            deactivate appTaskFu
+    end
 ```
 
 #### Scheduler 구현
 
-*   SystemTimer 를 사용하여 가장 기본이 되는 주기신호를 발생시킨다.  일반적으로 이것을 Tick 이라 부른다.
-    *   이 시스템 타이머를 사용하여 Tick Counter 변수를 기본 주기로 계속 증가시키고, 설정한 범위를 지나가면 다시 0이 되도록 동작시킨다.
-*   SchedulerLoop() 함수에서는 Tick Counter 변수값을 참고하여 각 Task 의 주기를 관리하고 해당 주기에 따라 사용자의 Task 들을 호출한다.
+*   Stm 를 사용하여 가장 기본이 되는 주기신호를 발생시킨다.  일반적으로 이것을 Tick 이라 부른다.
+    *   이 시스템 타이머를 사용하여 Tick 변수 (`g_Stm.counter`)를 기본 주기로 계속 증가시키고, 설정한 범위를 지나가면 다시 0이 되도록 동작시킨다.
+*   Scheduler_Loop() 함수에서는 Tick Counter 변수값을 참고하여 각 Task 의 주기를 관리하고 해당 주기에 따라 사용자의 Task 들을 호출한다.
 *   SystemTimer 와 SchedulerLoop() 사이에는 Flag를 하나 사용하여 동기화 시킨다.
 *   이와 같이 구현함으로써 ISR로 인한 실행 지연등을 최소화한 상태로 주기적인 사용자 Task 를 실행시킬 수 있게 된다.
 
 ```mermaid
 sequenceDiagram
-	opt Every SYSTIMER INTERRUPT
-		SYSTIMER ->> Scheduler: CallBack1ms()
-		activate Scheduler
-		Note right of Scheduler: Set TickFlag1ms
-		Note right of Scheduler: TickCounter++		
-		deactivate Scheduler
+	opt Every TIMER INTERRUPT
+		activate STM_Int0Handler
+		Note right of STM_Int0Handler: Tick++		
+		Note right of STM_Int0Handler: Set task_flag_1ms
+		Note right of STM_Int0Handler: Set task_flag_10ms
+		Note right of STM_Int0Handler: Set task_flag_XXX		
+		deactivate STM_Int0Handler
 	end
 	loop infinite loop
-		main ->> Scheduler: Scheduler_Loop()
-		activate Scheduler
-		Note right of Scheduler: Check TickFlag1ms
-		Note right of Scheduler: Set TaskxxFlag
-		Note right of Scheduler: Clear TickFlag1ms
-		Note right of Scheduler:  		
-		Note right of Scheduler: Check TaskxxFlag 		
-		Note right of Scheduler: Call Taskxx 		
-		Note right of Scheduler: Clear TaskxxFlag 		
-		deactivate Scheduler
+		activate BasicStm_run
+		Note left of BasicStm_run: Check task_flag_1ms
+		BasicStm_run ->> AppTaskFu: appTaskfu_1ms()
+		Note left of BasicStm_run: Clear task_flag_1ms
+		Note left of BasicStm_run: Check task_flag_10ms
+		BasicStm_run ->> AppTaskFu: appTaskfu_10ms()
+		Note left of BasicStm_run: Clear task_flag_10ms
+		deactivate BasicStm_run
 	end
 ```
 
 
 
 ```c
-static uint32_t TickCounter = 0;
-static bool TickFlag1ms = false;
-static bool Task1msFlag = false;
-static bool Task10msFlag = false;
+/******** BasicStm.c ***********/
 
-static void TaskInit(void);
-static void TaskIdle(void);
-static void Task1ms(void);
-static void Task10ms(void);
+void STM_Int0Handler(void)
+{
+    g_Stm.counter++;
+    if(g_Stm.counter == 1000){
+    	g_Stm.counter = 0;
+    }
 
-void CallBack1ms(){
-	TickFlag1ms = true;
-	TickCounter++;
-	if(TickCounter == 10000){
-		TickCounter = 0;
-	}
-}
+    task_flag_1m = TRUE;
 
-void StaticScheduler_Init(void){
-	TaskId1ms = SYSTIMER_CreateTimer(1000, SYSTIMER_MODE_PERIODIC, CallBack1ms, NULL);
-	TaskInit();
-	SYSTIMER_StartTimer(TaskId1ms);
-}
-
-void StaticScheduler_Loop(void){
-	if(TickFlag1ms == true){
-		if(TickCounter%1 == 0){
-			Task1msFlag = true;
-		}
-		if(TickCounter%10 == 1){
-			Task10msFlag = true;
-		}
+    if(g_Stm.counter % 10 == 0){
+    	task_flag_10m = TRUE;
+    }
 		/* 중간생략 */
-        TickFlag1ms = false;
-	}
-
-	if(Task1msFlag == true){
-		Task1ms();
-		Task1msFlag = false;
-	}
-
-	if(Task10msFlag == true){
-		Task10ms();
-		Task10msFlag = false;
-	}
-	/* 중간생략 */
-	TaskIdle();
+    appIsrCb_1ms();
 }
+
+void BasicStm_run(void)
+{
+	if(task_flag_1m == TRUE){
+		appTaskfu_1ms();
+		task_flag_1m = FALSE;
+	}
+
+	if(task_flag_10m == TRUE){
+		appTaskfu_10ms();
+		task_flag_10m = FALSE;
+	}
+		/* 중간생략 */
+
+	appTaskfu_idle();
+}
+
 ```
 
-#### 사용예 
 
-*   간단한 Scheduler 를 사용하 SevenSegLab을 재구성하면 다음과 같다.
+```c
+/*************** AppTaskFu.c *****************/
+IFX_EXTERN boolean task_flag_1m;
+IFX_EXTERN boolean task_flag_10m;
+/* 중간생략 */
+void appTaskfu_1ms(void);
+void appTaskfu_10ms(void);
+/* 중간생략 */
+void appIsrCb_1ms(void);
 
-```mermaid
-sequenceDiagram
-	Main ->> Scheduler: Scheduler_Init()
-	Scheduler ->> Tasks: TaskInit()
-	activate Tasks
-	Tasks ->> Button: Initialize Button
-	Tasks ->> Seg: Initialize Seg
-	deactivate Tasks
-	loop Every Cycle
-		Main ->> Scheduler: Scheduler_Loop()
-        opt Every1ms
-        	Scheduler ->> Tasks: Task1ms()
-        end
-        opt Every10ms
-        	Scheduler ->> Tasks: Task10ms()
-			Tasks ->> Button: CheckButton()
-            activate Button
-            Button -->> Tasks: Update Number
-            deactivate Button
-            Tasks ->> Seg: ConvertSeg()
-            activate Seg
-            Seg -->> Tasks: Update SegmentNum
-            deactivate Seg
-            Tasks ->> Seg: DisplaySeg()
-            activate Seg
-            Seg -->> Tasks: 
-            deactivate Seg
-        end
-        opt Every100ms
-        	Scheduler ->> Tasks: Task100ms()
-        end
-        opt Every1000ms
-        	Scheduler ->> Tasks: Task1000ms()
-        end
-       	Scheduler ->> Tasks: TaskIdle()
-    end
+void appTaskfu_1ms(void)
+{
+	/* 중간생략 */
+}
+void appTaskfu_10ms(void)
+{
+	/* 중간생략 */
+    BasicLineScan_run();
+    InfineonRacer_detectLane();
+}
+
 ```
-

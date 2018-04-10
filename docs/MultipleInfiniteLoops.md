@@ -12,30 +12,30 @@ date: 2017-09-01
 
 ## Infinite-loop을 활용한 실행
 
-* **MyIlldModule_TC23A - VadcAutoScan **  예제의 main 함수를 살펴보자.
+* **MyIlldModule_TC23A - VadcAutoScan**  예제의 main 함수를 살펴보자.
 
-  ```c
-  #include "SysSe/Bsp/Bsp.h"
-  #include "VadcAutoScanDemo.h"
+```c
+#include "SysSe/Bsp/Bsp.h"
+#include "VadcAutoScanDemo.h"
   /* 중간 생략 */
 
-  int core0_main(void)
+int core0_main(void)
+{
+  /* 중간 생략 */
+  IfxCpu_enableInterrupts();
+
+  /* Demo init */
+  VadcAutoScanDemo_init();
+
+  initTime(); // Initialize time constants
+
+  while (TRUE)
   {
-      /* 중간 생략 */
-      IfxCpu_enableInterrupts();
-
-      /* Demo init */
-      VadcAutoScanDemo_init();
-
-      initTime(); // Initialize time constants
-
-      while (TRUE)
-      {
-      	VadcAutoScanDemo_run();
-          wait(TimeConst_100ms*5);  /* Waste CPU time for 500ms */
-      }
+    VadcAutoScanDemo_run();
+    wait(TimeConst_100ms*5);  /* Waste CPU time for 500ms */
   }
-  ```
+}
+```
 
   ​
 

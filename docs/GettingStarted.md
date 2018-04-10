@@ -24,10 +24,11 @@ date: 2018-04-10
 1. 개발환경 구축
 * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
 * 인피니언에서 제공하는 *BIFACES* build environment 설치
+* Serial 통신 및 Shell 환경 구축을 위한 TeraTerm 설치
 2. *BIFACES* 를 통하여 소스코드 빌드
 3. 예제 동작 확인
-    * *Application Kit TC2X7 V1.0* 보드를 이용한 LED, Beeper, TFT 예제 동작
-    * *DC Motor Control Kit* 보드를 이용한 Motor, Encoder, LineScanCamera 예제 동작
+    * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
+    * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, LineScanCamera 예제 동작
 
 ---
 ## 1. 개발환경 설치
@@ -43,7 +44,7 @@ date: 2018-04-10
 3. 압축 해제된 파일 중 *setup.exe* 를 실행 후 설치 진행
     ![GettingStarted_02HighTecCompiler](images/GettingStarted_02HighTecCompiler.png)
 
-   * HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨
+   (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
 4. 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
 ### 1.2 BIFACES Installation
@@ -56,10 +57,21 @@ date: 2018-04-10
 
 3. 설치 진행
 
-![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
+    ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
 
 
 4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행 확인
+
+
+#### 1.3 TeraTerm Installation
+1. [TeraTerm](https://ttssh2.osdn.jp/) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
+2. *Select Components* 에서 *Standard installation* 를 선택하여 설치 진행
+
+    ![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
+
+3. 설치 완료 후 실행
+
+    ![GettingStarted_17Teraterm](images/GettingStarted_17Teraterm.png)    
 
 ---
 ## 2. InfineonRacer Project Build
@@ -106,7 +118,7 @@ date: 2018-04-10
 
 ### 2.2 Build
 0. Build 전 Complier 설정
-    * *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 Edit 창에서 편집 가능
+    *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 Edit 창에서 편집 가능
 
 1. *Project explorer* 를 통한 build
     1.1 *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
@@ -136,8 +148,95 @@ date: 2018-04-10
 
 
 ---
-## 3. 프로그램 다운로드 및 동작확인
-###3.0 Tera Term 설치 및 shell 실행
+## 3. 프로그램 다운로드 및 예제 파일 실행
+### 3.1 UDEVisualPlatfrom 실행 및 프로그램 다운로드하기
+* Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용한 Shell 환경 실행
+
+1. UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
+
+    ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
+
+
+2. *BIFACES Workspase/InfineonRacer_TC23A/tool/AppKit_TC23x.wsx* 파일 열기
+
+    ![GettingStarted_19UDE](images/GettingStarted_19UDE.png)
+
+
+3. Elf 파일 경로 확인 후 **OK** 클릭
+(경로가 빌드 후 생성된 *2_Out/Tricore_Gnuc/Gnuc_Files/InfineonRacer_TC23A_tc.elf* 파일로 설정되어 있는지 확인)
+
+    ![GettingStarted_20Load](images/GettingStarted_20Load.png)
+
+
+4. *AppKit* 를 USB로 Host PC와 연결한 후 **File** >> **Connect Target System..** 클릭
+(Host PC와 첫 연결 시 드라이버 다운로드가 진행됨)
+
+    ![GettingStarted_21Connect](images/GettingStarted_21Connect.png)
+
+
+5. *UDE - FLASH/OTP Memory Programming Tool* 창에서 *Program all* 버튼 클릭
+
+    ![GettingStarted_22Program](images/GettingStarted_22Program.png)
+
+
+6. *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 *Execute Memtool Command* 창을 닫음
+
+    ![GettingStarted_23Execute](images/GettingStarted_23Execute.png)
+
+
+7. **Debug** >> **Start Program Execution** 을 클릭하면 *AppKit* 에 다운로드 된 프로그램이 실행됨
+
+    ![GettingStarted_24Start](images/GettingStarted_24Start.png)
+
+    프로그램을 실행했을 때 *AppKit* 의 TFT 화면
+
+    ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
+
+
+8. **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
+
+    ![GettingStarted_26Dis](images/GettingStarted_26Dis.png)
+
+
+9. *AppKit* COM port 활성화(첫 연결시 필요)
+* 9.1 장치관리자 실행
+* 9.2 **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
+
+    ![GettingStarted_27Com](images/GettingStarted_27Com.png)
+
+* 9.3 *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
+
+    ![GettingStarted_28Enable](images/GettingStarted_28Enable.png)
+
+* 9.4 *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인
+
+    ![GettingStarted_29Com](images/GettingStarted_29Com.png)
+
+
+10. *TeraTerm* 실행 후 *Serial* 체크, *Port:* 에 *Infineon DAS COM (COMn)* 선택 후 **OK** 클릭
+
+    ![GettingStarted_30Tera](images/GettingStarted_30Tera.png)
+
+
+11. **Setup** >> **Serial port...** 클릭
+
+    ![GettingStarted_31Serial](images/GettingStarted_31Serial.png)
+
+
+12. *Buad rate* 을 *115200* 으로 설정하고 *OK* 클릭
+
+    ![GettingStarted_32Set](images/GettingStarted_32Set.png)
+
+
+13. *TeraTerm VT* 창에서 enter 를 입력하면 *shell>* 이 화면에 나타남! 여기에 *Help* 를 입력하고 enter를 입력하면 아래의 사진과 같이 사용할 수 있는 명령어 셋과 설명이 나타남
+
+    ![GettingStarted_33Help](images/GettingStarted_33Help.png)
+
+
+### 3.2 예제1
+### 3.3 예제2
+### 3.4 예제3
+
 
 ## 추가적인 설명
 

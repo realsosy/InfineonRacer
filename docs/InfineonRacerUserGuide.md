@@ -16,30 +16,30 @@ date: 2018-01-30
 ## SW Architecture
 
 * InfineonRacer SW Platform은 다음의 그림과 같은 3개의 계층으로 구성되어 있다.
-  * iLLD 와 CDrv: 최하단 계층으로 AURIX의 저수준 입출력 기능을 담당하는 드라이버 계층
-  * SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
-    * BasicGtmTom: DC Motor, Servo, Beeper
-    * BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화 
-    * BasicLineScan: LineScan Camera(TSL1401)
-    * BasicVadcBgScan: Analog Input 
-    * BasicGpt12Enc: Encoder
-    * BasicStm: Static Cyclic Scheduler
-    * ShellInterface: 직렬통신과 사용자 Shell 환경 제공
-    * TftApp: TFT의 MMI (Man-Machine Interface) 제공
-  * Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
-    * SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
-    * 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
+  - iLLD 와 CDrv: 최하단 계층으로 AURIX의 저수준 입출력 기능을 담당하는 드라이버 계층
+  - SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
+    + BasicGtmTom: DC Motor, Servo, Beeper
+    + BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화 
+    + BasicLineScan: LineScan Camera(TSL1401)
+    + BasicVadcBgScan: Analog Input 
+    + BasicGpt12Enc: Encoder
+    + BasicStm: Static Cyclic Scheduler
+    + ShellInterface: 직렬통신과 사용자 Shell 환경 제공
+    + TftApp: TFT의 MMI (Man-Machine Interface) 제공
+  - Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
+    + SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
+    + 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
 
 ![InfineonRacerUserGuide_SwArch](images/InfineonRacerUserGuide_SwArch.png)
 
 
 
 * 각 계층은 폴더와 파일명으로 형상관리
-  * Algorithm 계층: AppSw/Tricore/Algorithm/
-  * SnsAct 계층: AppSw/Tricore/SnsAct/
-  * iLLD 계층: BaseSw/
-  * Tft 관련
-    * AppSw/Tricore/TftApp 과 CDrv
+  - Algorithm 계층: AppSw/Tricore/Algorithm/
+  - SnsAct 계층: AppSw/Tricore/SnsAct/
+  - iLLD 계층: BaseSw/
+  - Tft 관련
+    + AppSw/Tricore/TftApp 과 CDrv
 
 
 
@@ -49,7 +49,7 @@ date: 2018-01-30
 
 * 사용자가 간단하게 사용할 수 있는 스케쥴러를 제공 (Scheduler 참고)
 
-  * 해당 모듈의 동작 주기와 순서 조정 가능
+  - 해당 모듈의 동작 주기와 순서 조정 가능
 
 * 하나의 프로젝트에서 모듈 시험 코드와 최종 릴리즈 코드를 동시에 개발하며 관리할 수 있도록 구성 (선택적으로 소스코드 빌드하기 참고)
 
@@ -92,22 +92,21 @@ InfineonRacer의 경우를 예로 설명하면
 ## Basic Module Structure & API
 
 * 8bit, 16bit 급 마이크로컨트롤러를 활용하기 위해서는  
-  * 데이터북을 보고 각 서브시스템 특징을 이해하고
-  * 메모리 공간상의 레지스터 맵에 직접 프로그래밍 하였다.
+  - 데이터북을 보고 각 서브시스템 특징을 이해하고
+  - 메모리 공간상의 레지스터 맵에 직접 프로그래밍 하였다.
 * AURIX와 같은 32bit 급 마이크로컨트롤러는 전통적인 방법으로 개발하기는 어렵다.
-  * 데이터북을 모두 읽고 일을 하기에는 너무 분량이 많고
-  * 서브시스템이 막강하여 다양한 기능을 수행할 수 있으므로 다양한 사용예들이 존재하고
-  * 레지스터의 개수가 너무 많다   
+  - 데이터북을 모두 읽고 일을 하기에는 너무 분량이 많고
+  - 서브시스템이 막강하여 다양한 기능을 수행할 수 있으므로 다양한 사용예들이 존재하고
+  - 레지스터의 개수가 너무 많다   
 
-  ​
 * BasicModule의 역할: iLLD를 활용하여 센서 및 액츄에이터를 추상화 하자.
-  * 개발자의 수고를 덜어주기 위하여 잘 다듬어져 있는 iLLD를 제공하고 있다.
-  * 물론 iLLD를 활용해서 사용예에 맞도록 설정하고 필요한 함수를 찾아서 호출해야 하지만, 레지스터를 직접 프로그래밍하는 것과는 비교할 수 없을 정도로 노력을 덜어준다.
+  - 개발자의 수고를 덜어주기 위하여 잘 다듬어져 있는 iLLD를 제공하고 있다.
+  - 물론 iLLD를 활용해서 사용예에 맞도록 설정하고 필요한 함수를 찾아서 호출해야 하지만, 레지스터를 직접 프로그래밍하는 것과는 비교할 수 없을 정도로 노력을 덜어준다.
 * 센서와 액츄에이터의 값을 언제든지 접근 가능한 변수와 이 변수를 읽고 쓰는 함수를 제공한다.
-  * API 변수명: `IR_SnsName`, `IR_ActName`
-  * API 함수명: `IR_getSnsName()`, `IR_setActName(type)`
-  * 내부동작함수: `BasicModuleName_init(void)`, `BasicModuleName_run(void)`
-  * iLLD를 이와 같이 추상화하여 사용자는 해당 센서와 액츄에이터의 값을 쉽게 접근할 수 있게 된다.
+  - API 변수명: `IR_SnsName`, `IR_ActName`
+  - API 함수명: `IR_getSnsName()`, `IR_setActName(type)`
+  - 내부동작함수: `BasicModuleName_init(void)`, `BasicModuleName_run(void)`
+  - iLLD를 이와 같이 추상화하여 사용자는 해당 센서와 액츄에이터의 값을 쉽게 접근할 수 있게 된다.
 
 ![InfineonRacerUserGuide_BasicModuleArch](images/InfineonRacerUserGuide_BasicModuleArch.png)
 
@@ -142,9 +141,9 @@ InfineonRacer의 경우를 예로 설명하면
 
 * InfineonRacer 는 다음과 같은 Static Cyclic Scheduler를 가지고 있다.
 * Release 의 예를 살펴보면 다음과 같이 
-  * 초기화 `appTaskfu_init(void)`
-  * `appTaskfu_1ms(void)`,  `appTaskfu_10ms(void)`,  `appTaskfu_100ms(void)`,  `appTaskfu_1000ms(void)` , `appTaskfu_idle(void)`  테스크를 가지고 있다.
-  * 그리고 1msec 의 Stm Interrupt 함수 내부에서 실행되는 `appIsrCb_1ms(void)` 가 있다.
+  - 초기화 `appTaskfu_init(void)`
+  - `appTaskfu_1ms(void)`,  `appTaskfu_10ms(void)`,  `appTaskfu_100ms(void)`,  `appTaskfu_1000ms(void)` , `appTaskfu_idle(void)`  테스크를 가지고 있다.
+  - 그리고 1msec 의 Stm Interrupt 함수 내부에서 실행되는 `appIsrCb_1ms(void)` 가 있다.
 * 해당되는 주기에 순서에 맞춰서 각 함수를 이곳에 프로그래밍 하면 된다.
 
 ```c
@@ -223,8 +222,8 @@ void appIsrCb_1ms(void){
 ### Hand-Code
 
 * 사용자에게 참고 목적으로 간단하게 2개의 함수로 예제를 제공
-  * `InfineonRacer_detectLand()`: 좌우의 Line Scan Camera 로 부터 각각 128 개의 정보를 읽어들여 좌우측 여백을 계산
-  * `InfineonRacer_control()`: 여백 정보를 고려하여 조향각도와 주행속도를 결정
+  - `InfineonRacer_detectLand()`: 좌우의 Line Scan Camera 로 부터 각각 128 개의 정보를 읽어들여 좌우측 여백을 계산
+  - `InfineonRacer_control()`: 여백 정보를 고려하여 조향각도와 주행속도를 결정
 * 사용자의 목적에 맞게 함수와 변수를 추가하고, 스케쥴러에 등록하여 사용
 
 ```c
@@ -254,8 +253,8 @@ void InfineonRacer_control(void){
 
 * Model-based 기법으로 제어기 개발 예제 제공
 * Hand-code 의 `InfineonRacer_control()` 부분만 조건부 컴파일 하도록 구성
-  * Mathwork 사의 Embedded Real-time Target을 사용할 경우 두번째 CODE_ERT 만 정의
-  * 향후 [SCILAB](http://scilab.io/)의 Auto-code generation 도 지원할 예정
+  - Mathwork 사의 Embedded Real-time Target을 사용할 경우 두번째 CODE_ERT 만 정의
+  - 향후 [SCILAB](http://scilab.io/)의 Auto-code generation 도 지원할 예정
 
 ```c
 /* in AppSw/Tricore/Cfg_Illd/Configuration.h */
@@ -285,9 +284,9 @@ void appTaskfu_10ms(void)
 
 
 * ERT Autocode Generation Example
-  * InfineonRacer/src/matlab/SimulCodeGen.prj 
-  * harness.slx 를 열면 다음과 같이 간단한 구조의 제어기와 차량 모델을 확인할 수 있습니다.
-  * 상단의 generate_controller_code 를 실행하면 /AppSw/Tricore/Algorithm/ert 디렉토리 밑에 Infineon Racer Controller 모델 부분의 코드가 자동으로 생성
+  - InfineonRacer/src/matlab/SimulCodeGen.prj 
+  - harness.slx 를 열면 다음과 같이 간단한 구조의 제어기와 차량 모델을 확인할 수 있습니다.
+  - 상단의 generate_controller_code 를 실행하면 /AppSw/Tricore/Algorithm/ert 디렉토리 밑에 Infineon Racer Controller 모델 부분의 코드가 자동으로 생성
 
 ![InfineonRacerUserGuide_Matlab](images/InfineonRacerUserGuide_Matlab.png)
 

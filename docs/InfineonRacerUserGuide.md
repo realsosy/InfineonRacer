@@ -293,11 +293,85 @@ void appTaskfu_10ms(void)
 
 ## Configuration 
 
+* SnsAct 계층의 Basic Module에 관한 설정 정보는 /AppSw/Tricore/Cfg_Illd 디렉토리 밑에있는 다음 3개의 파일로 한다.
+
 ### Module Configuration
 
+* `Configuration.h` 파일
 
+* Sensor Actuator IO 핀 정보
+
+  ```c
+  ...
+  #define LED108						IfxPort_P13_1
+  ...
+  #define M11_INH						IfxPort_P02_0
+  #define M12_INH						IfxPort_P00_2
+  ...
+  #define TSL1401_SI					IfxPort_P14_6
+  #define TSL1401_CLK					IfxPort_P14_7
+  #define TSL1401_AO_1				9
+  ...
+  ```
+
+* Encoder Emulation 여부
+
+    * 만약 이것이 정의 되면 Encoder Emulation 신호가 발생된다. (P02.6, P02.7, P02.8)
+
+    ```c
+    /* Encoder Emulation for Gpt12Enc Test */
+    #define ENCODER_EMUL
+    ```
+
+* TFT 관련 설정
+
+    * TFT와 연결된 HW 설정 정보들이므로 사용자는 변경할 필요는 없다.
+
+* Algorithm 코드 설정 정보
+
+    ```c
+    /* 다음 3개중의 하나만 정의해서 사용*/
+    #define CODE_HAND			// Hand code : default
+    //#define CODE_ERT			// Using embedded coder
+    //#define CODE_SCILAB			// Using SciLab
+    ```
+
+    ​
+
+### TFT Configuration
+
+* `conio_cfg.h` 파일
+
+  * TFT 관련된 정적 설정 정보
+
+  ​
 
 ### Interrupt Configuration
+
+* 사용하는 인터럽트와 우선순위 설정 정보
+
+* SnsAct 관련 인터럽트들
+
+  ```c
+  #define INTERRUPT_STM_INT0          ISR_ASSIGN(ISR_PRIORITY_STM_INT0, ISR_PROVIDER_STM_INT0)                            /**Define the System Timer interrupt priority.  */
+  #define INTERRUPT_INCRINC_ZERO      ISR_ASSIGN(ISR_PRIORITY_INCRENC_ZERO, ISR_PROVIDER_INCRENC_ZERO)               /**Define the  Incremental encoder zero interrupt priority.  */
+
+  #define INTERRUPT_ASC_0_RX    ISR_ASSIGN(ISR_PRIORITY_ASC_0_RX, ISR_PROVIDER_ASC_0)                 /**Define the ASC0 receive interrupt priority.  */
+  #define INTERRUPT_ASC_0_TX    ISR_ASSIGN(ISR_PRIORITY_ASC_0_TX, ISR_PROVIDER_ASC_0)                 /**Define the ASC0 transmit interrupt priority.  */
+  #define INTERRUPT_ASC_0_EX    ISR_ASSIGN(ISR_PRIORITY_ASC_0_EX, ISR_PROVIDER_ASC_0)                 /**Define the ASC0 error interrupt priority.  */
+  ```
+
+* TFT 관련 인터럽트들
+
+  ```C
+  #define ISR_PRIORITY_CPUSRV0        2  /**< \brief Define the conio periodic interrupt priority must be lower than QSPIx priorities.  */
+  #define ISR_PRIORITY_QSPI0_ER       12  /**< \brief Define the Qspi0 error interrupt priority.  */
+  #define ISR_PRIORITY_BACKLIGHT      15  /**< \brief Define the TOMx_x compare match interrupt priority.  */
+  #define ISR_PRIORITY_QSPI0_TX       31  /**< \brief Define the Qspi0 transmit interrupt priority.  */
+  #define ISR_PRIORITY_QSPI0_RX       51  /**< \brief Define the Qspi0 receive interrupt priority.  */
+  #define ISR_PRIORITY_OS_TICK        64  /**< \brief Define the TFT refresh interrupt priority.  */
+  #define ISR_PRIORITY_PERF_MEAS      255 /**< \brief Define the TOMx_x interrupt priority.  */
+  ```
 
 
 

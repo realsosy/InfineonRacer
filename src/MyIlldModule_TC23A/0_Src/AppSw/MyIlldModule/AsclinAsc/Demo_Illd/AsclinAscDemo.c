@@ -66,7 +66,7 @@ App_AsclinAsc g_AsclinAsc; /**< \brief Demo information */
 
 IFX_INTERRUPT(asclin0TxISR, 0, ISR_PRIORITY_ASC_0_TX)
 {
-    IfxAsclin_Asc_isrTransmit(&g_AsclinAsc.drivers.asc0);
+	IfxAsclin_Asc_isrTransmit(&g_AsclinAsc.drivers.asc0);
 }
 
 /** \} */
@@ -76,7 +76,7 @@ IFX_INTERRUPT(asclin0TxISR, 0, ISR_PRIORITY_ASC_0_TX)
 
 IFX_INTERRUPT(asclin0RxISR, 0, ISR_PRIORITY_ASC_0_RX)
 {
-    IfxAsclin_Asc_isrReceive(&g_AsclinAsc.drivers.asc0);
+	IfxAsclin_Asc_isrReceive(&g_AsclinAsc.drivers.asc0);
 }
 
 /** \} */
@@ -86,7 +86,7 @@ IFX_INTERRUPT(asclin0RxISR, 0, ISR_PRIORITY_ASC_0_RX)
 
 IFX_INTERRUPT(asclin0ErISR, 0, ISR_PRIORITY_ASC_0_EX)
 {
-    IfxAsclin_Asc_isrError(&g_AsclinAsc.drivers.asc0);
+	IfxAsclin_Asc_isrError(&g_AsclinAsc.drivers.asc0);
 }
 
 /** \} */
@@ -99,48 +99,48 @@ IFX_INTERRUPT(asclin0ErISR, 0, ISR_PRIORITY_ASC_0_EX)
  */
 void AsclinAscDemo_init(void)
 {
-    /* disable interrupts */
-    boolean              interruptState = IfxCpu_disableInterrupts();
+	/* disable interrupts */
+	boolean              interruptState = IfxCpu_disableInterrupts();
 
-    /* create module config */
-    IfxAsclin_Asc_Config ascConfig;
-    IfxAsclin_Asc_initModuleConfig(&ascConfig, &MODULE_ASCLIN0);
+	/* create module config */
+	IfxAsclin_Asc_Config ascConfig;
+	IfxAsclin_Asc_initModuleConfig(&ascConfig, &MODULE_ASCLIN0);
 
-    /* set the desired baudrate */
-    ascConfig.baudrate.prescaler    = 1;
-    ascConfig.baudrate.baudrate     = 115200; /* FDR values will be calculated in initModule */
-    ascConfig.baudrate.oversampling = IfxAsclin_OversamplingFactor_4;
+	/* set the desired baudrate */
+	ascConfig.baudrate.prescaler    = 1;
+	ascConfig.baudrate.baudrate     = 9600; /* FDR values will be calculated in initModule */
+	ascConfig.baudrate.oversampling = IfxAsclin_OversamplingFactor_4;
 
-    /* ISR priorities and interrupt target */
-    ascConfig.interrupt.txPriority    = ISR_PRIORITY_ASC_0_TX;
-    ascConfig.interrupt.rxPriority    = ISR_PRIORITY_ASC_0_RX;
-    ascConfig.interrupt.erPriority    = ISR_PRIORITY_ASC_0_EX;
-    ascConfig.interrupt.typeOfService = (IfxSrc_Tos)IfxCpu_getCoreIndex();
+	/* ISR priorities and interrupt target */
+	ascConfig.interrupt.txPriority    = ISR_PRIORITY_ASC_0_TX;
+	ascConfig.interrupt.rxPriority    = ISR_PRIORITY_ASC_0_RX;
+	ascConfig.interrupt.erPriority    = ISR_PRIORITY_ASC_0_EX;
+	ascConfig.interrupt.typeOfService = (IfxSrc_Tos)IfxCpu_getCoreIndex();
 
-    /* FIFO configuration */
-    ascConfig.txBuffer     = g_AsclinAsc.ascBuffer.tx;
-    ascConfig.txBufferSize = ASC_TX_BUFFER_SIZE;
+	/* FIFO configuration */
+	ascConfig.txBuffer     = g_AsclinAsc.ascBuffer.tx;
+	ascConfig.txBufferSize = ASC_TX_BUFFER_SIZE;
 
-    ascConfig.rxBuffer     = g_AsclinAsc.ascBuffer.rx;
-    ascConfig.rxBufferSize = ASC_RX_BUFFER_SIZE;
+	ascConfig.rxBuffer     = g_AsclinAsc.ascBuffer.rx;
+	ascConfig.rxBufferSize = ASC_RX_BUFFER_SIZE;
 
-    /* pin configuration */
-    const IfxAsclin_Asc_Pins pins = {
-        NULL_PTR,                     IfxPort_InputMode_pullUp,        /* CTS pin not used */
-        &IfxAsclin0_RXA_P14_1_IN, IfxPort_InputMode_pullUp,        /* Rx pin */
-        NULL_PTR,                     IfxPort_OutputMode_pushPull,     /* RTS pin not used */
-        &IfxAsclin0_TX_P14_0_OUT, IfxPort_OutputMode_pushPull,     /* Tx pin */
-        IfxPort_PadDriver_cmosAutomotiveSpeed1
-    };
-    ascConfig.pins = &pins;
+	/* pin configuration */
+	const IfxAsclin_Asc_Pins pins = {
+			NULL_PTR,                     IfxPort_InputMode_pullUp,        /* CTS pin not used */
+			&IfxAsclin0_RXA_P14_1_IN, IfxPort_InputMode_pullUp,        /* Rx pin */
+			NULL_PTR,                     IfxPort_OutputMode_pushPull,     /* RTS pin not used */
+			&IfxAsclin0_TX_P14_0_OUT, IfxPort_OutputMode_pushPull,     /* Tx pin */
+			IfxPort_PadDriver_cmosAutomotiveSpeed1
+	};
+	ascConfig.pins = &pins;
 
-    /* initialize module */
-    IfxAsclin_Asc_initModule(&g_AsclinAsc.drivers.asc0, &ascConfig);
+	/* initialize module */
+	IfxAsclin_Asc_initModule(&g_AsclinAsc.drivers.asc0, &ascConfig);
 
-    /* enable interrupts again */
-    IfxCpu_restoreInterrupts(interruptState);
+	/* enable interrupts again */
+	IfxCpu_restoreInterrupts(interruptState);
 
-    printf("Asclin Asc is initialised\n");
+	printf("Asclin Asc is initialised\n");
 }
 
 
@@ -150,42 +150,44 @@ void AsclinAscDemo_init(void)
  */
 void AsclinAscDemo_run(void)
 {
-    uint32 i, errors = 0;
+	uint32 i, errors = 0;
 
-    /* prepare data to transmit and receive */
-    g_AsclinAsc.count = 5;
+	/* prepare data to transmit and receive */
+	g_AsclinAsc.count = 5;
 
-    for (i = 0; i < g_AsclinAsc.count; ++i)
-    {
-        g_AsclinAsc.txData[i] = i + '1';    /* {'1', '2', '3' ,'4' ,'5'} */
-        g_AsclinAsc.rxData[i] = 0;
-    }
+	for (i = 0; i < g_AsclinAsc.count; ++i)
+	{
+		g_AsclinAsc.txData[i] = i + '1';    /* {'1', '2', '3' ,'4' ,'5'} */
+		g_AsclinAsc.rxData[i] = 0;
+	}
 
-    /* Transmit data */
-    IfxAsclin_Asc_write(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.txData, &g_AsclinAsc.count, TIME_INFINITE);
 
-    /* Receive data */
-    IfxAsclin_Asc_read(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.rxData, &g_AsclinAsc.count, TIME_INFINITE);
+	/* Transmit data */
+	//IfxAsclin_Asc_write(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.txData, &g_AsclinAsc.count, TIME_INFINITE);
 
-    /* check received data */
-    for (i = 0; i < 5; ++i)
-    {
-        if (g_AsclinAsc.rxData[i] != g_AsclinAsc.txData[i])
-        {
-            ++errors;
-        }
-    }
+	/* Receive data */
+	IfxAsclin_Asc_read(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.rxData, &g_AsclinAsc.count, TIME_INFINITE);
 
-    if (errors)
-    {
-    	IfxAsclin_Asc_write(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.rxData, &g_AsclinAsc.count , TIME_INFINITE);
-        printf("ERROR: received data doesn't match with expected data (%lu mismatches)\n", errors);
-    }
-    else
-    {
-        IfxAsclin_Asc_write(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.rxData, &g_AsclinAsc.count , TIME_INFINITE);
-        printf("OK: received data matches with expected data\n");
-    }
 
-   printf("Asclin Asc data transfers are finished\n");
+	/* check received data */
+
+	for (i = 0; i < 5; ++i)
+	{
+		if (g_AsclinAsc.rxData[i] != g_AsclinAsc.txData[i])
+		{
+			++errors;
+		}
+	}
+	if (errors)
+	{
+		printf("\n\nERROR: received data doesn't match with expected data (%lu mismatches)\n", errors);
+	}
+	else
+	{
+		printf("\n\nOK: received data matches with expected data\n");
+	}
+
+	printf("\nAsclin Asc data transfers are finished\n\n");
+
+
 }

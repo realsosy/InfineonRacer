@@ -16,19 +16,19 @@ date: 2018-01-30
 ## SW Architecture
 
 * InfineonRacer SW Platform은 다음의 그림과 같은 3개의 계층으로 구성되어 있다.
-  - iLLD 와 CDrv: 최하단 계층으로 AURIX의 저수준 입출력 기능을 담당하는 드라이버 계층
-  - SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
-    + BasicGtmTom: DC Motor, Servo, Beeper
-    + BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화 
-    + BasicLineScan: LineScan Camera(TSL1401)
-    + BasicVadcBgScan: Analog Input 
-    + BasicGpt12Enc: Encoder
-    + BasicStm: Static Cyclic Scheduler
-    + ShellInterface: 직렬통신과 사용자 Shell 환경 제공
-    + TftApp: TFT의 MMI (Man-Machine Interface) 제공
-  - Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
-    + SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
-    + 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
+  	- iLLD 와 CDrv: 최하단 계층으로 AURIX의 저수준 입출력 기능을 담당하는 드라이버 계층
+	- SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
+        + BasicGtmTom: DC Motor, Servo, Beeper
+        + BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화 
+        + BasicLineScan: LineScan Camera(TSL1401)
+        + BasicVadcBgScan: Analog Input 
+        + BasicGpt12Enc: Encoder
+        + BasicStm: Static Cyclic Scheduler
+        + ShellInterface: 직렬통신과 사용자 Shell 환경 제공
+        + TftApp: TFT의 MMI (Man-Machine Interface) 제공
+    - Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
+        + SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
+        + 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
 
 ![InfineonRacerUserGuide_SwArch](images/InfineonRacerUserGuide_SwArch.png)
 

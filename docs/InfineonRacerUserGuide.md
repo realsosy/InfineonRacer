@@ -28,7 +28,7 @@ date: 2018-01-30
     * TftApp: TFT의 MMI (Man-Machine Interface) 제공
   * Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
     * SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
-    * 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
+    * 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
 
 ![InfineonRacerUserGuide_SwArch](images/InfineonRacerUserGuide_SwArch.png)
 
@@ -91,16 +91,18 @@ InfineonRacer의 경우를 예로 설명하면
 
 ## Basic Module Structure & API
 
-* 8bit, 16bit 급 마이크로컨트롤러를 활용하기 위해서는
+* 8bit, 16bit 급 마이크로컨트롤러를 활용하기 위해서는  
   * 데이터북을 보고 각 서브시스템 특징을 이해하고
   * 메모리 공간상의 레지스터 맵에 직접 프로그래밍 하였다.
 * AURIX와 같은 32bit 급 마이크로컨트롤러는 전통적인 방법으로 개발하기는 어렵다.
   * 데이터북을 모두 읽고 일을 하기에는 너무 분량이 많고
   * 서브시스템이 막강하여 다양한 기능을 수행할 수 있으므로 다양한 사용예들이 존재하고
-  * 레지스터의 개수가 너무 많다 
+  * 레지스터의 개수가 너무 많다   
+
+  ​
 * BasicModule의 역할: iLLD를 활용하여 센서 및 액츄에이터를 추상화 하자.
   * 개발자의 수고를 덜어주기 위하여 잘 다듬어져 있는 iLLD를 제공하고 있다.
-  * 물론 iLLD를 활용해서 사용예에 맞도록 설정하고 필요한 함수를 찾아서 호출하는 수고가 남아 있지만, 레지스터를 직접 프로그래밍하는 것과는 비교할 수 없을 정도로 노력을 덜어준다.
+  * 물론 iLLD를 활용해서 사용예에 맞도록 설정하고 필요한 함수를 찾아서 호출해야 하지만, 레지스터를 직접 프로그래밍하는 것과는 비교할 수 없을 정도로 노력을 덜어준다.
 * 센서와 액츄에이터의 값을 언제든지 접근 가능한 변수와 이 변수를 읽고 쓰는 함수를 제공한다.
   * API 변수명: `IR_SnsName`, `IR_ActName`
   * API 함수명: `IR_getSnsName()`, `IR_setActName(type)`

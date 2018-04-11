@@ -40,7 +40,7 @@ Example Description
 
 - 타이머를 초기화하고 일정한 주기로 인터럽트를 발생시켜 LED를 제어
 
-![Example](images/TwinkleTwinkleLittleStar_01Example.png)
+![Example](images/TwinkleTwinkleLittleStar_01Example.png.png)
 
 - 타이머
     - 주기적 시간처리를 위한 위한 디지털 카운터 회로 모듈
@@ -66,7 +66,7 @@ iLLD - related
   - Clock distribution
 
 
-![CCU](images/TwinkleTwinkleLittleStar_02CCU.png)
+![CCU](images/TwinkleTwinkleLittleStar_02CCU.png.png)
 
 - How to use
   - 아래와 같이 iLLD에 정의된 코드로 타이머를 초기화
@@ -87,13 +87,13 @@ g_AppCpu0.info.stmFreq = IfxStm_getFrequency(&MODULE_STM0);
     - 서로 다른 timing range를 가진 여러 개의 32bit time register(TIMx)
     - 하나의 time register가 읽힐 때 동시에 upper part를 관측하는 capture register(CAP)  
 
-![STM](images/TwinkleTwinkleLittleStar_03STM.png)
+![STM](images/TwinkleTwinkleLittleStar_03STM.png.png)
 
 
 ##
 - 부분적인 compare match를 통한 flexible한 인터럽트 flag 생성
 
-![Capture](TwinkleTwinkleLittleStar_04STM_compare.png)
+![compare](images/TwinkleTwinkleLittleStar_04STM_compare.png.png)
 
 
 - How to use
@@ -121,7 +121,7 @@ void IfxStm_initCompareConfig(IfxStm_CompareConfig *config)
 g_Stm.stmConfig.ticks           = ???
 ~~~
 
-  ![Parameters](images/TwinkleTwinkleLittleStar_05Parameters.png)
+  ![Parameters](images/TwinkleTwinkleLittleStar_05Parameters.png.PNG)
 
 **3. 수정된 configuration을 업데이트**
 
@@ -141,7 +141,7 @@ IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
   - 이벤트가 빌생하면 프로그램을 중단
   - handler function을 통해 예외를 처리 후 main program으로 복귀
 
-![Interrupt](images/TwinkleTwinkleLittleStar_06Interrupt.png)
+![Interrupt](images/TwinkleTwinkleLittleStar_06Interrupt.png.png)
 
 
 ####

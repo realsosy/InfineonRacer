@@ -40,7 +40,7 @@ Example Description
 
 - 타이머를 초기화하고 일정한 주기로 인터럽트를 발생시켜 LED를 제어
 
-![Example]((images/TwinkleTwinkleLittleStar_01Example.png)
+![Example](images/TwinkleTwinkleLittleStar_01Example.png)
 
 - 타이머
     - 주기적 시간처리를 위한 위한 디지털 카운터 회로 모듈

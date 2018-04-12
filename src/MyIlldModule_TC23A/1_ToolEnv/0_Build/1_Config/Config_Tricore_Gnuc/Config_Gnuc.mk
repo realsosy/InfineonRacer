@@ -19,7 +19,7 @@
 #                                                                             #
 ###############################################################################
 
-B_GNUC_TRICORE_PATH:= C:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
+B_GNUC_TRICORE_PATH:= D:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
 
 B_GNUC_TRICORE_CC_OPTIONS= -mtc161 -g -O2 -fno-common -fstrict-volatile-bitfields \
                            -ffunction-sections -fdata-sections -Wall -std=c99

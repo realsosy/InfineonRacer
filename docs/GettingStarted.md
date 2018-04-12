@@ -2,10 +2,6 @@
 title: Getting Started.md
 author: Kyungpyo Kim (kyungpyo94@naver.com)  
 date: 2018-04-10
-
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-
-3. 각 모듈 동작 확인하기 (Shell, TFT)
 ---
 
 # Getting Started
@@ -17,21 +13,25 @@ date: 2018-04-10
 
 ## References
 * 개발환경 관련
+  - [HighTec Free TriCore™ Entry Tool Chain](https://free-entry-toolchain.hightec-edv.com/index.php)
+  - [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
+  - [TeraTerm](https://ttssh2.osdn.jp/)
 
 
 ## Example Description
 1. 개발환경 구축
-* 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
-* 인피니언에서 제공하는 *BIFACES* build environment 설치
-* Serial 통신 및 Shell 환경 구축을 위한 TeraTerm 설치
+    * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
+    * 인피니언에서 제공하는 *BIFACES* build environment 설치
+    * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설치
 2. *BIFACES* 를 통하여 소스코드 빌드
+    * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
 3. 예제 동작 확인
     * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
-    * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, LineScanCamera 예제 동작
+    * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, Line scan camera 예제 동작
 
 ---
-## 1. 개발환경 설치
-### 1.1 HighTec Installation
+## 개발환경 설치
+### HighTec Installation
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
 
 1. [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
@@ -46,7 +46,7 @@ date: 2018-04-10
    (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
 4. 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
-### 1.2 BIFACES Installation
+### BIFACES Installation
 * BIFACES [Download](추후입력)
 1. 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
 
@@ -62,7 +62,18 @@ date: 2018-04-10
 4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행 확인
 
 
-#### 1.3 TeraTerm Installation
+### SerialPlot Installation
+1. [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
+* Installation for windows:
+  - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
+  - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
+
+2. 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
+
+![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
+
+
+### TeraTerm Installation
 1. [TeraTerm](https://ttssh2.osdn.jp/) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
 2. *Select Components* 에서 *Standard installation* 선택 후 설치 진행
 
@@ -73,8 +84,8 @@ date: 2018-04-10
     ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
 ---
-## 2. InfineonRacer Project Build
-### 2.1 Project download and import
+## InfineonRacer Project Build
+### Project download and import
 1. [InfineonRacer](https://github.com/realsosy/InfineonRacer) 홈페이지 에서 **Clone or download** >> **Download ZIP** 클릭 후 *InfineonRacer-master.zip* downloasd 후 압축 해제
 
    ![GettingStarted_04Repository](images/GettingStarted_04Repository.png)
@@ -116,11 +127,15 @@ date: 2018-04-10
     ![GettingStarted_10Explorer](images/GettingStarted_10Explorer.png)
 
 
-### 2.2 Build
-0. Build 전 Complier 설정
+### Build
+1. Build 전 Complier 설정
     *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 편집 가능한 Edit창이 나옴
+    Tricore toolchain의 경로 및 버전이 맞게 설정되어 있는지 확인
+    ```
+    B_GNUC_TRICORE_PATH:= C:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
+    ```
 
-1. *Project explorer* 를 통한 build
+2. *Project explorer* 를 통한 build
     1.1 *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
 
     ![GettingStarted_11Build](images/GettingStarted_11Build.png)
@@ -133,24 +148,7 @@ date: 2018-04-10
     ![GettingStarted_12Build](images/GettingStarted_12Build.png)
 
 
-2. *Make Target* 기능을 통한 build
-    2.1 우측 *Make Target* 탭에서 *InfineonRacer_TC23A* 우클릭 한 뒤 **New...** 클릭
-
-    ![GettingStarted_13New](images/GettingStarted_13New.png)
-
-    2.2 *Target name* 에 *all* 을 입력하고 **OK** 를 클릭하면 프로젝트 하위에 *all* 파일 생성 확인
-
-    ![GettingStarted_14All](images/GettingStarted_14All.png)
-    (추가로 지원되는 build option은 *InfineonRacer_TC23A/tool/Makefile* 에서 확인 가능)
-
-    2.3 *all* 더블클릭 하여 build 수행 후 *1.2* 와 같이 파일들이 생성되었는지 확인
-
-    ![GettingStarted_15All](images/GettingStarted_15All.png)
-
-
----
-## 3. 프로그램 다운로드 및 예제 파일 실행
-### 3.1 UDEVisualPlatfrom 을 이용해 실행 파일 Flashing, TeraTerm 을 동작 확인
+### UDEVisualPlatfrom 을 이용해 실행 파일 버닝, TeraTerm 을 동작 확인
 * Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용해 Shell 환경 실행
 
 1. UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
@@ -192,6 +190,7 @@ date: 2018-04-10
     프로그램을 실행했을 때 *AppKit* 의 TFT 화면
 
     ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
+   * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
 
 
 8. **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
@@ -229,60 +228,60 @@ date: 2018-04-10
     ![GettingStarted_32Set](images/GettingStarted_32Set.png)
 
 
-13. *TeraTerm VT* 창에서 enter 를 입력하면 *shell>* 이 화면에 나타남! 여기에 *Help* 를 입력하고 enter를 입력하면 아래의 사진과 같이 사용할 수 있는 명령어 셋과 설명이 나타남
+13. *TeraTerm VT* 창에서 enter 를 입력하면 *Shell>* 이 화면에 나타남! 여기에 *info* 를 입력하고 enter를 입력하면 아래의 사진과 같이 **Welcome to Infineon Racer Shell** 확인 가능
 
     ![GettingStarted_33Help](images/GettingStarted_33Help.png)
 
 
-### 3.2 Shell 환경 활용 동작 확인
-* Shell은 사용자가 입력한 명령어를 해석하여 *AppKit* 가 동작할 수 있도록 해주는 역할을 함
-    (자세한 내용은 [MyOwnTerminal](MyOwnTerminal.md) 참고)
-* 본 예제에서는 직렬 통신으로 구현된 Shell 환경을 이용해 *AppKit* 의 Peripheral 장치 동작을 확인함
-    * Peripheral 장치: TFT, LCD, Beeper
+## TFT, Shell 을 이용한 동작 확인
+* LED, Beeper 등의 Peripheral 장치의 동작 확인
+* DC motor, Servo, Encoder, Line scan camera, Digital input port 의 경우 *MotorKit* 사용을 통해 쉽게 주변장치 구성 가능
+  - *MotorKit* 와 *AppKit* 의 하드웨어 연결은 [ConnectionGuide](ConnectionGuide.md)를 통해 확인 가능
 
-**0. Shell 사용 방법**
-* *info* 명령어를 통해 Shell 정보 확인 가능, **3.1** 의 *13.* 과정을 통해 전체 명령어 셋 확인 가능
+### 기본적인 TFT 및 Shell 사용법
+**TFT**(Thin Film Transistor) 는 Display를 구성하는 전기소자로 본 문서에서 터치가 가능한 LCD 화면을 통칭함
+LCD및 터치 기능을 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
 
-        ```
-        Shell>info
+* Main 화면에서는 DC motor, Servo, Encoder, Beeper, TFT의 제어 및 상태 확인 가능
+
+    ![GettingStarted_39Main](images/GettingStarted_39Main.png)
 
 
-        ******************************************************************************
-        *******  Welcome to Infineon Racer Shell                               *******
-        ******************************************************************************
-        *******  Software Version Date : 2018/ 1/30                            *******
-        *******  Software Version      :  1.00                                 *******
-        *******  iLLD version          : 1.0.1.4.0                            *******
-        *******  GNUC Compiler         : 4.9r4                                 *******
-        *******  Author                : Wootaik Lee (CI-ARCLab)               *******
-        ******************************************************************************
-        Real-time: 00:00:30
-        CPU Frequency: 200000000 Hz
-        SYS Frequency: 100000000 Hz
-        STM Frequency: 100000000 Hz
-        Shell>help
-        status   : Show the application status
-        m0v      : Motor0Vol
-        m1v      : Motor1Vol
-        m0e      : Motor0Enable
-        m1e      : Motor1Enable
-        srv      : Servo Angle
-        bpon     : Beeper On
-        bpf      : Beeper Freq
-        bpv      : Beeper Vol
-        l108     : LED108
-        l109     : LED109
-        l110     : LED110
-        ls0      : LineScan0
-        ls1      : LineScan1
-        mls      : Monitoring LineScan
-        vadc     : Vadc Backgound 1
-        enc      : Encoder
-        p00_0    : Port00_0
-        p00_1    : Port00_1
-        info     : Show the welcome screen
-        help     : Display command list.
-        ```
+* DIS1 화면에서는 CPU load를 포함한 주변장치의 상태 확인 가능
+(Main 화면에서 DIS1 화면으로 넘어가기 위해서는 하단의 *DIS1* 을 터치)
+
+    ![GettingStarted_40Dis1](images/GettingStarted_40Dis1.png)
+
+
+**Shell** 은 사용자가 입력한 명령어를 해석하여 *AppKit* 가 동작할 수 있도록 해주는 역할을 함(자세한 내용은 [MyOwnTerminal](MyOwnTerminal.md) 참고)
+TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
+
+* *help* 명령어를 통해 사용가능한 명령어 확인 가능
+
+    ```
+    Shell>help
+    status   : Show the application status
+    m0v      : Motor0Vol
+    m1v      : Motor1Vol
+    m0e      : Motor0Enable
+    m1e      : Motor1Enable
+    srv      : Servo Angle
+    bpon     : Beeper On
+    bpf      : Beeper Freq
+    bpv      : Beeper Vol
+    l108     : LED108
+    l109     : LED109
+    l110     : LED110
+    ls0      : LineScan0
+    ls1      : LineScan1
+    mls      : Monitoring LineScan
+    vadc     : Vadc Backgound 1
+    enc      : Encoder
+    p00_0    : Port00_0
+    p00_1    : Port00_1
+    info     : Show the welcome screen
+    help     : Display command list.
+    ```
 
 * 특정 명령어셋의 사용법(syntax)을 확인하기 위해서는 *"(명령어) ?""* 를 입력 후 enter를 입력한다.
 
@@ -295,11 +294,13 @@ date: 2018-04-10
       Syntax     : bpv frac-value
     Shell>
     ```
+
 * 상세한 내용은  [MyOwnTerminal](MyOwnTerminal.md) 문서와 [*AsclinShellInterface.c*](../src/InfineonRacer_TC23A/0_Src/AppSw/Tricore/SnsAct/AsclinShellInterface.c) 코드 참고
 
 
-**1. Beeper 예제**
-* *bpon* 명령어를 통해 beeper를 동작시킬 수 있다.
+### Beeper
+* TFT 의 *Beep OFF* 를 터치하여 Beeper 동작 확인 가능
+* *bpon* 명령어를 통해 Beeper의 On/Off 제어 가능
     ```
     Shell>bpon ?
       Syntax     : bpon 0/1
@@ -317,11 +318,6 @@ date: 2018-04-10
     ![GettingStarted_34On](images/GettingStarted_34On.jpg)
 
 
-    **< Beeper Off 일 때 TFT >**
-
-    ![GettingStarted_35Off](images/GettingStarted_35Off.jpg)
-
-
 * *bpf* 명령어를 통해 beeper 소리의 높이(frequency)를 조절할 수 있다.
     *  froat_value: 100.0 ~ 10000.0
 
@@ -334,10 +330,6 @@ date: 2018-04-10
       Beeper Freq:   100.0    # Beeper음의 frequency가 점 증가
     Shell>bpf 500             #
       Beeper Freq:   500.0    #
-    Shell>bpf 800             #
-      Beeper Freq:   800.0    #
-    Shell>bpf 1000            #
-      Beeper Freq:  1000.0    #
     Shell>bpf 10000           #
       Beeper Freq: 10000.0    #
     Shell>bpon 0
@@ -355,22 +347,29 @@ date: 2018-04-10
       Beeper On:    1         # Beeper 가 울림
     Shell>bpv 0
       Beeper Volume: 0.00     # Beeper의 소리가 점점 커짐
-    Shell>bpv 0.2             #
-      Beeper Volume: 0.20     #
-    Shell>bpv 0.4             #
-      Beeper Volume: 0.40     #
-    Shell>bpv 0.6             #
-      Beeper Volume: 0.60     #
-    Shell>bpv 0.8             #
-      Beeper Volume: 0.80     #
+    Shell>bpv 0.5             #
+      Beeper Volume: 0.50     #
     Shell>bpv 1               #
       Beeper Volume: 0.99     #
     Shell>bpon 0
       Beeper On:    0         # Beeper 가 울리지 않음
     ```
+* TFT의 DIS1 화면을 통해 Beeper의 소리의 높이(frequency)와 크기(voltage) 확인 가능
+
+    ```
+    Shell>bpon 1
+      Beeper On:    1
+    Shell>bpf 1000
+      Beeper Freq:  1000.0
+    Shell>bpv 0.2
+      Beeper Volume: 0.20
+    Shell>bpon 0
+      Beeper On:    0
+    ```
+    ![GettingStarted_TFTBeeper](images/GettingStarted_TFTBeeper.png)
 
 
-**2. LED 예제**
+### LED
 * *l108*, *l109*, *l110*  명령어를 통해 TFT 우측에 붙어있는 LED D108, D109, D110을 동작시킬 수 있다.
 
     ```
@@ -378,36 +377,8 @@ date: 2018-04-10
       Syntax     : l108 0/1
     Shell>l108 0
       Led108:    0    # D108 On
-    Shell>l109 0
-      Led109:    0    # D109 On
-    Shell>l110 0
-      Led110:    0    # D111 On
-    ```
-
-    **< D108 On, D109 On, D110 On >**
-
-    ![GettingStarted_36Ooo](images/GettingStarted_36Ooo.jpg)
-
-
-    ```
-    Shell>l108 1
-      Led108:    1    # D108 Off
-    Shell>l109 0
-      Led109:    0    # D109 On
-    Shell>l110 1
-      Led110:    1    # D110 Off
-    ```
-
-    **< D108 Off, D109 On, D110 Off >**
-
-    ![GettingStarted_37Fof](images/GettingStarted_37Fof.jpg)
-
-
-    ```
-    Shell>l108 0
-      Led108:    0    # D108 On
     Shell>l109 1
-      Led109:    1    # D108 On
+      Led109:    1    # D108 Off
     Shell>l110 0
       Led110:    0    # D108 On
     ```
@@ -417,12 +388,8 @@ date: 2018-04-10
     ![GettingStarted_38Ofo](images/GettingStarted_38Ofo.jpg)
 
 
-### 3.3 MotorKit 활용 예제
-* *MotorKit* 와 *AppKit* 의 하드웨어 연결은 [ConnectionGuide](ConnectionGuide.md)를 통해 확인 가능
-* 본 예제에서는 *3.2* 와 마찬가지로 DC motor, Servo motor, Encoder, Line scan camera, IR sensor 를 Shell 을 통해서 확인
-
-**1. DC Motor**
-* 아래와 같이 명령어를 입력해 동작 확인이 가능
+### DC motor
+* *m0v*, *m0e* 명령어를 이용해 모터 제어와 상태 확인 가능
     * frac_value: -1.0 ~ 1.0
 * *m1v* , *m1e* 명령어와 연결되어 있는 motor사용을 위해서는 [MotorKit 하드웨어 변경](https://github.com/realsosy/InfineonRacer/blob/master/docs/ConnectionGuide.md#hardware-modification-of-motor-driver-kit) 필요
 
@@ -431,22 +398,21 @@ date: 2018-04-10
       Syntax     : m0v frac-value
     Shell>m0e ?
       Syntax     : m0e 0/1
-    Shell>m0e 1
+    Shell>m0e 1                     # DC motor 동작 가능하도록 설정
       Motor0En:    1
-    Shell>m0v 0.2
-      Motor0Vol: 0.20 fraction
-    Shell>m0v 0.0
-      Motor0Vol: 0.00 fraction
-    Shell>m0v -0.2
-      Motor0Vol: -0.20 fraction
-    Shell>m0v 0.0
-      Motor0Vol: 0.00 fraction
-    Shell>m0e 0
-      Motor0En:    0
+    Shell>m1e 1                     
+      Motor1En:    1
+    Shell>m0v -0.2                   # Motor에 인가되는 전압을 제어
+      Motor0Vol: -0.20 fraction      
     ```
+* TFT에서 **M1En ON** 을 누르면 **M1En OFF** 로 변경
+* *-<<* 와 *>>+* 를 이용해서 0.05 단위로 DC Motor 제어가 가능
 
-**2. Servo motor**
-* 아래와 같이 명령어를 입력해 동작 확인이 가능
+    ![GettingStarted_TFTMotor](images/GettingStarted_TFTMotor.png)
+
+
+### Servo
+* *srv* 명령어를 입력해 동작 확인이 가능
     * frac_value: -1.0 ~ 1.0
 
     ```
@@ -457,10 +423,12 @@ date: 2018-04-10
     Shell>srv -0.5
       SrvAngle: -0.50 fraction
     ```
+* TFT에서 *-<<* 와 *>>+* 를 이용해서 0.05 단위로 Servo 제어가 가능
+
+    ![GettingStarted_TFTServo](images/GettingStarted_TFTServo.png)
 
 
-
-**3. Line scan camera**
+###Line scan camera
 * Line scan camera는 2개의 채널을 제공하며 각각 *ls0* , *ls1* 명령어를 통해서 값 확인이 가능
 
     ```
@@ -473,8 +441,8 @@ date: 2018-04-10
       LineScan1 results
      1753, 1754, 1753, 1735, 1739, 1741, 1743, 1744, 1746, 1746, 1746, 1747, 1747, 1747, 1748, 1748, 1748, 1748, 1749, 1748, 1750, 1752, 1752, 1753, 1753, 1753, 1752, 1752, 1753, 1754, 1753, 1754, 1754, 1752, 1751, 1752, 1753, 1753, 1753, 1754, 1754, 1753, 1751, 1753, 1754, 1754, 1756, 1755, 1754, 1735, 1741, 1745, 1747, 1750, 1750, 1751, 1752, 1750, 1748, 1753, 1754, 1755, 1754, 1753, 1752, 1752, 1752, 1753, 1753, 1754, 1754, 1755, 1752, 1753, 1754, 1754, 1755, 1755, 1753, 1751, 1751, 1750, 1750, 1749, 1749, 1749, 1749, 1751, 1756, 1752, 1753, 1755, 1753, 1752, 1735, 1739, 1743, 1746, 1749, 1752, 1751, 1752, 1751, 1748, 1749, 1749, 1748, 1748, 1748, 1748, 1748, 1748, 1747, 1748, 1748, 1748, 1750, 1752, 1752, 1753, 1753, 1753, 1754, 1735, 1722, 1732, 1737, 1743
     ```
-
-* *mls* 명령어를 통해 주기적으로 line scan camera의 값을 받아올 수 있음
+* SerialPlot 프로그램을 이용해 실시간 값 확인 가능
+  - *mls* 명령어를 통해 주기적으로 line scan camera의 값을 받아올 수 있음
 
     ```
     Shell>mls ?
@@ -485,16 +453,6 @@ date: 2018-04-10
      1749, 1753
      1750, 1753
      1732, 1752
-     1738, 1753
-     1742, 1754
-     1745, 1754
-     1746, 1754
-     1748, 1754
-     1748, 1755
-     1750, 1736
-     1731, 1720
-     1736, 1731
-     1741, 1737
      1745, 1743
      1748, 1747
      1749, 1749
@@ -507,8 +465,17 @@ date: 2018-04-10
 
     ```
 
-**4. Encoder**
-* 아래의 명령어를 통해 동작 확인이 가능
+  - *SerialPlot* 을 실행하고 아래 이미지와 같이 포트 설정 후 **Open** 클릭
+
+    ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
+
+  - 아래와 같이 Command 를 입력하고 Send를 입력하면 실시간으로 Line scan camera의 raw 데이터 확인 가능(LineScan0 만 사용)
+
+    ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
+
+
+### Encoder
+* *enc* 명령어를 통해 동작 확인이 가능
 
     ```
     Shell>enc ?
@@ -518,8 +485,9 @@ date: 2018-04-10
     ```
 
 
-**5. IR sensor**
-* P00_0 과 P00_1 에 연결되어있는 IR Sensor의 값을 읽어옴
+### Digital input IO
+
+* P00_0 과 P00_1 에 연결되어있는
 
     ```
     Shell>p00_0 ?
@@ -534,32 +502,7 @@ date: 2018-04-10
 
 
 ## 추가적인 설명
-### TFT 활용법
-*3.2*, *3.3* 에서 동작확인한 내용들은 TFT를 이용해서도 가능
-
-**1. Main**
-* Main 화면에서는 Motor, Beeper, Servo motor의 제어 및 상태 확인 가능 (TFT 화면 밝기 조절 기능 포함)
-    * DC motor enable
-    * Beeper On/Off
-    * DC motor 제어
-    * Servo motor 제어
-    * DC motor, servo motor monitoring
-    * TFT 밝기 조절
-
-    ![GettingStarted_39Main](images/GettingStarted_39Main.png)
-
-* DIS1 화면에서는 *InfineonRacer_TC23A* 에서 제공하는 모든 Peripheral 장치의 상태 확인 가능
-    * DC motor
-    * Servo motor
-    * Encoder
-    * ADC (4channel)
-    * IR sensor
-    * Beeper
-
-    ![GettingStarted_40Dis1](images/GettingStarted_40Dis1.png)
-
-
 
 * !ToDo
-    * 라이센스 문제 해결법
-    * BIFACES 다운로드 링크
+    * Encoder
+    * Digital input port

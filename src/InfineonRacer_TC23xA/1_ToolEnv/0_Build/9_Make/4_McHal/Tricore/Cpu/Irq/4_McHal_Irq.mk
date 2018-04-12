@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-#       Copyright (C) 2017 Infineon Technologies AG. All rights reserved.     #
+#       Copyright (C) 2015 Infineon Technologies AG. All rights reserved.     #
 #                                                                             #
 #                                                                             #
 #                              IMPORTANT NOTICE                               #
@@ -18,21 +18,18 @@
 # OR CONSEQUENTIAL DAMAGES, FOR	ANY REASON WHATSOEVER.                        #
 #                                                                             #
 ###############################################################################
+# Subdirectory make file for 0_Src/4_McHal/Tricore/Cpu/Irq
+# This is for core type "MAIN" and Gnuc toolchain !
+###############################################################################
 
-B_GNUC_TRICORE_PATH:= D:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
 
-B_GNUC_TRICORE_CC_OPTIONS= -mtc161 -g -O2 -fno-common -fstrict-volatile-bitfields \
-                           -ffunction-sections -fdata-sections -Wall -std=c99
+OBJ_FILES_MAIN+= 2_Out/Gnuc/0_Src/4_McHal/Tricore/Cpu/Irq/IfxCpu_Irq.o
+DEP_FILES_MAIN+= 2_Out/Gnuc/0_Src/4_McHal/Tricore/Cpu/Irq/IfxCpu_Irq.d
 
-B_GNUC_TRICORE_ASM_OPTIONS= $(GNUC_TC_CC_OPTIONS)
+2_Out/Gnuc/0_Src/4_McHal/Tricore/Cpu/Irq/IfxCpu_Irq.o: 0_Src/4_McHal/Tricore/Cpu/Irq/IfxCpu_Irq.c 1_ToolEnv/0_Build/1_Config/CfgCompiler_Gnuc.mk
+	@mkdir -p $(@D)
+	@rm -f $(ELF_BIN_MAIN) $(ADDITIONAL_EXE_MAIN) $(MAP_FILE_MAIN) $(LIB_OBJ_MAIN)
+	@echo 'Compiling 0_Src/4_McHal/Tricore/Cpu/Irq/IfxCpu_Irq.c'
+	$(CC) $(CC_OPTS) @1_ToolEnv/0_Build/9_Make/cIncludePathList.opt -c $< -o $@ -save-temps=obj -MMD
+	@echo ' '
 
-B_GNUC_TRICORE_LD_OPTIONS= -mtc161 -Wl,--gc-sections -nostartfiles -Wl,-n
-
-#Include path for library directories. Add each path with following format as shown below.
-#Each path prefixed with -L and separated by a space.
-#B_GNUC_TRICORE_LIB_INC=-Wl,-L<path>[ -Wl,-L<path>][..]
-B_GNUC_TRICORE_LIB_INC=
-
-#Libraries to include shall be listed with option -l, with following format.
-#B_GNUC_TRICORE_LIBS=-l<lib name>[ -l<lib name>][..]
-B_GNUC_TRICORE_LIBS=

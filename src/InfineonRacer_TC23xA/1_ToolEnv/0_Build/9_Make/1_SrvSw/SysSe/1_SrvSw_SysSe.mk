@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-#       Copyright (C) 2017 Infineon Technologies AG. All rights reserved.     #
+#       Copyright (C) 2015 Infineon Technologies AG. All rights reserved.     #
 #                                                                             #
 #                                                                             #
 #                              IMPORTANT NOTICE                               #
@@ -18,21 +18,14 @@
 # OR CONSEQUENTIAL DAMAGES, FOR	ANY REASON WHATSOEVER.                        #
 #                                                                             #
 ###############################################################################
+# Subdirectory make file for 0_Src/1_SrvSw/SysSe
+# This is for core type "MAIN" and Gnuc toolchain !
+###############################################################################
 
-B_GNUC_TRICORE_PATH:= D:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
 
-B_GNUC_TRICORE_CC_OPTIONS= -mtc161 -g -O2 -fno-common -fstrict-volatile-bitfields \
-                           -ffunction-sections -fdata-sections -Wall -std=c99
+include 1_ToolEnv/0_Build/9_Make/1_SrvSw/SysSe/Bsp/1_SrvSw_Bsp.mk \
+		1_ToolEnv/0_Build/9_Make/1_SrvSw/SysSe/Comm/1_SrvSw_Comm.mk \
+		1_ToolEnv/0_Build/9_Make/1_SrvSw/SysSe/General/1_SrvSw_General.mk \
+		1_ToolEnv/0_Build/9_Make/1_SrvSw/SysSe/Math/1_SrvSw_Math.mk \
+		1_ToolEnv/0_Build/9_Make/1_SrvSw/SysSe/Time/1_SrvSw_Time.mk
 
-B_GNUC_TRICORE_ASM_OPTIONS= $(GNUC_TC_CC_OPTIONS)
-
-B_GNUC_TRICORE_LD_OPTIONS= -mtc161 -Wl,--gc-sections -nostartfiles -Wl,-n
-
-#Include path for library directories. Add each path with following format as shown below.
-#Each path prefixed with -L and separated by a space.
-#B_GNUC_TRICORE_LIB_INC=-Wl,-L<path>[ -Wl,-L<path>][..]
-B_GNUC_TRICORE_LIB_INC=
-
-#Libraries to include shall be listed with option -l, with following format.
-#B_GNUC_TRICORE_LIBS=-l<lib name>[ -l<lib name>][..]
-B_GNUC_TRICORE_LIBS=

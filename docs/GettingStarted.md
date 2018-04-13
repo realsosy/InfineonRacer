@@ -41,23 +41,27 @@ date: 2018-04-10
 
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
   - Windows 운영체제 기준(최신 버전으로 받으면 됨)
-    ![GettingStarted_Java](images/GettingStarted_Java.png)
+
+ ![GettingStarted_Java](images/GettingStarted_Java.png)
 
 
 * [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
   * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요
-    ![GettingStarted_01Hightec](images/GettingStarted_01Hightec.png)
+
+ ![GettingStarted_01Hightec](images/GettingStarted_01Hightec.png)
 
 * *free_tricore_entry_tool_chain.zip* 다운로드 후 압축 해제
 
 * 압축 해제된 파일 중 *setup.exe* 를 실행 후 설치 진행
-    ![GettingStarted_02HighTecCompiler](images/GettingStarted_02HighTecCompiler.png)
+
+ ![GettingStarted_02HighTecCompiler](images/GettingStarted_02HighTecCompiler.png)
    (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
 
 * 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
   * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
-  ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
+
+ ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
 
 ### BIFACES Installation
 
@@ -67,11 +71,13 @@ date: 2018-04-10
   * BIFACES_V1_0_0.exe 실행
 
   * *Select Components* 에서 *Full installation for Win32* 선택 후 설치 진행
-  ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
+
+ ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
 
   * 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
     * **.bat** file 실행 화면 (Workspace는 defualt 값 사용)
-    ![GettingStarted_BiWelcome](images/GettingStarted_BiWelcome.png)
+
+ ![GettingStarted_BiWelcome](images/GettingStarted_BiWelcome.png)
 
 ### SerialPlot Installation
 
@@ -82,18 +88,22 @@ date: 2018-04-10
 
 * 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
   - **SerialPlot** 실행 화면
-  ![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
+
+ ![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
 
 ### TeraTerm Installation
 
 * [TeraTerm](https://ttssh2.osdn.jp/) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
 
 * *Select Components* 에서 *Standard installation* 선택 후 설치 진행
-![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
+
+ ![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
 
 * 설치 완료 후 **ttermpro.exe** *(C:\Program Files (x86)\teraterm)* 실행 확인
   * **ttermpro.exe** 실행 화면
-  ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
+
+ ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
+
 
 ---
 ## InfineonRacer Project Build
@@ -101,31 +111,37 @@ date: 2018-04-10
 ### Project download and import
 
 * [InfineonRacer](https://github.com/realsosy/InfineonRacer) 홈페이지 에서 **Clone or download** >> **Download ZIP** 클릭 후 *InfineonRacer-master.zip* downloasd 후 압축 해제
-   ![GettingStarted_04Repository](images/GettingStarted_04Repository.png)
+
+ ![GettingStarted_04Repository](images/GettingStarted_04Repository.png)
 
 * *BIFACES* 실행 (**StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행)  
 
 * Workspace 설정
     * 소스코드를 포함한 프로젝트를 관리 할 폴더 설정
-    ![GettingStarted_05Workspace](images/GettingStarted_05Workspace.png)
+
+ ![GettingStarted_05Workspace](images/GettingStarted_05Workspace.png)
 
 * 다운로드 받은  *InfineonRacer* 프로젝트 Import
-    * **File** >> **Import** 클릭
-    ![GettingStarted_06Import](images/GettingStarted_06Import.png)
+    * **File** >> **Import** 클릭
+
+ ![GettingStarted_06Import](images/GettingStarted_06Import.png)
 
 * **General** >> **Existing Projects into Workspace** 선택 후 **Next >** 클릭
-    ![GettingStarted_07General](images/GettingStarted_07General.png)
+
+ ![GettingStarted_07General](images/GettingStarted_07General.png)
 
 * **Select root directory** 에서 **Browse...** 클릭, *1.* 에서 압축 해제한 폴더의 *src* 파일 *(~\InfineonRacer-master\src)* 선택 후 **확인** 클릭
-    ![GettingStarted_08Select](images/GettingStarted_08Select.png)
+
+ ![GettingStarted_08Select](images/GettingStarted_08Select.png)
 
 * *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택, *Options* 탭에서 **Copy projects into workspace** 체크박스 선택 후 **Finish** 클릭
   * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
-    ![GettingStarted_09Project](images/GettingStarted_09Project.png)  
 
-  * *Project Explorer* 를 통해 Import 된 프로젝트를 확인할 수 있음
-    (Welcom 창은 닫으면 됨)
-    ![GettingStarted_10Explorer](images/GettingStarted_10Explorer.png)
+ ![GettingStarted_09Project](images/GettingStarted_09Project.png)  
+
+* *Project Explorer* 를 통해 Import 된 프로젝트를 확인할 수 있음 (Welcom 창은 닫으면 됨)
+
+ ![GettingStarted_10Explorer](images/GettingStarted_10Explorer.png)
 
 ### Build
 
@@ -138,14 +154,15 @@ date: 2018-04-10
 
 * *Project explorer* 를 통한 build
   * *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
-  ![GettingStarted_11Build](images/GettingStarted_11Build.png)
+
+ ![GettingStarted_11Build](images/GettingStarted_11Build.png)
 
   * Build 후 결과
     - *0_Build* 폴더에 **9_Make** 폴더 생성
     - **2_Out** 폴더 생성
     - *2_Out/Tricore_Gnuc/Gnuc_Files* 에 **.elf** 파일과 **.hex** 파일 그리고 **.map** 파일 생성
 
-    ![GettingStarted_12Build](images/GettingStarted_12Build.png)
+ ![GettingStarted_12Build](images/GettingStarted_12Build.png)
 
 * Build error 발생시 **추가사항** 의 **Build - Error181** 참고
 
@@ -154,64 +171,79 @@ date: 2018-04-10
 * Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용해 Shell 환경 실행
 
 * UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
-    ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
+ 
+ ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
 
 
 * *BIFACES Workspase/InfineonRacer_TC23A/tool/AppKit_TC23x.wsx* 파일 열기
-    ![GettingStarted_19UDE](images/GettingStarted_19UDE.png)
+
+ ![GettingStarted_19UDE](images/GettingStarted_19UDE.png)
 
 
 * Elf 파일 경로 확인 후 **OK** 클릭
 (경로가 빌드 후 생성된 *2_Out/Tricore_Gnuc/Gnuc_Files/InfineonRacer_TC23A_tc.elf* 파일로 설정되어 있는지 확인)
-    ![GettingStarted_20Load](images/GettingStarted_20Load.png)
 
+ ![GettingStarted_20Load](images/GettingStarted_20Load.png)
 
 * *AppKit* 를 USB로 Host PC와 연결한 후 **File** >> **Connect Target System..** 클릭
 (Host PC와 첫 연결 시 드라이버 다운로드가 진행됨)
-    ![GettingStarted_21Connect](images/GettingStarted_21Connect.png)
+
+ ![GettingStarted_21Connect](images/GettingStarted_21Connect.png)
 
 * *UDE - FLASH/OTP Memory Programming Tool* 창에서 *Program all* 버튼 클릭
-    ![GettingStarted_22Program](images/GettingStarted_22Program.png)
+
+ ![GettingStarted_22Program](images/GettingStarted_22Program.png)
 
 * *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 
 
 *Execute Memtool Command* 창을 닫음
-    ![GettingStarted_23Execute](images/GettingStarted_23Execute.png)
+
+ ![GettingStarted_23Execute](images/GettingStarted_23Execute.png)
 
 * **Debug** >> **Start Program Execution** 을 클릭하면 *AppKit* 에 다운로드 된 프로그램이 실행됨
-    ![GettingStarted_24Start](images/GettingStarted_24Start.png)
+
+ ![GettingStarted_24Start](images/GettingStarted_24Start.png)
     
     * 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
-    ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
+
+ ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
 
     * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
 
 * **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
-    ![GettingStarted_26Dis](images/GettingStarted_26Dis.png)
+
+ ![GettingStarted_26Dis](images/GettingStarted_26Dis.png)
 
 * *AppKit* COM port 활성화(첫 연결시 필요)
   * 장치관리자 실행
 
   * **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
-    ![GettingStarted_27Com](images/GettingStarted_27Com.png)
+
+ ![GettingStarted_27Com](images/GettingStarted_27Com.png)
 
   * *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
-    ![GettingStarted_28Enable](images/GettingStarted_28Enable.png)
+
+ ![GettingStarted_28Enable](images/GettingStarted_28Enable.png)
 
   * *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인 (재연결시 드라이버가 자동으로 설치됨)
-    ![GettingStarted_29Com](images/GettingStarted_29Com.png)
+
+ ![GettingStarted_29Com](images/GettingStarted_29Com.png)
 
 * *TeraTerm* 실행 후 *Serial* 체크, *Port:* 에 *Infineon DAS COM (COMn)* 선택 후 **OK** 클릭
-    ![GettingStarted_30Tera](images/GettingStarted_30Tera.png)
+
+ ![GettingStarted_30Tera](images/GettingStarted_30Tera.png)
 
 * **Setup** >> **Serial port...** 클릭
-    ![GettingStarted_31Serial](images/GettingStarted_31Serial.png)
+
+ ![GettingStarted_31Serial](images/GettingStarted_31Serial.png)
 
 * *Buad rate* 을 *115200* 으로 설정하고 *OK* 클릭
-    ![GettingStarted_32Set](images/GettingStarted_32Set.png)
+
+ ![GettingStarted_32Set](images/GettingStarted_32Set.png)
 
 * *TeraTerm VT* 창에서 enter 를 입력하면 *Shell>* 이 화면에 나타남! 여기에 *info* 를 입력하고 enter를 입력하면 아래의 사진과 같이 **Welcome to Infineon Racer Shell** 확인 가능
-    ![GettingStarted_33Help](images/GettingStarted_33Help.png)
+
+ ![GettingStarted_33Help](images/GettingStarted_33Help.png)
 
 
 ## TFT, Shell 을 이용한 동작 확인
@@ -227,12 +259,14 @@ date: 2018-04-10
 LCD및 터치 기능을 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
 
 * Main 화면에서는 DC motor, Servo, Encoder, Beeper, TFT의 제어 및 상태 확인 가능
-    ![GettingStarted_39Main](images/GettingStarted_39Main.png)
+
+ ![GettingStarted_39Main](images/GettingStarted_39Main.png)
 
 
 * DIS1 화면에서는 CPU load를 포함한 주변장치의 상태 확인 가능
 (Main 화면에서 DIS1 화면으로 넘어가기 위해서는 하단의 *DIS1* 을 터치)
-    ![GettingStarted_40Dis1](images/GettingStarted_40Dis1.png)
+
+ ![GettingStarted_40Dis1](images/GettingStarted_40Dis1.png)
 
 **Shell** 은 사용자가 입력한 명령어를 해석하여 *AppKit* 가 동작할 수 있도록 해주는 역할을 함(자세한 내용은 [MyOwnTerminal](MyOwnTerminal.md) 참고)
 TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
@@ -296,7 +330,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
     **< Beeper On 일 때 TFT >**
-    ![GettingStarted_34On](images/GettingStarted_34On.jpg)
+
+ ![GettingStarted_34On](images/GettingStarted_34On.jpg)
 
 * *bpf* 명령어를 통해 beeper 소리의 높이(frequency)를 조절할 수 있다.
     *  froat_value: 100.0 ~ 10000.0
@@ -347,7 +382,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
       Beeper On:    0
     ```
 
-    ![GettingStarted_TFTBeeper](images/GettingStarted_TFTBeeper.png)
+
+ ![GettingStarted_TFTBeeper](images/GettingStarted_TFTBeeper.png)
 
 ### LED
 
@@ -366,7 +402,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
     **< D108 On, D109 Off, D110 On >**
 
-    ![GettingStarted_38Ofo](images/GettingStarted_38Ofo.jpg)
+
+ ![GettingStarted_38Ofo](images/GettingStarted_38Ofo.jpg)
 
 
 ### DC motor
@@ -392,7 +429,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 * TFT에서 **M1En ON** 을 누르면 **M1En OFF** 로 변경
 
 * *-<<* 와 *>>+* 를 이용해서 0.05 단위로 DC Motor 제어가 가능
-    ![GettingStarted_TFTMotor](images/GettingStarted_TFTMotor.png)
+
+ ![GettingStarted_TFTMotor](images/GettingStarted_TFTMotor.png)
 
 ### Servo
 
@@ -409,7 +447,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * TFT에서 *-<<* 와 *>>+* 를 이용해서 0.05 단위로 Servo 제어가 가능
-    ![GettingStarted_TFTServo](images/GettingStarted_TFTServo.png)
+
+ ![GettingStarted_TFTServo](images/GettingStarted_TFTServo.png)
 
 
 ###Line scan camera
@@ -452,10 +491,12 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
   - *SerialPlot* 을 실행하고 아래 이미지와 같이 포트 설정 후 **Open** 클릭
-  ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
+
+ ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
 
   - 아래와 같이 Command 를 입력하고 Send를 입력하면 실시간으로 Line scan camera의 raw 데이터 확인 가능(LineScan0 만 사용)
-  ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
+
+ ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
 
 
 ### Encoder
@@ -476,7 +517,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * TFT 화면을 이용해 확인 가능
-    ![GettingStarted_Enc](images/GettingStarted_Enc.png)
+
+ ![GettingStarted_Enc](images/GettingStarted_Enc.png)
 
 ### Digital I/O
 
@@ -494,7 +536,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * TFT 화면을 이용해 확인 가능
-    ![GettingStarted_DIO](images/GettingStarted_DIO.png)
+
+ ![GettingStarted_DIO](images/GettingStarted_DIO.png)
 
 
 ## 추가적인 설명
@@ -504,6 +547,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 * 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
 
 * *C:\Windows\SysWOW64* 폴더(운영체제 Windows - 64bit)에 저장하여 문제 해결 가능
-    ![GettingStarted_Error181](images/GettingStarted_Error181.png)
+
+ ![GettingStarted_Error181](images/GettingStarted_Error181.png)
 
     -  msvcr110.dll 파일이 없어 Make 파일 생성을 위한 php.exe 실행이 안되어 빌드 실패

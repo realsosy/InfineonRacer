@@ -17,6 +17,8 @@ date: 2018-04-10
   - [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
   - [TeraTerm](https://ttssh2.osdn.jp/)
 
+* Build 관련
+  - Error181 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
 
 ## Example Description
 1. 개발환경 구축
@@ -46,6 +48,9 @@ date: 2018-04-10
    (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
 4. 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
+    * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
+    ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
+
 ### BIFACES Installation
 * BIFACES [Download](추후입력)
 1. 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
@@ -59,8 +64,10 @@ date: 2018-04-10
     ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
 
 
-4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행 확인
+4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
+  - **.bat** file 실행 화면 (Workspace는 defualt 값 사용)
 
+    ![GettingStarted_BiWelcome](images/GettingStarted_BiWelcome.png)
 
 ### SerialPlot Installation
 1. [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
@@ -69,6 +76,7 @@ date: 2018-04-10
   - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
 
 2. 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
+- **SerialPlot** 실행 화면
 
 ![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
 
@@ -80,7 +88,7 @@ date: 2018-04-10
     ![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
 
 3. 설치 완료 후 **ttermpro.exe** *(C:\Program Files (x86)\teraterm)* 실행 확인
-
+    - **ttermpro.exe** 실행 화면
     ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
 ---
@@ -147,6 +155,7 @@ date: 2018-04-10
 
     ![GettingStarted_12Build](images/GettingStarted_12Build.png)
 
+* Build error 발생시 **추가사항** 의 **Build - Error181** 참고
 
 ### UDEVisualPlatfrom 을 이용해 실행 파일 버닝, TeraTerm 을 동작 확인
 * Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용해 Shell 환경 실행
@@ -481,13 +490,22 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>enc ?
       Syntax     : enc
     Shell>enc
-      Encoder speed:     0, position:    0, direction: 0
+      Encoder speed: 1610612736, position: -1060059186, direction: 0
+    Shell>enc
+      Encoder speed: 1073741824, position: -1059935370, direction: 0
+    Shell>enc
+      Encoder speed: 1073741824, position: -1060233742, direction: 0
+    Shell>enc
+      Encoder speed:     0, position: -1060724977, direction: 0
     ```
 
+* TFT 화면을 이용해 확인 가능
 
-### Digital input IO
+    ![GettingStarted_Enc](images/GettingStarted_Enc.png)
 
-* P00_0 과 P00_1 에 연결되어있는
+### Digital I/O
+
+* P00_0 과 P00_1 에 연결되어있는 Digital 신호를 읽어옴
 
     ```
     Shell>p00_0 ?
@@ -497,12 +515,19 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>p00_1 ?
       Syntax     : p00_1
     Shell>p00_1
-      Port00_1:    0
+      Port00_1:    1
     ```
+
+* TFT 화면을 이용해 확인 가능
+
+    ![GettingStarted_DIO](images/GettingStarted_DIO.png)
 
 
 ## 추가적인 설명
+###Build - Error181 문제
+* 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
+* *C:\Windows\SysWOW64* 폴더(운영체제 Windows - 64bit)에 저장하여 문제 해결 가능
 
-* !ToDo
-    * Encoder
-    * Digital input port
+    ![GettingStarted_Error181](images/GettingStarted_Error181.png)
+
+    -  msvcr110.dll 파일이 없어 Make 파일 생성을 위한 php.exe 실행이 안되어 빌드 실패

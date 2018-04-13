@@ -542,7 +542,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
 ## 추가적인 설명
 
-###Build - Error181 문제
+### Build - Error181 문제
 
 * 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
 

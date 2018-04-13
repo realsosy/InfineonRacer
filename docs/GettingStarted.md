@@ -13,257 +13,226 @@ date: 2018-04-10
 
 ## References
 * 개발환경 관련
-  - [HighTec Free TriCore™ Entry Tool Chain](https://free-entry-toolchain.hightec-edv.com/index.php)
-  - [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
-  - [TeraTerm](https://ttssh2.osdn.jp/)
+  * [HighTec Free TriCore™ Entry Tool Chain](https://free-entry-toolchain.hightec-edv.com/index.php)
+  * [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
+  * [TeraTerm](https://ttssh2.osdn.jp/)
 
 * Build 관련
   - Error181 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
 
 ## Example Description
-1. 개발환경 구축
-    * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
-    * 인피니언에서 제공하는 *BIFACES* build environment 설치
-    * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설치
-2. *BIFACES* 를 통하여 소스코드 빌드
-    * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
-3. 예제 동작 확인
-    * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
-    * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, Line scan camera 예제 동작
+
+* 개발환경 구축
+  * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
+  * 인피니언에서 제공하는 *BIFACES* build environment 설치
+  * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설
+
+* *BIFACES* 를 통하여 소스코드 빌드
+  * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
+
+* 예제 동작 확인
+  * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
+  * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, Line scan camera 예제 동작
 
 ---
 ## 개발환경 설치
+
 ### HighTec Installation
+
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
   - Windows 운영체제 기준(최신 버전으로 받으면 됨)
     ![GettingStarted_Java](images/GettingStarted_Java.png)
 
 
-1. [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
-    * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요
-
+* [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
+  * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요
     ![GettingStarted_01Hightec](images/GettingStarted_01Hightec.png)
 
-2. *free_tricore_entry_tool_chain.zip* 다운로드 후 압축 해제
-3. 압축 해제된 파일 중 *setup.exe* 를 실행 후 설치 진행
+* *free_tricore_entry_tool_chain.zip* 다운로드 후 압축 해제
+
+* 압축 해제된 파일 중 *setup.exe* 를 실행 후 설치 진행
     ![GettingStarted_02HighTecCompiler](images/GettingStarted_02HighTecCompiler.png)
-
    (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
-4. 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
-    * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
-    ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
+* 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
+
+  * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
+  ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
 
 ### BIFACES Installation
+
 * BIFACES [Download](추후입력)
-1. 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
+  * 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
 
+  * BIFACES_V1_0_0.exe 실행
 
-2. BIFACES_V1_0_0.exe 실행
+  * *Select Components* 에서 *Full installation for Win32* 선택 후 설치 진행
+  ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
 
-
-3. *Select Components* 에서 *Full installation for Win32* 선택 후 설치 진행
-
-    ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
-
-
-4. 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
-  - **.bat** file 실행 화면 (Workspace는 defualt 값 사용)
-
+  * 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
+    * **.bat** file 실행 화면 (Workspace는 defualt 값 사용)
     ![GettingStarted_BiWelcome](images/GettingStarted_BiWelcome.png)
 
 ### SerialPlot Installation
-1. [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
-* Installation for windows:
-  - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
-  - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
 
-2. 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
-- **SerialPlot** 실행 화면
+* [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
+  * Installation for windows:
+    - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
+    - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
 
-![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
-
+* 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
+  - **SerialPlot** 실행 화면
+  ![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
 
 ### TeraTerm Installation
-1. [TeraTerm](https://ttssh2.osdn.jp/) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
-2. *Select Components* 에서 *Standard installation* 선택 후 설치 진행
 
-    ![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
+* [TeraTerm](https://ttssh2.osdn.jp/) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
 
-3. 설치 완료 후 **ttermpro.exe** *(C:\Program Files (x86)\teraterm)* 실행 확인
-    - **ttermpro.exe** 실행 화면
-    ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
+* *Select Components* 에서 *Standard installation* 선택 후 설치 진행
+![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
+
+* 설치 완료 후 **ttermpro.exe** *(C:\Program Files (x86)\teraterm)* 실행 확인
+  * **ttermpro.exe** 실행 화면
+  ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
 ---
 ## InfineonRacer Project Build
-### Project download and import
-1. [InfineonRacer](https://github.com/realsosy/InfineonRacer) 홈페이지 에서 **Clone or download** >> **Download ZIP** 클릭 후 *InfineonRacer-master.zip* downloasd 후 압축 해제
 
+### Project download and import
+
+* [InfineonRacer](https://github.com/realsosy/InfineonRacer) 홈페이지 에서 **Clone or download** >> **Download ZIP** 클릭 후 *InfineonRacer-master.zip* downloasd 후 압축 해제
    ![GettingStarted_04Repository](images/GettingStarted_04Repository.png)
 
+* *BIFACES* 실행 (**StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행)  
 
-2. *BIFACES* 실행 (**StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행)  
-
-
-3. Workspace 설정
+* Workspace 설정
     * 소스코드를 포함한 프로젝트를 관리 할 폴더 설정
-
     ![GettingStarted_05Workspace](images/GettingStarted_05Workspace.png)
 
-
-4. 다운로드 받은  *InfineonRacer* 프로젝트 Import
+* 다운로드 받은  *InfineonRacer* 프로젝트 Import
     * **File** >> **Import** 클릭
-
     ![GettingStarted_06Import](images/GettingStarted_06Import.png)
 
-
-5. **General** >> **Existing Projects into Workspace** 선택 후 **Next >** 클릭
-
+* **General** >> **Existing Projects into Workspace** 선택 후 **Next >** 클릭
     ![GettingStarted_07General](images/GettingStarted_07General.png)
 
-
-6. **Select root directory** 에서 **Browse...** 클릭, *1.* 에서 압축 해제한 폴더의 *src* 파일 *(~\InfineonRacer-master\src)* 선택 후 **확인** 클릭
-
+* **Select root directory** 에서 **Browse...** 클릭, *1.* 에서 압축 해제한 폴더의 *src* 파일 *(~\InfineonRacer-master\src)* 선택 후 **확인** 클릭
     ![GettingStarted_08Select](images/GettingStarted_08Select.png)
 
-
-7. *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택, *Options* 탭에서 **Copy projects into workspace** 체크박스 선택 후 **Finish** 클릭
-    * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
-
+* *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택, *Options* 탭에서 **Copy projects into workspace** 체크박스 선택 후 **Finish** 클릭
+  * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
     ![GettingStarted_09Project](images/GettingStarted_09Project.png)  
 
-    * *Project Explorer* 를 통해 Import 된 프로젝트를 확인할 수 있음
+  * *Project Explorer* 를 통해 Import 된 프로젝트를 확인할 수 있음
     (Welcom 창은 닫으면 됨)
-
     ![GettingStarted_10Explorer](images/GettingStarted_10Explorer.png)
 
-
 ### Build
-1. Build 전 Complier 설정
+
+* Build 전 Complier 설정
     *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 편집 가능한 Edit창이 나옴
     Tricore toolchain의 경로 및 버전이 맞게 설정되어 있는지 확인
     ```
     B_GNUC_TRICORE_PATH:= C:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
     ```
 
-2. *Project explorer* 를 통한 build
-    1.1 *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
+* *Project explorer* 를 통한 build
+  * *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
+  ![GettingStarted_11Build](images/GettingStarted_11Build.png)
 
-    ![GettingStarted_11Build](images/GettingStarted_11Build.png)
-
-    1.2 Build 후 결과
-         - *0_Build* 폴더에 **9_Make** 폴더 생성
-         - **2_Out** 폴더 생성
-         - *2_Out/Tricore_Gnuc/Gnuc_Files* 에 **.elf** 파일과 **.hex** 파일 그리고 **.map** 파일 생성
+  * Build 후 결과
+    - *0_Build* 폴더에 **9_Make** 폴더 생성
+    - **2_Out** 폴더 생성
+    - *2_Out/Tricore_Gnuc/Gnuc_Files* 에 **.elf** 파일과 **.hex** 파일 그리고 **.map** 파일 생성
 
     ![GettingStarted_12Build](images/GettingStarted_12Build.png)
 
 * Build error 발생시 **추가사항** 의 **Build - Error181** 참고
 
 ### UDEVisualPlatfrom 을 이용해 실행 파일 버닝, TeraTerm 을 동작 확인
+
 * Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용해 Shell 환경 실행
 
-1. UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
-
+* UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
     ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
 
 
-2. *BIFACES Workspase/InfineonRacer_TC23A/tool/AppKit_TC23x.wsx* 파일 열기
-
+* *BIFACES Workspase/InfineonRacer_TC23A/tool/AppKit_TC23x.wsx* 파일 열기
     ![GettingStarted_19UDE](images/GettingStarted_19UDE.png)
 
 
-3. Elf 파일 경로 확인 후 **OK** 클릭
+* Elf 파일 경로 확인 후 **OK** 클릭
 (경로가 빌드 후 생성된 *2_Out/Tricore_Gnuc/Gnuc_Files/InfineonRacer_TC23A_tc.elf* 파일로 설정되어 있는지 확인)
-
     ![GettingStarted_20Load](images/GettingStarted_20Load.png)
 
 
-4. *AppKit* 를 USB로 Host PC와 연결한 후 **File** >> **Connect Target System..** 클릭
+* *AppKit* 를 USB로 Host PC와 연결한 후 **File** >> **Connect Target System..** 클릭
 (Host PC와 첫 연결 시 드라이버 다운로드가 진행됨)
-
     ![GettingStarted_21Connect](images/GettingStarted_21Connect.png)
 
-
-5. *UDE - FLASH/OTP Memory Programming Tool* 창에서 *Program all* 버튼 클릭
-
+* *UDE - FLASH/OTP Memory Programming Tool* 창에서 *Program all* 버튼 클릭
     ![GettingStarted_22Program](images/GettingStarted_22Program.png)
 
+* *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 
 
-6. *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 *Execute Memtool Command* 창을 닫음
-
+*Execute Memtool Command* 창을 닫음
     ![GettingStarted_23Execute](images/GettingStarted_23Execute.png)
 
-
-7. **Debug** >> **Start Program Execution** 을 클릭하면 *AppKit* 에 다운로드 된 프로그램이 실행됨
-
+* **Debug** >> **Start Program Execution** 을 클릭하면 *AppKit* 에 다운로드 된 프로그램이 실행됨
     ![GettingStarted_24Start](images/GettingStarted_24Start.png)
-
-    프로그램을 실행했을 때 *AppKit* 의 TFT 화면
-
+    
+    * 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
     ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
-   * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
 
+    * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
 
-8. **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
-
+* **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
     ![GettingStarted_26Dis](images/GettingStarted_26Dis.png)
 
+* *AppKit* COM port 활성화(첫 연결시 필요)
+  * 장치관리자 실행
 
-9. *AppKit* COM port 활성화(첫 연결시 필요)
-* 9.1 장치관리자 실행
-* 9.2 **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
-
+  * **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
     ![GettingStarted_27Com](images/GettingStarted_27Com.png)
 
-* 9.3 *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
-
+  * *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
     ![GettingStarted_28Enable](images/GettingStarted_28Enable.png)
 
-* 9.4 *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인 (재연결시 드라이버가 자동으로 설치됨)
-
+  * *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인 (재연결시 드라이버가 자동으로 설치됨)
     ![GettingStarted_29Com](images/GettingStarted_29Com.png)
 
-
-10. *TeraTerm* 실행 후 *Serial* 체크, *Port:* 에 *Infineon DAS COM (COMn)* 선택 후 **OK** 클릭
-
+* *TeraTerm* 실행 후 *Serial* 체크, *Port:* 에 *Infineon DAS COM (COMn)* 선택 후 **OK** 클릭
     ![GettingStarted_30Tera](images/GettingStarted_30Tera.png)
 
-
-11. **Setup** >> **Serial port...** 클릭
-
+* **Setup** >> **Serial port...** 클릭
     ![GettingStarted_31Serial](images/GettingStarted_31Serial.png)
 
-
-12. *Buad rate* 을 *115200* 으로 설정하고 *OK* 클릭
-
+* *Buad rate* 을 *115200* 으로 설정하고 *OK* 클릭
     ![GettingStarted_32Set](images/GettingStarted_32Set.png)
 
-
-13. *TeraTerm VT* 창에서 enter 를 입력하면 *Shell>* 이 화면에 나타남! 여기에 *info* 를 입력하고 enter를 입력하면 아래의 사진과 같이 **Welcome to Infineon Racer Shell** 확인 가능
-
+* *TeraTerm VT* 창에서 enter 를 입력하면 *Shell>* 이 화면에 나타남! 여기에 *info* 를 입력하고 enter를 입력하면 아래의 사진과 같이 **Welcome to Infineon Racer Shell** 확인 가능
     ![GettingStarted_33Help](images/GettingStarted_33Help.png)
 
 
 ## TFT, Shell 을 이용한 동작 확인
+
 * LED, Beeper 등의 Peripheral 장치의 동작 확인
+
 * DC motor, Servo, Encoder, Line scan camera, Digital input port 의 경우 *MotorKit* 사용을 통해 쉽게 주변장치 구성 가능
   - *MotorKit* 와 *AppKit* 의 하드웨어 연결은 [ConnectionGuide](ConnectionGuide.md)를 통해 확인 가능
 
 ### 기본적인 TFT 및 Shell 사용법
+
 **TFT**(Thin Film Transistor) 는 Display를 구성하는 전기소자로 본 문서에서 터치가 가능한 LCD 화면을 통칭함
 LCD및 터치 기능을 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
 
 * Main 화면에서는 DC motor, Servo, Encoder, Beeper, TFT의 제어 및 상태 확인 가능
-
     ![GettingStarted_39Main](images/GettingStarted_39Main.png)
 
 
 * DIS1 화면에서는 CPU load를 포함한 주변장치의 상태 확인 가능
 (Main 화면에서 DIS1 화면으로 넘어가기 위해서는 하단의 *DIS1* 을 터치)
-
     ![GettingStarted_40Dis1](images/GettingStarted_40Dis1.png)
-
 
 **Shell** 은 사용자가 입력한 명령어를 해석하여 *AppKit* 가 동작할 수 있도록 해주는 역할을 함(자세한 내용은 [MyOwnTerminal](MyOwnTerminal.md) 참고)
 TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 Peripheral 장치들을 제어하고 상태 확인 가능
@@ -294,7 +263,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     info     : Show the welcome screen
     help     : Display command list.
     ```
-
+    
 * 특정 명령어셋의 사용법(syntax)을 확인하기 위해서는 *"(명령어) ?""* 를 입력 후 enter를 입력한다.
 
      ```
@@ -311,7 +280,9 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
 
 ### Beeper
+
 * TFT 의 *Beep OFF* 를 터치하여 Beeper 동작 확인 가능
+
 * *bpon* 명령어를 통해 Beeper의 On/Off 제어 가능
     ```
     Shell>bpon ?
@@ -324,11 +295,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
       Beeper On:    0 # Beeper 가 울리지 않음
     ```
 
-
     **< Beeper On 일 때 TFT >**
-
     ![GettingStarted_34On](images/GettingStarted_34On.jpg)
-
 
 * *bpf* 명령어를 통해 beeper 소리의 높이(frequency)를 조절할 수 있다.
     *  froat_value: 100.0 ~ 10000.0
@@ -348,7 +316,6 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
       Beeper On:    0         # Beeper 가 울리지 않음
     ```
 
-
 * *bpv* 명령어를 통해 beeper 소리의 크기(voltage)를 조절할 수 있다.
     *  frac_value: 0.00 ~ 0.99
 
@@ -366,6 +333,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>bpon 0
       Beeper On:    0         # Beeper 가 울리지 않음
     ```
+
 * TFT의 DIS1 화면을 통해 Beeper의 소리의 높이(frequency)와 크기(voltage) 확인 가능
 
     ```
@@ -378,10 +346,11 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>bpon 0
       Beeper On:    0
     ```
+
     ![GettingStarted_TFTBeeper](images/GettingStarted_TFTBeeper.png)
 
-
 ### LED
+
 * *l108*, *l109*, *l110*  명령어를 통해 TFT 우측에 붙어있는 LED D108, D109, D110을 동작시킬 수 있다.
 
     ```
@@ -401,8 +370,10 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
 
 ### DC motor
+
 * *m0v*, *m0e* 명령어를 이용해 모터 제어와 상태 확인 가능
     * frac_value: -1.0 ~ 1.0
+
 * *m1v* , *m1e* 명령어와 연결되어 있는 motor사용을 위해서는 [MotorKit 하드웨어 변경](https://github.com/realsosy/InfineonRacer/blob/master/docs/ConnectionGuide.md#hardware-modification-of-motor-driver-kit) 필요
 
     ```
@@ -417,13 +388,14 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>m0v -0.2                   # Motor에 인가되는 전압을 제어
       Motor0Vol: -0.20 fraction      
     ```
-* TFT에서 **M1En ON** 을 누르면 **M1En OFF** 로 변경
-* *-<<* 와 *>>+* 를 이용해서 0.05 단위로 DC Motor 제어가 가능
 
+* TFT에서 **M1En ON** 을 누르면 **M1En OFF** 로 변경
+
+* *-<<* 와 *>>+* 를 이용해서 0.05 단위로 DC Motor 제어가 가능
     ![GettingStarted_TFTMotor](images/GettingStarted_TFTMotor.png)
 
-
 ### Servo
+
 * *srv* 명령어를 입력해 동작 확인이 가능
     * frac_value: -1.0 ~ 1.0
 
@@ -435,12 +407,13 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     Shell>srv -0.5
       SrvAngle: -0.50 fraction
     ```
-* TFT에서 *-<<* 와 *>>+* 를 이용해서 0.05 단위로 Servo 제어가 가능
 
+* TFT에서 *-<<* 와 *>>+* 를 이용해서 0.05 단위로 Servo 제어가 가능
     ![GettingStarted_TFTServo](images/GettingStarted_TFTServo.png)
 
 
 ###Line scan camera
+
 * Line scan camera는 2개의 채널을 제공하며 각각 *ls0* , *ls1* 명령어를 통해서 값 확인이 가능
 
     ```
@@ -453,6 +426,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
       LineScan1 results
      1753, 1754, 1753, 1735, 1739, 1741, 1743, 1744, 1746, 1746, 1746, 1747, 1747, 1747, 1748, 1748, 1748, 1748, 1749, 1748, 1750, 1752, 1752, 1753, 1753, 1753, 1752, 1752, 1753, 1754, 1753, 1754, 1754, 1752, 1751, 1752, 1753, 1753, 1753, 1754, 1754, 1753, 1751, 1753, 1754, 1754, 1756, 1755, 1754, 1735, 1741, 1745, 1747, 1750, 1750, 1751, 1752, 1750, 1748, 1753, 1754, 1755, 1754, 1753, 1752, 1752, 1752, 1753, 1753, 1754, 1754, 1755, 1752, 1753, 1754, 1754, 1755, 1755, 1753, 1751, 1751, 1750, 1750, 1749, 1749, 1749, 1749, 1751, 1756, 1752, 1753, 1755, 1753, 1752, 1735, 1739, 1743, 1746, 1749, 1752, 1751, 1752, 1751, 1748, 1749, 1749, 1748, 1748, 1748, 1748, 1748, 1748, 1747, 1748, 1748, 1748, 1750, 1752, 1752, 1753, 1753, 1753, 1754, 1735, 1722, 1732, 1737, 1743
     ```
+
 * SerialPlot 프로그램을 이용해 실시간 값 확인 가능
   - *mls* 명령어를 통해 주기적으로 line scan camera의 값을 받아올 수 있음
 
@@ -478,15 +452,14 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
   - *SerialPlot* 을 실행하고 아래 이미지와 같이 포트 설정 후 **Open** 클릭
-
-    ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
+  ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
 
   - 아래와 같이 Command 를 입력하고 Send를 입력하면 실시간으로 Line scan camera의 raw 데이터 확인 가능(LineScan0 만 사용)
-
-    ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
+  ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
 
 
 ### Encoder
+
 * *enc* 명령어를 통해 동작 확인이 가능
 
     ```
@@ -503,7 +476,6 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * TFT 화면을 이용해 확인 가능
-
     ![GettingStarted_Enc](images/GettingStarted_Enc.png)
 
 ### Digital I/O
@@ -522,15 +494,16 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * TFT 화면을 이용해 확인 가능
-
     ![GettingStarted_DIO](images/GettingStarted_DIO.png)
 
 
 ## 추가적인 설명
-###Build - Error181 문제
-* 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
-* *C:\Windows\SysWOW64* 폴더(운영체제 Windows - 64bit)에 저장하여 문제 해결 가능
 
+###Build - Error181 문제
+
+* 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
+
+* *C:\Windows\SysWOW64* 폴더(운영체제 Windows - 64bit)에 저장하여 문제 해결 가능
     ![GettingStarted_Error181](images/GettingStarted_Error181.png)
 
     -  msvcr110.dll 파일이 없어 Make 파일 생성을 위한 php.exe 실행이 안되어 빌드 실패

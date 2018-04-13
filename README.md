@@ -60,5 +60,8 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 15.  [OSEK-Certified ErikaOS & RT-Druid](./docs/OsekCertificedErikaOsRtDruid.md)
 
 
+### etc
 
+* [References](./docs/References.md)
+* [Source code list](./src/README.md)
 

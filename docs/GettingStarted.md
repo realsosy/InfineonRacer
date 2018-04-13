@@ -35,6 +35,9 @@ date: 2018-04-10
 ## 개발환경 설치
 ### HighTec Installation
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
+  - Windows 운영체제 기준(최신 버전으로 받으면 됨)
+    ![GettingStarted_Java](images/GettingStarted_Java.png)
+
 
 1. [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
     * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요

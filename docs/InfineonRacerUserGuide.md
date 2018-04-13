@@ -377,36 +377,172 @@ void appTaskfu_10ms(void)
 
 ## Modules
 
-### Service 1: BasicStm
-
-
-
-### Service 2: AsclinShellInterface
-
-
-
-### Service 3: TFT
-
 
 
 ### IO: BasicPort
+
+#### Functions
+
+* LED's(Application Kit on board)
+* Port: Digital Input for User
+* Motor Driver Inhibit
+
+#### Files
+
+* BasicPort.c/.h
+
+#### Notes
+
+* Nothing special
 
 
 
 ### IO: BasicVadcBgScan
 
+#### Functions
 
+* Analog Input for User
+
+#### Files
+
+* BasicVadcBgScan.c/.h
+
+#### Notes
+
+* AN15 번은 Group 1, Channel 3
+  * AN12 번 부터는 Vadc Group 1 번에 할당되어 있음
+  * 15 - 13 => 3번 Channel 로 관리됨
+
+### 
 
 ### IO: BasicLineScan
+
+#### Functions
+
+* Line Scan Camera 2 개
+
+#### Files
+
+* BasicLineScan.c/.h
+
+#### Notes
+
+* SI, CLK는 두 Line Scan Camera 공통으로 사용
+  * P14.6, P14.7
+  * Port 출력과 waitTime 함수로 신호 발생
+* AO 출력은 각각 AN9, AN10 채널로 입력
+  * VadcAutoScan 모드로 2채널 동작
+* 128 지점의 스캔 신호(2채널)를 얻는데 걸리는 시간 : 약 850usec
+  * 129 clock * 6usec/clock
+  * clock 의 주기를 더 단축할 수 있지만 감도가 떨어짐
+  * 조명 조건에 따라서 clock 주기를 조정할 수 있음
+* 개발의 편의를 위하여 다양한 모니터링 방법 제공
+  * 디버깅 단계: Array View 이용
+  * 실차 튜닝 단계: Shell 명령어(**mls**: monitoring line scan)와 SerialPlot 이용
 
 
 
 ### IO: BasicGtmTom
 
+#### Functions
 
+* DC Motor PWM 신호: 2 개
+* Servo 
+* Beeper: 정상 혹은 이상 동작등의 상황을 사용자가 확인할 수 있도록 
+
+#### Files
+
+* BasicGtmTom.c/.h
+
+#### Notes
+
+**[DC Motor PWM]**
+
+* Frequency: 10KHz
+  * DC 모터의 시정수와 드라이버 IC의 스위칭 속도에 따라 조정 가능
+
+**[Servo]**
+
+* Period: 10msec 
+  * Servo 의 특성에 따라 조정 가능
+* On-time: 0.5~2.5 msec
+  * 0.5: -90 Degree
+  * 2.5: +20 Degree
+
+**[Beeper]**
+
+* Frequency, Volume 조정 가능
+  * Default Frequency: 2048 Hz
+  * Default Volume: 10%
+
+### 
 
 ### IO: BasicGpt12Enc
 
+#### Functions
+
+* Encoder (2^N PPR)
+
+#### Files
+
+* BasicGpt12Enc.c/.h
+
+#### Notes
+
+* 위치만 측정하는 것이 아니라 필터링된 속도도 함께 구할 수 있다.
+
+* iLLD의 특성상 2^N PPR(Pulse Per Revolution) 의 Encoder 만 사용가능하다.
+
+* 시험을 위하여 Encoder 신호를 Emulation 할 수도 있다.
+
+  ​
+
+### Service 1: BasicStm
+
+#### Functions
+
+* Scheduler Tick 발생
+
+#### Files
+
+* BasicStm.c/.h
+
+#### Notes
+
+* Period: 1ms
 
 
 
+### Service 2: AsclinShellInterface
+
+#### Functions
+
+* 직렬 통신을 이용한 Shell 제공
+
+#### Files
+
+* AsclinShellInterface.c/.h
+
+#### Notes
+
+* 속도: 115200 bps
+
+  * 주변환경에 따라서 속도 조정 가능
+
+  ​
+
+### Service 3: TFT
+
+#### Functions
+
+* MMI 제공
+
+#### Files
+
+* /TftApp 디렉토리 폴더의 파일들
+
+#### Notes
+
+* Graphic 출력
+* Touch Screen 제공
+* 필요에 따사 사용자가 사용할 수 있는 Text 창과 Graph 창 제공

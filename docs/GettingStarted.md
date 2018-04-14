@@ -18,7 +18,7 @@ date: 2018-04-10
   * [TeraTerm](https://ttssh2.osdn.jp/)
 
 * Build 관련
-  - Error181 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
+  - php 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
 
 ## Example Description
 
@@ -40,7 +40,7 @@ date: 2018-04-10
 ### HighTec Installation
 
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
-  - Windows 운영체제 기준(최신 버전으로 받으면 됨)
+  - Windows 32bit 64bit 운영체제 모두 32bit 버전으로 다운받아야 함 (최신 버전으로 받으면 됨)
 
  ![GettingStarted_Java](images/GettingStarted_Java.png)
 
@@ -81,10 +81,9 @@ date: 2018-04-10
 
 ### SerialPlot Installation
 
-* [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행
-  * Installation for windows:
-    - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
-    - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
+* [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행하거나 아래 링크를 이용 (자신의 PC 운영체제에 맞게 설치)
+  - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
+  - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
 
 * 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
   - **SerialPlot** 실행 화면
@@ -114,10 +113,16 @@ date: 2018-04-10
 
  ![GettingStarted_04Repository](images/GettingStarted_04Repository.png)
 
+* 압축 해제한 폴더 확인
+
+ ![GettingStarted_SourceCode](images/GettingStarted_SourceCode.png)
+
 * *BIFACES* 실행 (**StartBifaces.bat** *(C:\Tools\BifacesTools)* 실행)  
 
 * Workspace 설정
     * 소스코드를 포함한 프로젝트를 관리 할 폴더 설정
+    * 새로 만든 Workspace에 *src* 폴더 *(~\InfineonRacer-master\src)* 를 복사 또는 이동 하거나
+    * *src* 폴더를 Workspace로 지정
 
  ![GettingStarted_05Workspace](images/GettingStarted_05Workspace.png)
 
@@ -130,11 +135,11 @@ date: 2018-04-10
 
  ![GettingStarted_07General](images/GettingStarted_07General.png)
 
-* **Select root directory** 에서 **Browse...** 클릭, *1.* 에서 압축 해제한 폴더의 *src* 파일 *(~\InfineonRacer-master\src)* 선택 후 **확인** 클릭
+* **Select root directory** 에서 **Browse...** 클릭, Workspace의  *src* 폴더 선택 후 **확인** 클릭
 
  ![GettingStarted_08Select](images/GettingStarted_08Select.png)
 
-* *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택, *Options* 탭에서 **Copy projects into workspace** 체크박스 선택 후 **Finish** 클릭
+* *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택 후 **Finish** 클릭
   * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
 
  ![GettingStarted_09Project](images/GettingStarted_09Project.png)  
@@ -171,7 +176,7 @@ date: 2018-04-10
 * Build를 통해 생성한 elf 파일을 *AppKit* 에 다운로드 하고 TeraTerm을 이용해 Shell 환경 실행
 
 * UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
- 
+
  ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
 
 
@@ -194,7 +199,7 @@ date: 2018-04-10
 
  ![GettingStarted_22Program](images/GettingStarted_22Program.png)
 
-* *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 
+* *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과
 
 *Execute Memtool Command* 창을 닫음
 
@@ -203,7 +208,7 @@ date: 2018-04-10
 * **Debug** >> **Start Program Execution** 을 클릭하면 *AppKit* 에 다운로드 된 프로그램이 실행됨
 
  ![GettingStarted_24Start](images/GettingStarted_24Start.png)
-    
+
     * 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
 
  ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
@@ -297,7 +302,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     info     : Show the welcome screen
     help     : Display command list.
     ```
-    
+
 * 특정 명령어셋의 사용법(syntax)을 확인하기 위해서는 *"(명령어) ?""* 를 입력 후 enter를 입력한다.
 
      ```
@@ -542,12 +547,29 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
 ## 추가적인 설명
 
-### Build - Error181 문제
+### Build  error - php.exe 실행 문제
 
-* 아래 사진과 같이 에러가 발생할 시 [msvcr110.dll](msvcr110.dll) 파일을 다운로드 받아서
+* 빌드시 컴파일을 위한 Make 파일 생성이 안될 경우 빌드 에러 발생
+* **BIFACES** 가 설치된 경로에서 *C:\Tools\BifacesTools\Php* 로 이동하여 *php.exe* 실행
+  -  정상적으로 실행 되었을 때
+  ![GettingStarted_Php](images/GettingStarted_Php.png)
 
-* *C:\Windows\SysWOW64* 폴더(운영체제 Windows - 64bit)에 저장하여 문제 해결 가능
+  - *php.exe* 파일이 실행은 되지만 아래 사진과 같이 에러가 발생
+  ![GettingStarted_PhpMsvc](images/GettingStarted_PhpMsvc.png)
 
- ![GettingStarted_Error181](images/GettingStarted_Error181.png)
+    - [msvcr110.dll 파일을 다운로드](msvcr110.dll)
+    - 다운 받은 파일을 *C:\Windows\SysWOW64* 폴더(운영체제 Windows 64bit 기준)에 저장
+    - 다시 php.exe 파일을 실행하여 실행이 되는지 확인 (정상적으로 실행이 되면 검은 도스창이 뜸) 후 다시 빌드 실행
 
-    -  msvcr110.dll 파일이 없어 Make 파일 생성을 위한 php.exe 실행이 안되어 빌드 실패
+  - *php.exe* 파일이 실행되지 않을 경우
+  ![GettingStarted_PhpExee](images/GettingStarted_PhpExee.png)
+
+    - 설치된 백신 프로그램(ex. 알약)을 종료시키고 **BIFACES** 를 다시 설치
+    - 다시 *php.exe* 파일을 실행하여 실행이 되는지 확인 후 다시 빌드 실행
+
+## ToDo!
+
+* Java 설명 추가 [O]
+* SerialPlot 설치 설명 추가 [O]
+* Workspaces 설정 수정 [O]
+* Php 관련 이슈 [O]

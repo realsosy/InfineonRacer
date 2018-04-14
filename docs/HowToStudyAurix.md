@@ -124,6 +124,7 @@ AURIX를 왜 공부하냐에 따라서 이 두가지 질문에 대한 대답은 
 | Debugger | UDE VisualPlatform | UDE Manual.pdf |      |
 
 * Build Framework
+
 | 분류 | 제품명 | 관련자료 | 기타 |
 | -------- | ---- | ---- | ---- |
 | Framework | BIFACES | BIFACES User Manual |      |
@@ -135,12 +136,14 @@ AURIX를 왜 공부하냐에 따라서 이 두가지 질문에 대한 대답은 
 | Template | BaseFramwork | source code and examples |      |
 
 * MCU 관련
+
 | 분류 | 제품명 | 관련자료 | 기타 |
 | -------- | ---- | ---- | ---- |
 | MCU | TC237 | TC23X User Manual |      |
 | Evaluation Board | ApplicationKit | ApplicationKitManual-TC2X7 |      |
 
 * iLLD
+
 | 분류 | 제품명 | 관련자료 | 기타 |
 | -------- | ---- | ---- | ---- |
 | Device Driver         | iLLD | \iLLD_1_0_1_4_0\Doc\TC23A\html\index.html |      |

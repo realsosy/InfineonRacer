@@ -19,7 +19,7 @@ References
 
 -	iLLD_1_0_1_4_0_TC2xx_Release.zip; iLLD source and doc
 -	iLLD_Demos_1_0_1_4_0_TC2xx.zip; iLLD examples
--	TC21x/TC22x/TC23x Family User’s Manual V1.1
+-	[TC23x TC22x Family User's Manual v1.1](../references/tc23x_tc22x_um_v1.1.pdf)
 
 Example Description
 -------------------
@@ -100,7 +100,7 @@ g_AppCpu0.info.stmFreq = IfxStm_getFrequency(&MODULE_STM0);
 
   - Compare register를 이용하기 위해서는 capture를 위한 구체적인 define이 필요
 
-**1. 사용할 STM 모듈의 정보를 받아와 구조체 형식으로 저장하며 초기화**
+**1. STM 모듈의 기본정보를 받아와 구조체 형식화**
 ~~~
 g_Stm.stmSfr = &MODULE_STM0;
 IfxStm_initCompareConfig(&g_Stm.stmConfig);
@@ -118,7 +118,31 @@ void IfxStm_initCompareConfig(IfxStm_CompareConfig *config)
 ~~~
 **2. 수정할 변수에 원하는 수치를 입력**
 ~~~
-g_Stm.stmConfig.ticks           = ???
+/* TimeConst_*는 ticks를 실제 시간에 매칭시키는 time constant */
+
+g_Stm.stmConfig.ticks           = TimeConst_1ms
+~~~
+~~~
+/************ bsp.c *************/
+
+/* Default timer의 system tick freqency와 무관 */
+
+void initTime(void)
+{
+   sint32 Fsys = IfxStm_getFrequency(BSP_DEFAULT_TIMER);
+
+   TimeConst[TIMER_INDEX_10NS]  = Fsys / (1000000000 / 10);
+   TimeConst[TIMER_INDEX_100NS] = Fsys / (1000000000 / 100);
+   TimeConst[TIMER_INDEX_1US]   = Fsys / (1000000 / 1);
+   TimeConst[TIMER_INDEX_10US]  = Fsys / (1000000 / 10);
+   TimeConst[TIMER_INDEX_100US] = Fsys / (1000000 / 100);
+   TimeConst[TIMER_INDEX_1MS]   = Fsys / (1000 / 1);
+   TimeConst[TIMER_INDEX_10MS]  = Fsys / (1000 / 10);
+   TimeConst[TIMER_INDEX_100MS] = Fsys / (1000 / 100);
+   TimeConst[TIMER_INDEX_1S]    = Fsys * (1);
+   TimeConst[TIMER_INDEX_10S]   = Fsys * (10);
+   TimeConst[TIMER_INDEX_100S]  = Fsys * (100);
+}
 ~~~
 
   ![Parameters](images/TwinkleTwinkleLittleStar_05Parameters.png.PNG)
@@ -163,6 +187,7 @@ void STM_Int0Handler(void)
 
 
   /* 인터럽트 마다 counter를 누적하며 특정 주기에 원하는 기능(BlinkLed)을 작동 */
+  
     g_Stm.counter++;
 
     if(g_Stm.counter == 1000){

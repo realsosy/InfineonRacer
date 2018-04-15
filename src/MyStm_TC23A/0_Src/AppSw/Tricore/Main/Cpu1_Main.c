@@ -1,6 +1,6 @@
 /**
- * \file Cpu0_Main.c
- * \brief System initialisation and main program implementation.
+ * \file Cpu1_Main.c
+ * \brief CPU1 functions.
  *
  * \version iLLD_Demos_1_0_1_4_0
  * \copyright Copyright (c) 2014 Infineon Technologies AG. All rights reserved.
@@ -26,9 +26,7 @@
 /******************************************************************************/
 
 #include "Cpu0_Main.h"
-#include "SysSe/Bsp/Bsp.h"
 #include "IfxScuWdt.h"
-#include "StmDemo.h"
 
 /******************************************************************************/
 /*------------------------Inline Function Prototypes--------------------------*/
@@ -45,47 +43,20 @@
 /******************************************************************************/
 /*------------------------------Global variables------------------------------*/
 /******************************************************************************/
-App_Cpu0 g_AppCpu0; /**< \brief CPU 0 global data */
 
 /******************************************************************************/
 /*-------------------------Function Implementations---------------------------*/
 /******************************************************************************/
-
-/** \brief Main entry point after CPU boot-up.
- *
- *  It initialise the system and enter the endless loop that handles the demo
- */
-int core0_main(void)
+/** \brief Main entry point for CPU1  */
+void core1_main(void)
 {
     /*
-     * !!WATCHDOG0 AND SAFETY WATCHDOG ARE DISABLED HERE!!
+     * !!WATCHDOG1 IS DISABLED HERE!!
      * Enable the watchdog in the demo if it is required and also service the watchdog periodically
      * */
     IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
-    IfxScuWdt_disableSafetyWatchdog(IfxScuWdt_getSafetyWatchdogPassword());
-
-    /* Initialise the application state */
-    g_AppCpu0.info.pllFreq = IfxScuCcu_getPllFrequency();
-    g_AppCpu0.info.cpuFreq = IfxScuCcu_getCpuFrequency(IfxCpu_getCoreIndex());
-    g_AppCpu0.info.sysFreq = IfxScuCcu_getSpbFrequency();
-    g_AppCpu0.info.stmFreq = IfxStm_getFrequency(&MODULE_STM0);
-
-    /* Enable the global interrupts of this CPU */
-    IfxCpu_enableInterrupts();
-
-    /* Demo init */
-    IfxStmDemo_init();
 
     /* background endless loop */
     while (TRUE)
-    {
-        IfxStmDemo_run();
-
-        REGRESSION_RUN_STOP_PASS;
-    }
-
-    return 0;
+    {}
 }
-
-
-/** \} */

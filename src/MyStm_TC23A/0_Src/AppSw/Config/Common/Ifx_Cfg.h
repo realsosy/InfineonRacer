@@ -1,6 +1,6 @@
 /**
- * \file Configuration.h
- * \brief Global configuration
+ * \file Ifx_Cfg.h
+ * \brief Configuration.
  *
  * \version iLLD_Demos_1_0_1_4_0
  * \copyright Copyright (c) 2014 Infineon Technologies AG. All rights reserved.
@@ -20,42 +20,33 @@
  * INFINEON SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL,
  * OR CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
  *
- * \defgroup IfxLld_Demo_StmDemo_SrcDoc_Config Application configuration
+ *
+ *
+ * \defgroup IfxLld_Demo_StmDemo_SrcDoc_IlldConfig iLLD configuration
  * \ingroup IfxLld_Demo_StmDemo_SrcDoc
- *
- *
  */
 
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
-/******************************************************************************/
-/*----------------------------------Includes----------------------------------*/
-/******************************************************************************/
-#include "Ifx_Cfg.h"
-#include "ConfigurationIsr.h"
-#include "_Impl/IfxGlobal_cfg.h"
+#ifndef IFX_CFG_H
+#define IFX_CFG_H
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
 /******************************************************************************/
 
-/** \addtogroup IfxLld_Demo_Template_SrcDoc_Config
+/** \addtogroup IfxLld_Demo_StmDemo_SrcDoc_IlldConfig
  * \{ */
+
 /*______________________________________________________________________________
-** Help Macros
+** Configuration for IfxScu_cfg.h
 **____________________________________________________________________________*/
 /**
- * \name Macros for Regression Runs
+ * \name Frequency configuration
  * \{
  */
-#ifndef REGRESSION_RUN_STOP_PASS
-#define REGRESSION_RUN_STOP_PASS
-#endif
+#define IFX_CFG_SCU_XTAL_FREQUENCY (20000000)                       /**< \copydoc IFX_CFG_SCU_XTAL_FREQUENCY */
 
-#ifndef REGRESSION_RUN_STOP_FAIL
-#define REGRESSION_RUN_STOP_FAIL
-#endif
 /** \} */
 
 /** \} */
-#endif
+
+#endif /* IFX_CFG_H */

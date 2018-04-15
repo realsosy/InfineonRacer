@@ -1,8 +1,24 @@
 /**
- * \file BasicStm.c
- * \brief BasicStm
+ * \file StmDemo.c
+ * \brief Stm Demo
  *
- * \version InfineonRacer 1_0_0
+ * \version iLLD_Demos_1_0_1_4_0
+ * \copyright Copyright (c) 2014 Infineon Technologies AG. All rights reserved.
+ *
+ *
+ *                                 IMPORTANT NOTICE
+ *
+ *
+ * Infineon Technologies AG (Infineon) is supplying this file for use
+ * exclusively with Infineon's microcontroller products. This file can be freely
+ * distributed within development tools that are supporting such microcontroller
+ * products.
+ *
+ * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+ * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+ * INFINEON SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL,
+ * OR CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
  */
 
 /******************************************************************************/
@@ -11,8 +27,7 @@
 
 #include <stdio.h>
 
-#include "BasicStm.h"
-#include "AppTaskFu.h"
+#include "StmDemo.h"
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
@@ -25,24 +40,17 @@
 /******************************************************************************/
 /*-----------------------------Data Structures--------------------------------*/
 /******************************************************************************/
-typedef struct
-{
-    Ifx_STM             *stmSfr;            /**< \brief Pointer to Stm register base */
-    IfxStm_CompareConfig stmConfig;         /**< \brief Stm Configuration structure */
-    volatile uint8       LedBlink;          /**< \brief LED state variable */
-    volatile uint32      counter;           /**< \brief interrupt counter */
-} Basic_Stm;
 
 /******************************************************************************/
 /*------------------------------Global variables------------------------------*/
 /******************************************************************************/
 
-Basic_Stm g_Stm; /**< \brief Stm global data */
+App_Stm g_Stm; /**< \brief Stm global data */
 /******************************************************************************/
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
-static void BlinkLed_run(void);
-static void BlinkLed_init(void);
+static void IfxBlinkLed_Task(void);
+static void IfxBlinkLed_Init(void);
 /******************************************************************************/
 /*------------------------Private Variables/Constants-------------------------*/
 /******************************************************************************/
@@ -71,30 +79,27 @@ void STM_Int0Handler(void)
 #ifdef SIMULATION
 	IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, 1000);
 #else
-	IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, TimeConst_1ms);
+	IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, TimeConst_1s);
 #endif
     IfxCpu_enableInterrupts();
+    IfxBlinkLed_Task();
+}
 
-    g_Stm.counter++;
-    if(g_Stm.counter == 1000){
-    	g_Stm.counter = 0;
+
+/** \brief Port Pin State
+ *
+ * This function changes the Port Pin state
+ */
+static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
+{
+    if (state)
+    {
+        IfxPort_setPinState(port, pin, IfxPort_State_high);
     }
-
-    task_flag_1m = TRUE;
-
-    if(g_Stm.counter % 10 == 0){
-    	task_flag_10m = TRUE;
+    else
+    {
+        IfxPort_setPinState(port, pin, IfxPort_State_low);
     }
-    if(g_Stm.counter % 100 == 0){
-        task_flag_100m = TRUE;
-        BlinkLed_run();
-    }
-    if(g_Stm.counter % 1000 == 0){
-        task_flag_1000m = TRUE;
-    }
-
-    appIsrCb_1ms();
-
 }
 
 
@@ -103,27 +108,24 @@ void STM_Int0Handler(void)
  * This function blinks the LED connected to P 33.6 and counts the number
  *	of times the interrupt occurs.
  */
-static void BlinkLed_run(void)
+static void IfxBlinkLed_Task(void)
 {
     g_Stm.LedBlink ^= 1;
-    if (g_Stm.LedBlink == TRUE)
-    {
-        IfxPort_setPinState(&MODULE_P13, 0, IfxPort_State_high);
-    }
-    else
-    {
-        IfxPort_setPinState(&MODULE_P13, 0, IfxPort_State_low);
-    }
 
+//    setOutputPin(&MODULE_P33, 6, g_Stm.LedBlink);
+    setOutputPin(&MODULE_P13, 0, g_Stm.LedBlink);
+
+    g_Stm.counter++;
 }
 
 
 /** \brief LED Initialization
  *
- * This function initializes the LED connected to P13.0
+ * This function initializes the LED connected to P33.6
  */
-static void BlinkLed_init(void)
+static void IfxBlinkLed_Init(void)
 {
+    IfxPort_setPinMode(&MODULE_P33, 6, IfxPort_Mode_outputPushPullGeneral);
     IfxPort_setPinMode(&MODULE_P13, 0, IfxPort_Mode_outputPushPullGeneral);
 }
 
@@ -132,9 +134,9 @@ static void BlinkLed_init(void)
  *
  * This function is called from main during initialization phase
  */
-void BasicStm_init(void)
+void IfxStmDemo_init(void)
 {
-    printf("BasicStm_init() called\n");
+    printf("IfxStmDemo_init() called\n");
 
     /* disable interrupts */
     boolean interruptState = IfxCpu_disableInterrupts();
@@ -144,9 +146,6 @@ void BasicStm_init(void)
 
     initTime();
 
-    // suspend by debugger enabled
-    IfxStm_enableOcdsSuspend (&MODULE_STM0);
-
     g_Stm.stmSfr = &MODULE_STM0;
     IfxStm_initCompareConfig(&g_Stm.stmConfig);
 
@@ -155,13 +154,11 @@ void BasicStm_init(void)
 #ifdef SIMULATION
     g_SrcSwInt.stmConfig.ticks      = 1000;
 #else
-    g_Stm.stmConfig.ticks           = TimeConst_1ms;
+    g_Stm.stmConfig.ticks           = TimeConst_1s;
 #endif
     IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
 
-    BlinkLed_init();
-
-    appTaskfu_init();
+    IfxBlinkLed_Init();
 
     /* enable interrupts again */
     IfxCpu_restoreInterrupts(interruptState);
@@ -172,28 +169,12 @@ void BasicStm_init(void)
  *
  * This function is called from main, background loop
  */
-void BasicStm_run(void)
+void IfxStmDemo_run(void)
 {
-//    printf("BasicStm_run() called\n");
-	if(task_flag_1m == TRUE){
-		appTaskfu_1ms();
-		task_flag_1m = FALSE;
-	}
+    printf("IfxStmDemo_run() called\n");
 
-	if(task_flag_10m == TRUE){
-		appTaskfu_10ms();
-		task_flag_10m = FALSE;
-	}
+    while (g_Stm.counter < 10)
+    {}
 
-	if(task_flag_100m == TRUE){
-		appTaskfu_100ms();
-		task_flag_100m = FALSE;
-	}
-
-	if(task_flag_1000m == TRUE){
-		appTaskfu_1000ms();
-		task_flag_1000m = FALSE;
-	}
-
-	appTaskfu_idle();
+    printf("OK: checks passed \n");
 }

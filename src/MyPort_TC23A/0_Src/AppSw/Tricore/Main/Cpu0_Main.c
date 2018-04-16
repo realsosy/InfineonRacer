@@ -77,13 +77,14 @@ int core0_main(void)
 
     /* Initialization section */
     printf("Initialization started\n");
+    initTime(); // Initialize time constants
     BasicPort_init();
     /* background endless loop */
     printf("Background loop started\n");
     while (TRUE)
     {
     	BasicPort_run();
-        REGRESSION_RUN_STOP_PASS;
+        wait(TimeConst_100ms*5);
     }
 
     return 0;

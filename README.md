@@ -56,7 +56,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 1.  [How to study AURIX?](./docs/HowToStudyAurix.md)
 2.  [How to use BIFACES? (작성중)](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
-3.  [What is iLLD?(작성중)](./docs/WhatIsIlld.md) PORT
+3.  [What is iLLD?](./docs/WhatIsIlld.md) PORT
 4.  [Twinkle twinkle little star(작성중)](./docs/TwinkleTwinkleLittleStar.md)  STM 
 5.  [Multiple infinite loops](./docs/MultipleInfiniteLoops.md) Static Cyclic Scheduler
 6.  [Hello world(작성중)](./docs/HelloWorld.md)  ASC & Terminal

@@ -145,8 +145,6 @@ void initTime(void)
 }
 ~~~
 
-  ![Parameters](images/TwinkleTwinkleLittleStar_05Parameters.png.PNG)
-
 **3. 수정된 configuration을 업데이트**
 
 ~~~
@@ -187,7 +185,7 @@ void STM_Int0Handler(void)
 
 
   /* 인터럽트 마다 counter를 누적하며 특정 주기에 원하는 기능(BlinkLed)을 작동 */
-  
+
     g_Stm.counter++;
 
     if(g_Stm.counter == 1000){

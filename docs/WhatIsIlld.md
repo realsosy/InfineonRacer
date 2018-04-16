@@ -157,7 +157,7 @@ date: 2018-01-30
 
 ### iLLD Demo code를 참고하는 방법
 
-* iLLD Demo는 설치했는데 어떻게 사용하는 것이지? 어떻게 사용하는 것인가?
+* iLLD Demo는 설치했는데 어떻게 사용하는 것이지? 
     * 아래 그림과 같이 iLLD의 모듈명과 일치하는 Demo 밑에 0_Src 라는 폴더와 Doc 이라는 폴더를 각각 가지고 있다.
       ![WhatIsIlld_StmDemoFolder](images/WhatIsIlld_StmDemoFolder.png)
     * 0_Src/AppSw 를 해당하는 BaseFramework 의 폴더에 복사하면 빌드할 수 있다.
@@ -180,7 +180,7 @@ date: 2018-01-30
 * StmDemo 예제를 구성해서 실행해 보자
 * Stm을 사용하여 Port 출력으로1초마다 토글, 즉 2초 주기로 LED를 점멸해 보자
 
-### [STEP1] \_MyiLLDFramework\_TC23A 만들기 <= \_MyBaseFramework\_TC23A + iLLD sources
+**[첫단계]** \_MyiLLDFramework\_TC23A 만들기 <= \_MyBaseFramework\_TC23A + iLLD sources
 
 * iLLD를 사용할 수 있는 Framework 만들기
   * BaseFramework에는 최소한의 iLLD 구성 요소만 들어 있음
@@ -192,7 +192,7 @@ date: 2018-01-30
   * 모든 iLLD 모듈을 사용할 수 있게 된다.
 * [Check] 프로젝트를 빌드하고 실행해 본다.
 
-### [STEP2] MyStm\_TC23A 만들기
+**[둘째단계]** MyStm\_TC23A 만들기
 
 * StmDemo 예제를 복사, 혹은 import, 해서 실행해 본다.
 * [Action] _MyiLLDFramwork_TC23A 복사해서 MyStm_TC23A 프로젝트를 만든다.
@@ -200,7 +200,7 @@ date: 2018-01-30
   * /iLLD_Demos_1_0_1_4_0_TC23A/demos/Aurix1G/StmDemo/Doc/ 밑의 텍스트 파일을 열어본다.  프로그램 동작에 관한 간단한 설명이 나와 있다.  이 코드는 어떤 
 * [Check] 프로젝트를 빌드하고 실행해 본다.  실행은 되고 브레이크 포인트도 동작하지만 LED가 점멸되지는 않는다.
 
-### [STEP3] Customization
+**[세째단계]** Customization
 
 * 사용하는 Board와 CPU에 맞게 코드를 Customization 한다.
 * [Action1] mainPage.dox 파일을 열고 다음의 내용을 확인해 보세요
@@ -346,6 +346,8 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
   * C++ 만으로 이것이 가능한 것은 아닙니다.
   * C 언어로 객체지향적으로 모듈을 만들 수 있습니다.
   * Class member 대신 구조체로, Class function 대신 연관된 함수들로, 그리고 이것들을 좋은 명명법을 사용해서 이름을 붙이면 모듈화된 객체를 만들어 사용할 수 있습니다.
+
+  ![WhatIsIlld_PortClassDiagram](images/WhatIsIlld_PortClassDiagram.png)
 * **Header 파일은 사용자가 참고해야 하는 정보들의 집합**
   * 다음의 코드와 같이 
   * `IR_Port` 구조체를 만들고
@@ -412,7 +414,7 @@ void BasicPort_init(void)
 
 	/* IR_Port 변수 초기화 */
 
-    /* LED Port output */
+	/* LED Port output */
 
 	/* Digital Input */
 
@@ -430,11 +432,11 @@ void IR_setLed108(boolean led){
 }
 
 boolean IR_getLed108(){
-    ...
+    return(IR_Port.led108);
 }
 ```
 
-* 주기적으로 실행해서 처리하는 함수
+* 주기적 실행 함수
 
 ```C
 void BasicPort_run(void)
@@ -459,7 +461,7 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 }
 ```
 
-* [참고] 주기적으로 실햄해서 처리하는 함수, `Module_run()` 함수를 구성하는 이유
+* [참고] 주기적 실행 함수, `Module_run()` 함수를 구성하는 이유
 
   * `IR_setLed108()` 함수에서 LED108의 상태 변수를 변경하고
 

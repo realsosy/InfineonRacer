@@ -54,7 +54,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ### Dive into AURIX world using InfineonRacer
 
-1.  [How to study AURIX?](./docs/HowToStudyAurix.md) 
+1.  [How to study AURIX?](./docs/HowToStudyAurix.md) MCU 학습 방법 제안
 2.  [How to use BIFACES? (작성중)](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
 3.  [What is iLLD?](./docs/WhatIsIlld.md) PORT
 4.  [Do ma a favor?](./docs/DoMeAFavor.md) Config, Init, ISR in iLLD

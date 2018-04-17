@@ -6,9 +6,36 @@ date: 2017-09-01
 
 # Multiple infinite loops
 
+## 시작하는 질문
+
+* 실제 마이크로컨트롤러 프로그램을 구성할 때는 **여러개의 수행 주기를 가진 일들을 동시에 실행** 해야 하는데 어떻게 구성할 수 있지?
+
+
+
+맞습니다. 임베디드 시스템, 특히 제어시스템의 경우에는 복수개(Multiple)의 주기를 갖는 여러가지 일(Task)들을 동시에 실행해야 합니다.  이런 역할을 해주는 전문적인 프로그램, RTOS(Real-Time OS),을  사용하면 가능합니다.  그러나 여러가지 일을 동시에 실행 시킬 때도 
+
+* 인터럽트 처럼 하던 일을 중단 하고 다른 일을 하느냐 (선점형, Preemptive 방식)
+* 아니면 하던 일이 끝날 때까지 기다렸다가 바로 시작하느냐 (비선점형, Non-preemptive 방식) 
+
+으로 분류할 수 있습니다.  선점형 방식이 여러가지 면에서 성능이 좋습니다만, 이 좋은 성능을 사용하려면 선점을 함으로써 발생되는 문제를 방지하기 위하여 올바른 설계를 해야하고, RTOS에서 제공하는 서비스 들을 정확하게 알고 사용해야 합니다.  이 내용은 [OSEK-Certified ErikaOS & RT-Druid](./OsekCertificedErikaOsRtDruid.md) 에서 구체적으로 살펴보도록 하겠습니다.
+
+대안적인 방법이 있습니다.  RTOS 처럼 성능이 좋지는 않지만, 예전 부터 현장의 엔지니어들이 애용하던 방법입니다.  주기적인 인터럽트를 발생시켜주는 인터럽트 하나와 간단한 함수 몇가지를 구성하면 쓸만한 스케쥴러를 만들 수 있습니다.
+
+
+
 ## Objectives
 
-* 실행주기가 다른 여러개의 함수들을 실행시킬 수 있는 방법
+* BSP에서 제공하는 시간지연 함수 활용 방법을 익힌다.
+* 시스템타이머를 사용하여 실행주기가 다른 여러개의 함수들을 실행시킬 수 있는 방법을 익힌다.
+
+## References
+
+**[Example Code]**
+
+* MyIlldModule_TC23A - VadcAutoScan
+* InfineonRacer_TC23A - TestStm
+
+
 
 ## Infinite-loop을 활용한 실행
 
@@ -56,6 +83,7 @@ int core0_main(void)
     * 간단하게 한 주기의 일을 시킬 경우에는 문제가 없지만,
     * 복잡한 여러 주기의 일을 실행시킬 경우에는 loop을 복잡하게 구성해야 한다.
 
+[참고용 mermaid diagram source]
 ```mermaid
 sequenceDiagram
 	Main ->> BSP: initTime( )
@@ -95,12 +123,12 @@ sequenceDiagram
 
 
     * 위의 예에서  `Task1ms()` , `Task10ms()`
-
+    
     * 간단한 함수, 즉 실행시간이 길지 않을 경우에는 문제가 없지만, 
-
+    
     * 복잡한 연산이나 반복등으로 실행시간이 길다면 다른 Interrupt의 실행을 방해할 수 있게 된다.
 
-
+[참고용 mermaid diagram source]
 ```mermaid
 sequenceDiagram
 	opt Every TIMER INTERRUPT 1ms
@@ -135,6 +163,7 @@ sequenceDiagram
     *   사용자는 실행주기에 맞는 Task에 해당 동작을 프로그래밍 한다.
 *   Interrupt Context로 실행되어야 하는 부분은 Callback 함수 영역(`appIsrCb_1ms()`)에 프로그래밍 한다.
 
+[참고용 mermaid diagram source]
 ```mermaid
 sequenceDiagram
 	Main ->> BasicStm: BasicStm_init()
@@ -185,6 +214,7 @@ sequenceDiagram
 *   SystemTimer 와 SchedulerLoop() 사이에는 Flag를 하나 사용하여 동기화 시킨다.
 *   이와 같이 구현함으로써 ISR로 인한 실행 지연등을 최소화한 상태로 주기적인 사용자 Task 를 실행시킬 수 있게 된다.
 
+[참고용 mermaid diagram source]
 ```mermaid
 sequenceDiagram
 	opt Every TIMER INTERRUPT

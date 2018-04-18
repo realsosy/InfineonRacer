@@ -25,7 +25,7 @@ date: 2018-04-10
 * 개발환경 구축
   * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
   * 인피니언에서 제공하는 *BIFACES* build environment 설치
-  * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설
+  * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설치
 
 * *BIFACES* 를 통하여 소스코드 빌드
   * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
@@ -65,7 +65,7 @@ date: 2018-04-10
 
 ### BIFACES Installation
 
-* BIFACES [Download](추후입력)
+* BIFACES [Download](https://drive.google.com/open?id=1tYg7DDeB-HNf8ZCV7toeD5UtMwiLin4A)
   * 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
 
   * BIFACES_V1_0_0.exe 실행

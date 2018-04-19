@@ -77,7 +77,7 @@ AURIX - related
 	- STM의 내부에는 별개의 range를 가지는 32bit timer register(STM_TIMx)들이 있고,
 	- 동기화를 위한 capture register(STM_CAP)가 존재한다.
 	- 만약 사용자가 하위단의 시간정보를 요청한다면(TIM0~TIM5),
-	- 그 요청와 동시에 capture register에서 상위단(TIM6)의 시간을 capture한다.
+	- 그 요청와 동시에 capture register에서 상위단(32~63bit)의 시간을 capture한다.
 
 ![TwinkleTwinkleLittleStar_GeneralBlockDiagram](images/TwinkleTwinkleLittleStar_GeneralBlockDiagram.png)
 

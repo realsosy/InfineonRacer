@@ -58,7 +58,7 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ## Background 정보
 
-* Shell 의 계측적 구조
+* Shell 의 계층적 구조
 
 ![MyOwnTerminal_ShellLayer](images/MyOwnTerminal_ShellLayer.png)
 

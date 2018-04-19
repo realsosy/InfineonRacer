@@ -13,8 +13,7 @@
 ### Sensor & Actuator 관련
 
 * [TSL1401CL Data Sheet](../references/TSL1401CL_DS000136_3-00.pdf)
-
-  ​
+* [BTN8982TA Data Sheet](../references/Infineon-BTN8982TA-DS-v01_00-EN.pdf)
 
   ​
 

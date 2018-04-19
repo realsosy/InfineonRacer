@@ -17,7 +17,8 @@ date: 2018-01-30
 
 
 ## References
-* ​
+* TC23x TC22x Family User's Manual v1.1 - Chap
+* iLLD_TC23A Help / Modules/ 
 
 **[Example Code]**
 
@@ -42,6 +43,30 @@ date: 2018-01-30
 
 ## iLLD - related
 * ​
+
+### Module Configuration 
+
+```c
+
+```
+
+
+
+### Interrupt Configuration 
+
+```c
+
+```
+
+
+
+### Module Behavior 
+
+```c
+
+```
+
+
 
 ## 추가적인 설명
 

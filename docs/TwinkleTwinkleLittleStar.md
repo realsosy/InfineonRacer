@@ -1,304 +1,277 @@
 ---
+
 title: Twinkle twinkle little star.md
 author: Hyunki Shin(tlsgusrl66@gmail.com)  
-date: 2018-04-11
-EXAMPLE: MyStm_TC23A, MyIlldModule_TC23A - Stm
+date: 2018-04-19
+
 ---
 
 Twinkle twinkle little star
 ===========================
 
+## 시작하는 이야기
+
+"반짝 반짝 작은 별~~~" 우리가 즐겨 부르던 동요입니다.
+
+마이크로컨트롤러에 프로그래밍 할 때도 첫 번째로 만들어 봐야 하는 프로그램입니다. 단 불빛만 반짝인다고 만족해서는 안 됩니다. 이 프로그램으로 우리는 다음의 사항들을 확실하게 할 수 있게 됩니다.
+
+* 디지털 출력을 내보낼 수 있고,
+* 시스템타이머를 사용할 줄 알게 되고,
+* 인터럽트를 처리할 수 있게 된다.
+
+ 이 프로그램은 앞으로 진행할 다른 모든 프로그램의 기초가 됩니다. 심지어 실제로 최종 프로그램을 동작시킬 때에도, background로 실행되는 이 루틴은 살았는지 죽었는지 알 수 없는 마이크로컨트롤러의 심장박동으로 사용될 것입니다. 깜깜하기만 한 마이크로컨트롤러 보드에 작은 불빛을 밝혀 봅시다.
+
+
+
 Objectives
 ----------
 
--	Timer와 interrupt의 개념 및 용도에 대한 이해
--	STM을 사용한 interrupt의 구현
+*	시스템타이머를 이해하고 활용할 수 있게 한다.
+* 인터럽트를 활용할 수 있게 한다.
 
 References
 ----------
 
--	iLLD_1_0_1_4_0_TC2xx_Release.zip; iLLD source and doc
--	iLLD_Demos_1_0_1_4_0_TC2xx.zip; iLLD examples
--	[TC23x TC22x Family User's Manual v1.1](../references/tc23x_tc22x_um_v1.1.pdf)
+*	TC23x TC22x Family User's Manual v1.1 - 17 System Timer (STM)
+* iLLD_TC23A 1.0.1.4.0 도움말 - STM
+* iLLD_TC23A_Demos_1_0_1_4_0 - StmDemo
+
+**[Example Code]**
+
+* MyStm_TC23A
+
+* MyIlldModule_TC23A - Stm
 
 Example Description
 -------------------
 
-#### 개요
-
--	시스템의 주기적 제어
-      - 리얼 타임 시스템은 종료가 없는 무한루프로 구성되는 경우가 많음
-      - 무한루프 안에서의 실행주기는 루프의 구성에 따라 가변적
-      - 다양한 주기적 요구사항 처리에 대해 flexibility를 가지는 도구가 필요
+* 시스템 타이머를 사용해서 1초 마다 인터럽트를 발생시킨다.
+* 인터럽트를 이용해서 2초 주기로 LED107를 점멸시킨다.
 
 
-#### 구현
 
--	5Hz의 주기로 LED를 점멸
+## Backgounds
 
-#### 구조
+* 타이머가 무엇이지?
+	- 세상에는 대개 주기적으로 처리하는 일이 있으며 프로그램 역시 마찬가지.
+	- 그런 주기적 시간처리를 위한 clock 모듈을 타이머라고 한다.
 
-- 타이머를 초기화하고 일정한 주기로 인터럽트를 발생시켜 LED를 제어
+- 시스템 타이머는 일반 타이머와 무엇이 다른 것이지?
+	- 프로그램 내부에는 여러가지 타이머가 있을 수 있고,
+	- 전체 시스템의 시간을 동기화 해야할 때가 있을 것이며,
+	- 그 때 시스템의 기준이 될 타이머가 필요하다.
+	- 그것이 시스템 타이머이며 *Tick* 이라고 불리는 매우 작은 단위의 시간이 누적된다.
 
-![Example](images/TwinkleTwinkleLittleStar_01Example.png.png)
-
-- 타이머
-    - 주기적 시간처리를 위한 위한 디지털 카운터 회로 모듈
-    - 일정 시간간격으로 주기적인 이벤트를 발생시킬 수 있음
-
-- 인터럽트
-    - 이벤트 기반 예외처리 메커니즘
-    - 프로그램을 중단하고 우선순위에 따라 예외를 처리
-
-Hardware
+AURIX - related
 --------------
 
--	​Application Kit TC237 V1.0
-	-	내장 LED (P13.0)
+#### STM (System timer)
+
+* 64-bit timer of 32-bit microcontroller
+	- TC237이 한 번의 명령어로 가져올 수 있는 데이터량은 32 bit.
+  - 두 번의 명령으로 나눌 경우 그 사이의 overflow 등을 간과할 수 없다.
+  - STM에서는 이를 위해 capture라는 개념을 이용한다.
+
+
+- Timer register와 capture register
+	- STM의 내부에는 별개의 range를 가지는 32bit timer register(STM_TIMx)들이 있고,
+	- 동기화를 위한 capture register(STM_CAP)가 존재한다.
+	- 만약 사용자가 하위단의 시간정보를 요청한다면(TIM0~TIM5),
+	- 그 요청와 동시에 capture register에서 상위단(TIM6)의 시간을 capture한다.
+
+![TwinkleTwinkleLittleStar_GeneralBlockDiagram](images/TwinkleTwinkleLittleStar_GeneralBlockDiagram.png)
+
+- Compare register
+	- STM은 interrupt를 발생시키기 위한 trigger 역할을 할 수도 있다.
+	- 이때는 compare register라는 것을 따로 구성할 필요가 있고,
+	- 구성된 register는 tick이 쌓일 때마다 비교를 하여 일치할 시 flag를 발생시킨다.
+
+![TwinkleTwinkleLittleStar_CompareMode](images/TwinkleTwinkleLittleStar_CompareMode.png)
 
 iLLD - related
 --------------
 
-####	CCU(clock control unit)
-- 다양한 타이머 모듈을 병렬적으로 사용하기 위한 control unit
-  - Basic system tick의 생성
-  - Clock speed의 scaling
-  - Clock distribution
 
+### Module Configuration
 
-![CCU](images/TwinkleTwinkleLittleStar_02CCU.png.png)
+* 앞장에서 배운대로 필요한 값을 변경하며 모듈을 초기화한다.
 
-- How to use
-  - 아래와 같이 iLLD에 정의된 코드로 타이머를 초기화
-  - 별 다른 설정이 없다면 f_PLL = 200MHz, f_STM = 100MHz의 주기로 system tick이 발생
-~~~
-g_AppCpu0.info.pllFreq = IfxScuCcu_getPllFrequency();
-g_AppCpu0.info.cpuFreq = IfxScuCcu_getCpuFrequency(IfxCpu_getCoreIndex());
-g_AppCpu0.info.sysFreq = IfxScuCcu_getSpbFrequency();
-g_AppCpu0.info.stmFreq = IfxStm_getFrequency(&MODULE_STM0);
-~~~
-
-
----
-
-#### STM(system timer)
-
-- 64bit를 동시에 동기화하여 사용가능
-    - 서로 다른 timing range를 가진 여러 개의 32bit time register(TIMx)
-    - 하나의 time register가 읽힐 때 동시에 upper part를 관측하는 capture register(CAP)  
-
-![STM](images/TwinkleTwinkleLittleStar_03STM.png.png)
-
-
-##
-- 부분적인 compare match를 통한 flexible한 인터럽트 flag 생성
-
-![compare](images/TwinkleTwinkleLittleStar_04STM_compare.png.png)
-
-
-- How to use
-
-  - Compare register를 이용하기 위해서는 capture를 위한 구체적인 define이 필요
-
-**1. STM 모듈의 기본정보를 받아와 구조체 형식화**
-~~~
-g_Stm.stmSfr = &MODULE_STM0;
-IfxStm_initCompareConfig(&g_Stm.stmConfig);
-~~~
-~~~
-void IfxStm_initCompareConfig(IfxStm_CompareConfig *config)
+```c
+// in StmDemo.c
+void IfxStmDemo_init(void)
 {
-    config->comparator          = IfxStm_Comparator_0;
-    config->compareOffset       = IfxStm_ComparatorOffset_0;
-    config->compareSize         = IfxStm_ComparatorSize_32Bits;
-    config->comparatorInterrupt = IfxStm_ComparatorInterrupt_ir0;  
-    config->ticks               = 0xFFFFFFFF;
-    config->triggerPriority     = 0;
+	// ...
+    initTime();
+
+    g_Stm.stmSfr = &MODULE_STM0;
+    IfxStm_initCompareConfig(&g_Stm.stmConfig);
+
+    g_Stm.stmConfig.triggerPriority = ISR_PRIORITY_STM_INT0;
+    g_Stm.stmConfig.typeOfService   = IfxSrc_Tos_cpu0;
+    g_Stm.stmConfig.ticks           = TimeConst_1s;
+
+    IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
+	// ...
 }
-~~~
-**2. 수정할 변수에 원하는 수치를 입력**
-~~~
-/* TimeConst_*는 ticks를 실제 시간에 매칭시키는 time constant */
+```
 
-g_Stm.stmConfig.ticks           = TimeConst_1ms
-~~~
-~~~
-/************ bsp.c *************/
-
-/* Default timer의 system tick freqency와 무관 */
-
-void initTime(void)
+* 이 때 각 구조체 변수들의 의미를 알아야 하는데,
+```c
+//in StmDemo.h
+typedef struct
 {
-   sint32 Fsys = IfxStm_getFrequency(BSP_DEFAULT_TIMER);
+    IfxStm_Comparator          comparator;   
+    IfxStm_ComparatorInterrupt comparatorInterrupt;     
+    IfxStm_ComparatorOffset    compareOffset;          
+    IfxStm_ComparatorSize      compareSize;             
+    uint32                     ticks;            
+    Ifx_Priority               triggerPriority;      
+    IfxSrc_Tos                 typeOfService;         
+} IfxStm_CompareConfig;
+```
 
-   TimeConst[TIMER_INDEX_10NS]  = Fsys / (1000000000 / 10);
-   TimeConst[TIMER_INDEX_100NS] = Fsys / (1000000000 / 100);
-   TimeConst[TIMER_INDEX_1US]   = Fsys / (1000000 / 1);
-   TimeConst[TIMER_INDEX_10US]  = Fsys / (1000000 / 10);
-   TimeConst[TIMER_INDEX_100US] = Fsys / (1000000 / 100);
-   TimeConst[TIMER_INDEX_1MS]   = Fsys / (1000 / 1);
-   TimeConst[TIMER_INDEX_10MS]  = Fsys / (1000 / 10);
-   TimeConst[TIMER_INDEX_100MS] = Fsys / (1000 / 100);
-   TimeConst[TIMER_INDEX_1S]    = Fsys * (1);
-   TimeConst[TIMER_INDEX_10S]   = Fsys * (10);
-   TimeConst[TIMER_INDEX_100S]  = Fsys * (100);
-}
-~~~
+* 각각의 대략적인 의미는 아래와 같다.
+ 	* `comparator` : 사용할 compare register의 번호(STM_CMPx)
+	* `comparatorInterrupt` : 인터럽트 flag를 어디로 내보낼지
+	* `compareOffset` : compare를 시작할 bit (MSTARTx)
+	* `compareSize` : compare register의 사이즈 (MSIZEx)
+	* `ticks` : 어느 정도의 tick을 누적시킬지
+	* `triggerPriority` : 인터럽트 우선순위
+	* `typeOfService` : 사용할 CPU 번호
+- 이 예제에서는 이 중 ticks를 수정하여 인터럽트 flag를 발생시킬 주기를 결정할 것이다.
 
-**3. 수정된 configuration을 업데이트**
+### Interrupt Configuration
 
-~~~
-IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
+```c
+// in ConfigurationIsr.h
+#define ISR_PRIORITY_STM_INT0       40
+#define ISR_PROVIDER_STM_INT0       IfxSrc_Tos_cpu0    
+#define INTERRUPT_STM_INT0          ISR_ASSIGN(ISR_PRIORITY_STM_INT0, ISR_PROVIDER_STM_INT0)
 
-/* 초기화 이후 compare register는 지정된 ticks를 관측하면 interrupt flag를 발생시킴 */
-~~~
-
-
----
-
-#### Interrupt
-
-- 이벤트 기반 예외처리 메커니즘
-  - 이벤트로 인식할 트리거 정의
-  - 이벤트가 빌생하면 프로그램을 중단
-  - handler function을 통해 예외를 처리 후 main program으로 복귀
-
-![Interrupt](images/TwinkleTwinkleLittleStar_06Interrupt.png.png)
+// in StmDemo.c
+IFX_INTERRUPT(STM_Int0Handler, 0, ISR_PRIORITY_STM_INT0);
+```
 
 
-####
-- How to use
+### Stm 동작
 
-**1. 이벤트 처리를 위한 handler 함수 프로그래밍**
-~~~
+* compare register를 설정했을 때 인터럽트 flag를 내보내는 것은 한 번 뿐이다.
+
+- 때문에 STM으로 주기적인 응답처리를 하기 위해선 그를 위한 루틴이 필요하고,
+
+* 그것을 interrupt가 발생할 때마다 실행되는 handler function을 이용해 구현한다.
+
+
+```c
+// in StmDemo.c
 void STM_Int0Handler(void)
 {
-  /* 지속적인 인터럽트를 위해 트리거가 되는 stm의 compare ticks를 증가시킴 */
-
     IfxStm_clearCompareFlag(g_Stm.stmSfr, g_Stm.stmConfig.comparator);
-    #ifdef SIMULATION
-	IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, 1000);
-    #else
-	IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, TimeConst_1ms);
-    #endif    
-        IfxCpu_enableInterrupts();
-
-
-  /* 인터럽트 마다 counter를 누적하며 특정 주기에 원하는 기능(BlinkLed)을 작동 */
-
-    g_Stm.counter++;
-
-    if(g_Stm.counter == 1000){
-    	g_Stm.counter = 0;
-    }
-
-    task_flag_1m = TRUE;
-
-    if(g_Stm.counter % 10 == 0){
-    	task_flag_10m = TRUE;
-    }
-    if(g_Stm.counter % 100 == 0){
-        task_flag_100m = TRUE;
-        BlinkLed_run();
-    }
-    if(g_Stm.counter % 1000 == 0){
-        task_flag_1000m = TRUE;
-    }
-
-    appIsrCb_1ms();
+    IfxStm_increaseCompare(g_Stm.stmSfr, g_Stm.stmConfig.comparator, TimeConst_1s);
+    IfxCpu_enableInterrupts();
+    IfxBlinkLed_Task();
 }
-~~~
+```
 
-~~~
-/* BlinkLed_run function은 실행될 때마다 LED의 on/off 상태를 바꿈 */
+* Handler 함수는 실행되자마자 다음 inerrupt를 준비한다.	 
+	1. Interrupt flag를 reset하고, `IfxStm_clearCompareFlag`
+	2. Compare register의 ticks 값을 연장하고, `IfxStm_increaseCompare`
+	3. Interrupt를 다시 활성화. `IfxCpu_enableInterrupts`
 
-static void BlinkLed_run(void)
+- 이후 `IfxBlinkLed_Task`함수를 통해 LED를 제어한다.
+
+```c
+// in StmDemo.c
+static void IfxBlinkLed_Task(void)
 {
-    /* ^=는 xor의 개념 */
+    // ^=는 XOR의 개념, 실행할 때 마다 LED의 state를 바꾸고 counter를 올림
 
     g_Stm.LedBlink ^= 1;
 
-    if (g_Stm.LedBlink == TRUE)
-    {
-        IfxPort_setPinState(&MODULE_P13, 0, IfxPort_State_high);
-    }
-    else
-    {
-        IfxPort_setPinState(&MODULE_P13, 0, IfxPort_State_low);
-    }
+    setOutputPin(&MODULE_P13, 0, g_Stm.LedBlink);
+
+    g_Stm.counter++;
 }
-~~~
 
-**2. STM의 compare기능을 인터럽트 트리거로 이용**
-
-~~~
-IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
-~~~
-
-**3. 인터럽트 정의**
-
-~~~
-IFX_INTERRUPT(STM_Int0Handler, 0, ISR_PRIORITY_STM_INT0);
-// IFX_INTERRUPT_INTERNAL(isr, vectabNum, prio)
-// STM_Int0Handler : 위에서 프로그래밍한 handler function
-// vectabNum : 사용할 cpu number
-// prio : 인터럽트 priority (board 내에 사전 정의된 값 사용)
-~~~
-
-**4. 인터럽트 활성화**
-~~~
-IfxCpu_enableInterrupts();
-~~~
+```
 
 
-추가적인 설명
--------------
+* 이 때 누적시키는 `counter`값을 이용해 스케쥴러를 구성하면 병렬적인 시간처리가 가능해진다.
 
-
-#### Timer 제어
-
-- System tick을 원하는 주기로 만들어야 할 때는 다음과 같은 절차를 거침
-
-**1. 메뉴얼을 찾거나 코드를 추적하여 내부 scaling 구조 파악**
-
-~~~
-IFX_INLINE float32 IfxScuCcu_getStmFrequency(void)
+```c
+// in StmDemo.c
+void IfxStmDemo_run(void)
 {
-  /* STM의 경우 source freqency를 STMDIV의 값으로 나누어 scaling */
+    // 아직은 아무 기능도 하고 있지 않다.
 
-  return IfxScuCcu_getSourceFrequency() / SCU_CCUCON1.B.STMDIV;  
+    while (g_Stm.counter < 10)
+    {}
 }
-~~~
+```
 
 
-**2. Safety ENDINIT 해제**
 
-~~~
-/* 특정 system parameter들은 안전을 위해 보안이 걸려있음 */
-/* Safety ENDINIT를 해제해 wirte access 권한 획득 */
+### BSP (Board support package)
 
-IfxScuWdt_clearSafetyEndinit(IfxScuWdt_getSafetyWatchdogPassword());
-~~~
+* 실제 시간단위를 사용하는 사용자 친화적 타이머 보조 모듈.
 
-**3. Paremeter 수정**
-~~~
-/* register가 업데이트 가능 상태일 때 까지 대기 */
-
-while (SCU_CCUCON1.B.LCK != 0x0)
+- `initTime()` 함수를 통해 시스템 타이머의 tick과 사람의 시간단위를 매칭시킨 상수를 생성한다.
+```c
+// in Bsp.c
+void initTime(void)
 {
-    ;
+    sint32 Fsys = IfxStm_getFrequency(BSP_DEFAULT_TIMER);
+
+    TimeConst[TIMER_INDEX_10NS]  = Fsys / (1000000000 / 10);
+    TimeConst[TIMER_INDEX_100NS] = Fsys / (1000000000 / 100);
+    TimeConst[TIMER_INDEX_1US]   = Fsys / (1000000 / 1);
+    TimeConst[TIMER_INDEX_10US]  = Fsys / (1000000 / 10);
+    TimeConst[TIMER_INDEX_100US] = Fsys / (1000000 / 100);
+    TimeConst[TIMER_INDEX_1MS]   = Fsys / (1000 / 1);
+    TimeConst[TIMER_INDEX_10MS]  = Fsys / (1000 / 10);
+    TimeConst[TIMER_INDEX_100MS] = Fsys / (1000 / 100);
+    TimeConst[TIMER_INDEX_1S]    = Fsys * (1);
+    TimeConst[TIMER_INDEX_10S]   = Fsys * (10);
+    TimeConst[TIMER_INDEX_100S]  = Fsys * (100);
 }
+```
+* 위에서 생성한 constants들을 이용하면 좀 더 쉽고 직관적인 시간 제어가 가능해진다.
+```c
+// in Bsp.h
+#define TimeConst_0s    ((Ifx_TickTime)0)                 
+#define TimeConst_10ns  (TimeConst[TIMER_INDEX_10NS])    
+#define TimeConst_100ns (TimeConst[TIMER_INDEX_100NS])    
+#define TimeConst_1us   (TimeConst[TIMER_INDEX_1US])       
+#define TimeConst_10us  (TimeConst[TIMER_INDEX_10US])    
+#define TimeConst_100us (TimeConst[TIMER_INDEX_100US])      
+#define TimeConst_1ms   (TimeConst[TIMER_INDEX_1MS])           
+#define TimeConst_10ms  (TimeConst[TIMER_INDEX_10MS])            
+#define TimeConst_100ms (TimeConst[TIMER_INDEX_100MS])         
+#define TimeConst_1s    (TimeConst[TIMER_INDEX_1S])           
+#define TimeConst_10s   (TimeConst[TIMER_INDEX_10S])               
+#define TimeConst_100s  (TimeConst[TIMER_INDEX_100S])           
+```
 
-/* paremeter 수정 후 업데이트 */
+## 추가적인 설명
 
-SCU_CCUCON1.B.STMDIV = 4;
-SCU_CCUCON1.B.UP = 1;
-~~~
-**4. Safety ENDINIT set**
+- 이번 장에서 추가로 설명할 내용은 없습니다.
+- 대신 간단한 exercise를 해결해보며 이해도를 높여봅시다.
+
+### [Exercise 1] 바아~안 짜아~악 을 빤짝빤짝 으로
+
+* 위의 예제는 인터럽트의 주기가 1초이기 때문에 LED107의 점멸 주기는 2초가 됩니다.
+* 주기를 100msec로 바꿔서 200msec 주기로, 즉 LED를 5Hz의 주기로 점멸시켜 봅시다.
+* 위의 코드에서 2군데만 수정하면 됩니다.
 
 
-~~~
-/* 해제했던 Safety ENDINIT을 다시 실행 */
 
-IfxScuWdt_setSafetyEndinit(IfxScuWdt_getSafetyWatchdogPassword());
-~~~
+### [Exercise 2] 인터럽트 발생 주기를 1msec로
+
+* 인터럽트 발생 주기를 1msec 로 변경해 봅시다.
+* LED107은 5Hz로 점멸시킵니다.  LED108은 0.5Hz로 점멸시킵니다.
+* 프로그래밍 가이드
+  * ISR에서 직접 LED를 점멸하지 않습니다.  대신 `g_Stm.counter`를 1씩 증가 시킵니다.
+  * `IfxStmDemo_run(void)` 함수에서 `g_Stm.counter` 값을 살펴보면서 100 이 될 때마다, 그리고 1000 이 될 때마다 LED107 Toggle 함수와 LED108 Toggle 함수를 호출하도록 합니다.
+* **[중요]**
+  * 위와 같은 방식으로 프로그래밍 하는 것이 스케쥴러의 기본 아이디어 입니다.  
+  * 여기서 가장 기본이 되는 주기적 증가 카운터, 이 예에서는 `g_Stm.counter` 를 Tick 이라 부르며, 시계의 초침과 같은 역할을 합니다.

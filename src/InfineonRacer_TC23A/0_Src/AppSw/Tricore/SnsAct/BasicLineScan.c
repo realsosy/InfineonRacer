@@ -194,6 +194,6 @@ void BasicLineScan_run(void)
 
 	IfxPort_setPinState(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_State_low);
 	IfxPort_setPinState(TSL1401_CLK.port, TSL1401_CLK.pinIndex, IfxPort_State_low);
-	waitTime(1*TimeConst_10ms);
+//	waitTime(1*TimeConst_10ms);
 
 }

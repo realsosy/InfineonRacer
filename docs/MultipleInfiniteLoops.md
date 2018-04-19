@@ -100,7 +100,7 @@ sequenceDiagram
 	end
 ```
 
-![MultiChannelVoltmeter_delay](images/MultiChannelVoltmeter_delay.svg)
+![MultipleInfiniteLoops_delay](images/MultipleInfiniteLoops_delay.svg)
 
 ## 여러개의 Timer Interrupt 활용한 주기적 실행
 
@@ -145,7 +145,7 @@ sequenceDiagram
 	end
 ```
 
-![MultiChannelVoltmeter_interrupt](images/MultiChannelVoltmeter_interrupt.svg)
+![MultipleInfiniteLoops_interrupt](images/MultipleInfiniteLoops_interrupt.svg)
 
 ## 간단한 Scheduler 활용하기
 
@@ -204,7 +204,7 @@ sequenceDiagram
     end
 ```
 
-![MultiChannelVoltmeter_user](images/MultiChannelVoltmeter_user.svg)
+![MultipleInfiniteLoops_user](images/MultipleInfiniteLoops_user.svg)
 
 #### Scheduler 구현
 
@@ -237,7 +237,7 @@ sequenceDiagram
 	end
 ```
 
-![MultiChannelVoltmeter_developer](images/MultiChannelVoltmeter_developer.svg)
+![MultipleInfiniteLoops_developer](images/MultipleInfiniteLoops_developer.svg)
 
 ```c
 /******** BasicStm.c ***********/

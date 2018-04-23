@@ -103,12 +103,98 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 ## AURIX - related
 
-* Request Sources
-  * Queue
-  * Scan
-  * Background
+* Request sources
+  - ADC를 trigger할 수 있는 신호를 말합니다. 아래와 같이 세 가지의 종류가 있습니다.
+    - External signals
+    - On-chip signals
+    - Software
+  - Queue
+  - Scan
+  - Background
+
+
+
+* Conversion modes
+
+  - ADC를 수행하는 여러가지 모드 중에 AURIX에서 제공하는 Conversion 모드는 세 가지 입니다.
+
+    - Fixed Channel Conversion
+    - Auto Scan Conversion
+    - Channel Sequence Conversion
+
+    ​
+
+* Arbiter
+
+  - Arbiter는 여러 개의 request sources에서 동시에 ADC 수행 요청이 왔을 경우 우선 순위에 따라 ADC 실행 순서 조정하는 역할을 합니다.
+
+  - 여러 개의 순서 조정 및 ADC 실행 모드 중 사용자 설정을 할 수 있습니다.
+
+    - Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
+    - Wait-for-start mode: 현 낮은 우선순위 ADC 종료 직후 높은 우선순위 ADC 수행
+    - Wait-for-read mode: ADC 결과 레지스터 값을 읽지 않은 경우, 요청된 ADC는 연기시킴
+
+    ​
+
+* ADC 동작
+
+  * Input channel selection
+    * Multiplexer가 여러 개의 아날로그 입력 중 하나를 선택합니다.
+    * 세 가지 소스들은 (Request source 1-3) linear sequence, arbitrary sequence, 또는 specific channel 중 선택 가능합니다.
+      * 사용자는 소스들의 우선 순위를 결정할 수 있고, 이 우선 순위를 Arbiter가 중재 시 참조하게 됩니다.
+  * Conversion control
+    * 선택된 아날로그 입력은 conversion control 설정 값에 따라 변환되게 됩니다.
+      * Sample phase duration 또는 result resolution 등
+    * Conversion parameter는 4개의 input classes에 설정됩니다.
+      * 2 group-specific classes, 2 global classes
+  * Result handling
+    * 변환 결과값은 16개의 group-specific result register 중 하나에 저장되고, 1개의 global result register에 저장됩니다.
+    * Result register는 channels 그룹에 할당될 수도 있고, 단일 channel에만 할당될 수 도 있습니다.
+  * Service Request Generation
+    * 여러 ADC event가 CPU와 DMA에 service request를 알려줍니다.
+      * Source events: 해당 request source의 conversion sequence가 완료되었음을 알려줍니다.
+      * Channel events: 해당 channel의 conversion이 완료되었음을 알려줍니다.
+      * Result events: 해당 result register에 새로운 결과값이 업데이트 되었음을 알려줍니다.
 
 ![MyOwnCheapOscilloscope_ConversionReqUnit](images/MyOwnCheapOscilloscope_ConversionReqUnit.png)
+
+* Conversion Request Generation
+
+  * Triggers
+
+    * Software triggers
+    * External triggers
+
+  * Operation modes
+
+    * Single-shot
+    * Continuous
+
+  * Types of request sources
+
+    * Queued source: 입력 채널을 임의 순서로 변환하는 방식으로 입력 채널 수는 자유롭게 변경 가능합니다.  채널 설정에 따라 매우 짧은 변환도 가능합니다. 스캔 순서는 queue buffer에 저장됩니다.
+
+      * Request source 0와 3이 이에 해당됩니다.
+
+        ![QueuedRequestSource](images\MyOwnCheapOscilloscope_QueuedRequestSource.png)
+
+    * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
+
+      * Request source 1과 2가 이에 해당됩니다.
+
+        ![ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
+
+
+
+* Request Source Arbitration
+
+
+
+* Analog Input Channel Configuration
+
+
+
+* Conversion Timing and Result Handling
 
 
 

@@ -176,13 +176,13 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
       * Request source 0와 3이 이에 해당됩니다.
 
-        ![QueuedRequestSource](images\MyOwnCheapOscilloscope_QueuedRequestSource.png)
+        ![MyOwnCheapOscilloscope_QueuedRequestSource](images\MyOwnCheapOscilloscope_QueuedRequestSource.png)
 
     * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
 
       * Request source 1과 2가 이에 해당됩니다.
 
-        ![ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
+        ![MyOwnCheapOscilloscope_ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
 
 
 

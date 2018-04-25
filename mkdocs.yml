@@ -11,8 +11,8 @@ pages:
 #    - How to use BIFACES?: HowToUseBIFACES.md
     - What is iLLD?: WhatIsIlld.md
     - Do me a favor?: DoMeAFavor.md
-#    - Twinkle twinkle little star: TwinkleTwinkleLittleStar.md
-#    - Multiple infinite loops: MultipleInfiniteLoops.md 
+    - Twinkle twinkle little star: TwinkleTwinkleLittleStar.md
+    - Multiple infinite loops: MultipleInfiniteLoops.md 
 #    - Hello world: HelloWorld.md
 #    - My own terminal: MyOwnTerminal.md
 #    - Multi channel voltmeter: MultiChannelVoltmeter.md

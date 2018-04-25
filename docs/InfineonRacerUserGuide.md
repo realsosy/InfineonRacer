@@ -302,21 +302,21 @@ void appTaskfu_10ms(void)
 * Sensor Actuator IO 핀 정보
 
   ```c
-  ...
+  //...
   #define LED108						IfxPort_P13_1
-  ...
+  //...
   #define M11_INH						IfxPort_P02_0
   #define M12_INH						IfxPort_P00_2
-  ...
+  //...
   #define TSL1401_SI					IfxPort_P14_6
   #define TSL1401_CLK					IfxPort_P14_7
   #define TSL1401_AO_1				9
-  ...
+  //...
   ```
 
 * Encoder Emulation 여부
 
-    * 만약 이것이 정의 되면 Encoder Emulation 신호가 발생된다. (P02.6, P02.7, P02.8)
+    * 만약 이것이 정의 되면 Encoder Emulation 신호가 발생된다. (P02.6, P02.7, P02.8)  
 
     ```c
     /* Encoder Emulation for Gpt12Enc Test */
@@ -327,7 +327,7 @@ void appTaskfu_10ms(void)
 
     * TFT와 연결된 HW 설정 정보들이므로 사용자는 변경할 필요는 없다.
 
-* Algorithm 코드 설정 정보
+* Algorithm 코드 설정 정보  
 
     ```c
     /* 다음 3개중의 하나만 정의해서 사용*/

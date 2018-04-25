@@ -39,26 +39,26 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ### InfineonRacer Guide
 
-1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
-2.  [InfineonRacer User Guide](./docs/InfineonRacerUserGuide.md)  SW Architecture & API
+1.  [Getting Started].(/GettingStarted.md)  HW Setup & Quick-Start
+2.  [InfineonRacer User Guide](./InfineonRacerUserGuide.md)  SW Architecture & API
 
 
-* [Connection Guide for Infineon Racer](./docs/ConnectionGuide.md)
-* [Pins & API](./docs/PinsApi.xlsx)
+* [Connection Guide for Infineon Racer](./ConnectionGuide.md)
+* [Pins & API](./PinsApi.xlsx)
 
 ### Dive into AURIX world using InfineonRacer
 
-1.  [How to study AURIX?](./docs/HowToStudyAurix.md) MCU 학습 방법 제안
-2.  [How to use BIFACES? (작성중)](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
-3.  [What is iLLD?](./docs/WhatIsIlld.md) PORT
-4.  [Do ma a favor?](./docs/DoMeAFavor.md) Config, Init, ISR in iLLD
-5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM
-6.  [Multiple infinite loops](./docs/MultipleInfiniteLoops.md) Static Cyclic Scheduler
+1.  [How to study AURIX?](./HowToStudyAurix.md) MCU 학습 방법 제안
+2.  [How to use BIFACES? (작성중)](./HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
+3.  [What is iLLD?](./WhatIsIlld.md) PORT
+4.  [Do ma a favor?](./DoMeAFavor.md) Config, Init, ISR in iLLD
+5.  [Twinkle twinkle little star](./TwinkleTwinkleLittleStar.md)  STM
+6.  [Multiple infinite loops](./MultipleInfiniteLoops.md) Static Cyclic Scheduler
 
 ### etc
 
-* [References](./docs/References.md)
-* [Source code list](./src/README.md)
+* [References](./References.md)
+* [Source code list](../src/README.md)
 
 
 

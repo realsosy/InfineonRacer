@@ -83,16 +83,15 @@ date: 2018-01-30
     * Configuration Data Structures ?
     * Handles ?
 
-* in iLLD APIs
+* in iLLD Module의 초기화 API?
 
-    * iLLD Module의 초기화 API?
 ```c
 <Driver Prefix>_initConfig(<Driver Prefix>_Config *cfg);
 
 <Driver Prefix>_init(<Driver Prefix>_Handle *handle, <Driver Prefix>_Config *cfg);
 ```
 
-    * iLLD Module의 기능 API?
+* iLLD Module의 기능 API?
 
 ```c
 <Driver Prefix>_<functionality>(<Driver Prefix>_Handle *handle)
@@ -119,18 +118,16 @@ date: 2018-01-30
     IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
 ```
 
-    * To find `IfxStm_CompareConfig`  type definition
-    * To find `IfxStm_initCompare()` method definition
+
+* To find `IfxStm_CompareConfig`  type definition & `IfxStm_initCompare()` method definition
     * 위의 정의들은 어느 디렉토리의 어느 파일에 되어 있나요?
     * [Hint] 해당하는 definition 을 선택하고 `F3` 혹은 `Open Declaration` menu 선택
 
-
-    * Cpu/Std/Platform_Types.h 파일을 열고 다음의 정보들을 확인해 보세요
-        * Bit order:  MSB_FIRST or LSB_FIRST
-        * Byte order: HIGH_BYTE_FIRST or LOW_BYTE_FIRST
-        * sint8 ?
-        * uint8 ?
-
+* Cpu/Std/Platform_Types.h 파일을 열고 다음의 정보들을 확인해 보세요
+    * Bit order:  MSB_FIRST or LSB_FIRST
+    * Byte order: HIGH_BYTE_FIRST or LOW_BYTE_FIRST
+    * sint8 ?
+    * uint8 ?
 * in Files and Configuration
     * 다음 폴더에 있는 파일들의 용도를 설명하세요.
     * _Reg:

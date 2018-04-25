@@ -336,15 +336,12 @@ void appTaskfu_10ms(void)
 //#define CODE_SCILAB			// Using SciLab
 ```
 
-    ​
-
 ### TFT Configuration
 
 * `conio_cfg.h` 파일
 
   * TFT 관련된 정적 설정 정보
 
-  ​
 
 ### Interrupt Configuration
 
@@ -529,7 +526,6 @@ void appTaskfu_10ms(void)
 
   * 주변환경에 따라서 속도 조정 가능
 
-  ​
 
 ### Service 3: TFT
 

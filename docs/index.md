@@ -39,7 +39,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ### InfineonRacer Guide
 
-1.  [Getting Started].(/GettingStarted.md)  HW Setup & Quick-Start
+1.  [Getting Started](./GettingStarted.md)  HW Setup & Quick-Start
 2.  [InfineonRacer User Guide](./InfineonRacerUserGuide.md)  SW Architecture & API
 
 

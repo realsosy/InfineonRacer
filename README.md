@@ -60,7 +60,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 4.  [Do ma a favor?](./docs/DoMeAFavor.md) Config, Init, ISR in iLLD
 5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM
 6.  [Multiple infinite loops](./docs/MultipleInfiniteLoops.md) Static Cyclic Scheduler
-7.  [Hello world(작성중)](./docs/HelloWorld.md)  ASC & Terminal
+7.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
 8.  [My own terminal(작성중)](./docs/MyOwnTerminal.md) Shell
 9.  [Multi channel voltmeter(작성중)](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan
 10.  [My own cheap oscilloscope(작성중)](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot

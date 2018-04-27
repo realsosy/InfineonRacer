@@ -54,6 +54,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 4.  [Do ma a favor?](./DoMeAFavor.md) Config, Init, ISR in iLLD
 5.  [Twinkle twinkle little star](./TwinkleTwinkleLittleStar.md)  STM
 6.  [Multiple infinite loops](./MultipleInfiniteLoops.md) Static Cyclic Scheduler
+7.  [Hello world](./HelloWorld.md)  ASC & Terminal
 
 ### etc
 

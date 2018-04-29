@@ -83,54 +83,51 @@ date: 2018-01-30
     * Configuration Data Structures ?
     * Handles ?
 
-* in iLLD APIs
+* in iLLD Module의 초기화 API?
 
-    * iLLD Module의 초기화 API?
+```c
+<Driver Prefix>_initConfig(<Driver Prefix>_Config *cfg);
 
-    ```
-    <Driver Prefix>_initConfig(<Driver Prefix>_Config *cfg);
+<Driver Prefix>_init(<Driver Prefix>_Handle *handle, <Driver Prefix>_Config *cfg);
+```
 
-    <Driver Prefix>_init(<Driver Prefix>_Handle *handle, <Driver Prefix>_Config *cfg);
-    ```
+* iLLD Module의 기능 API?
 
-    * iLLD Module의 기능 API?
-
-    ```
-    <Driver Prefix>_<functionality>(<Driver Prefix>_Handle *handle)
-    ```
+```c
+<Driver Prefix>_<functionality>(<Driver Prefix>_Handle *handle)
+```
 
 * in Naming Conventions (Open MyStm_TC23A Project)
-  ````
-  // in StmDemo.h
-  typedef struct
-  {
-      Ifx_STM             *stmSfr;            /**< \brief Pointer to Stm register base */
-      IfxStm_CompareConfig stmConfig;         /**< \brief Stm Configuration structure */
-      volatile uint8       LedBlink;          /**< \brief LED state variable */
-      volatile uint32      counter;           /**< \brief interrupt counter */
-  } App_Stm;
 
-  // in StmDemo.c
-  	App_Stm g_Stm;
-  	// 
-      IfxStm_initCompareConfig(&g_Stm.stmConfig);
-  	//
-  	IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
-  ````
 
-    * To find `IfxStm_CompareConfig`  type definition
-    * To find `IfxStm_initCompare()` method definition
+```c
+// in StmDemo.h
+    typedef struct
+    {
+        Ifx_STM             *stmSfr;            /**< \brief Pointer to Stm register base */
+        IfxStm_CompareConfig stmConfig;         /**< \brief Stm Configuration structure */
+        volatile uint8       LedBlink;          /**< \brief LED state variable */
+        volatile uint32      counter;           /**< \brief interrupt counter */
+    } App_Stm;
+
+// in StmDemo.c
+    App_Stm g_Stm;
+    // 
+    IfxStm_initCompareConfig(&g_Stm.stmConfig);
+    //
+    IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
+```
+
+
+* To find `IfxStm_CompareConfig`  type definition & `IfxStm_initCompare()` method definition
     * 위의 정의들은 어느 디렉토리의 어느 파일에 되어 있나요?
     * [Hint] 해당하는 definition 을 선택하고 `F3` 혹은 `Open Declaration` menu 선택
 
-  ​
-
-    * Cpu/Std/Platform_Types.h 파일을 열고 다음의 정보들을 확인해 보세요
-        * Bit order:  MSB_FIRST or LSB_FIRST
-        * Byte order: HIGH_BYTE_FIRST or LOW_BYTE_FIRST
-        * sint8 ?
-        * uint8 ?
-
+* Cpu/Std/Platform_Types.h 파일을 열고 다음의 정보들을 확인해 보세요
+    * Bit order:  MSB_FIRST or LSB_FIRST
+    * Byte order: HIGH_BYTE_FIRST or LOW_BYTE_FIRST
+    * sint8 ?
+    * uint8 ?
 * in Files and Configuration
     * 다음 폴더에 있는 파일들의 용도를 설명하세요.
     * _Reg:
@@ -343,6 +340,7 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
   * 이렇게 만들어진 기능은 작성한 사람을 위한 것이지, 정작 이 기능을 사용하는 사람의 편의성은 전혀 고려되지 않은 경우가 많습니다.
   * 어떻게 만들 것인가 보다 어떻게 사용할 것인가를 먼저 고민해서 함수, 모듈, 객체를 설계해야 다른 사람이 사용할 수 있습니다.
   * 다른 사람을 위해서가 아니라, 바로 내가 이것을 사용할 첫번째 사용자 입니다.
+
 * **객체는 자료와 Method의 조합**
   * 객체지향적으로 프로그래밍을 하면 재사용성, 은닉성 등등 좋은 점이 많습니다.
   * C++ 만으로 이것이 가능한 것은 아닙니다.
@@ -350,6 +348,9 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
   * Class member 대신 구조체로, Class function 대신 연관된 함수들로, 그리고 이것들을 좋은 명명법을 사용해서 이름을 붙이면 모듈화된 객체를 만들어 사용할 수 있습니다.
 
   ![WhatIsIlld_PortClassDiagram](images/WhatIsIlld_PortClassDiagram.png)
+
+  ​
+
 * **Header 파일은 사용자가 참고해야 하는 정보들의 집합**
   * 다음의 코드와 같이 
   * `IR_Port` 구조체를 만들고

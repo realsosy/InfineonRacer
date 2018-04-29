@@ -243,21 +243,40 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 >
 > * Timer 등과 연결해서 트리거링 시키는 이야기 같은 것을 더 하면.... 너무 어려울까?
 
+**Queue request source handling**
+
+*  Queue request source는 활성화된 채널의 고정된 conversion 순서가 있는 scan request source와 달리 임의의 채널의 short conversion sequence 를 지원합니다. (최대 8개)
+*  프로그래밍 된 sequence는 queue buffer에 저장됩니다. (FIFO 메커니즘 기반)
+*  요청된 채널 번호가 Queue input을 통해 입력되고, Queue stage 0은 다음 변환될 채널을 정의합니다.
+*  Arbiter가 priority 가 높은 request로 인해 queued request source에 의해 발생된 conversion을 중단하면, 해당 conversion parameter가 자동으로 백업 단계에 저장됩니다. 이렇게 하면 중단된 conversion이 손실되지 않고 다음 arbitration round(stage 0 이전)에 참여하게 됩니다.
+*  Trigger와 gating unit은 선택된 외부 트리거 및 gating signal로부터 이벤트를 생성합니다.
+*  Trigger event는 queued sequence를 시작하고 소프트웨어나 선택된 하드웨어를 통해 생성될 수 있습니다.
+
+
+
 
 
 
 
 ### Module Configuration
 
+* Background scan과 다른점
+  * autoscanEnabled 가 필요
+  * ​
+
 ```c
 void VadcAutoScanDemo_init(void)
 {
-    /* ADC Configuration ***************************************************************/
+    /* VADC Configuration */
+
+    /* create configuration */
     IfxVadc_Adc_Config adcConfig;
     IfxVadc_Adc_initModuleConfig(&adcConfig, &MODULE_VADC);
+
+    /* initialize module */
     IfxVadc_Adc_initModule(&g_VadcAutoScan.vadc, &adcConfig);
 
-    /* group config *******************************************************************/
+    /* create group config */
     IfxVadc_Adc_GroupConfig adcGroupConfig;
     IfxVadc_Adc_initGroupConfig(&adcGroupConfig, &g_VadcAutoScan.vadc);
 
@@ -275,9 +294,9 @@ void VadcAutoScanDemo_init(void)
     adcGroupConfig.scanRequest.triggerConfig.gatingMode = IfxVadc_GatingMode_always;
 
     /* initialize the group */
+    /*IfxVadc_Adc_Group adcGroup;*/    //declared globally
     IfxVadc_Adc_initGroup(&g_VadcAutoScan.adcGroup, &adcGroupConfig);
 
-    /* channel config *****************************************************************/
     uint32                    chnIx;
     /* create channel config */
     IfxVadc_Adc_ChannelConfig adcChannelConfig[4];
@@ -292,7 +311,7 @@ void VadcAutoScanDemo_init(void)
         /* initialize the channel */
         IfxVadc_Adc_initChannel(&adcChannel[chnIx], &adcChannelConfig[chnIx]);
 
-        /* add to scan ***************************************************************/
+        /* add to scan */
         unsigned channels = (1 << adcChannelConfig[chnIx].channelId);
         unsigned mask     = channels;
         IfxVadc_Adc_setScan(&g_VadcAutoScan.adcGroup, channels, mask);
@@ -302,6 +321,7 @@ void VadcAutoScanDemo_init(void)
     IfxVadc_Adc_startScan(&g_VadcAutoScan.adcGroup);
 
 }
+
 
 ```
 
@@ -320,6 +340,8 @@ void VadcAutoScanDemo_init(void)
 ```c
 void VadcAutoScanDemo_run(void)
 {
+    printf("VadcAutoScanDemo_run() called\n");
+
     uint32                    chnIx;
 
 	/* check results */
@@ -337,6 +359,11 @@ void VadcAutoScanDemo_run(void)
 		} while (!conversionResult.B.VF);
 
 		volatile uint32 actual = conversionResult.B.RESULT;
+		/* print result, check with expected value */
+		{
+			/* FIXME result verification pending ?? */
+			printf("Group %d Channel %d : %u\n", group, channel, actual);
+		}
 	}
 }
 ```
@@ -377,9 +404,15 @@ int core0_main(void)
 >
 > 이것이 진짜로 오실로스코프 동작 이니까.
 
+![ADCLinescanPort](.\images\ADCInputPortSet.png)
 
+![ADCLinescanPort](.\images\ADCLinescanPort.jpg)
 
+![CheckADCwithDeguger](.\images\CheckADCwithDeguger.png)
 
+![ADCmls](.\images\ADCmls.jpg)
+
+![ADCmlsSerialport](.\images\ADCmlsSerialport.jpg)
 
 ------
 

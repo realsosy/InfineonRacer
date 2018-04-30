@@ -1,7 +1,7 @@
 ---
 
 title: Hello world.md
-author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)  
+author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)
 date: 2018-04-23
 
 ---
@@ -38,44 +38,70 @@ date: 2018-04-23
 ## Example Description
 
 * 터미널을 통해 다음의 기능이 동작하는지 확인한다.
-	* 프로그램 시작 시 '12345' 라는 문자열을 출력
+	* 프로그램 시작 시 '12345'라는 문자열을 출력
 	* 메세지를 5개 입력받을 때마다 입력받은 데이터를 출력
 
-* 디버거의 Simulated IO를 통해 다음 기능이 동작하는지 확인한다.
-	* 일치여부에 따라 error 또는 성공 메세지를 출력
+- 디버거의 Simulated IO를 통해 다음 기능이 동작하는지 확인한다.
+	* 일치 여부에 따라 error 또는 성공 메세지를 출력
 
 ## AURIX -related
 
-#### Asclin ( Asynchronous/Synchronous Interface )
+### Asclin ( Asynchronous/Synchronous Interface )
+* 빠르고(fast) 유연한(flexible) 직렬(serial) 통신 인터페이스 구축을 위한 모듈로
+	* 어떠한 signal들을,
+	* 어떠한 protocol을 통해서,
+	* 어떠한 sequence로 데이터를 처리할지를 결정해 준다.
+- AURIX의 Module은 구성은 다음과 같음
 
-* 빠르고(fast) 유연한(flexible) 직렬(serial) 통신 인터페이스 구축을 위한 모듈
-	* 어떠한 signal들을 받아서,
-	* 어떠한 protocol을 이용해서,
-	* 어떠한 sequence로 데이터를 처리할까?
-- Signals
-	* ​Receive data input, ARX
+![HelloWorld_AscLinHardware](images/HelloWorld_AscLinHardware.png)
+
+### Signals
+* Asclin의 signal 들은 다음과 같이 data 통신에 관한 signal,
+	- ​Receive data input, ARX
 	* Transmit data output, ATX
 	* Request to send handshake output, ARTS
 	* Clear to send handshake input, ACTS
+- Module에 관한 signal이 존재
 	* Slave select signal output, ASLSO
 	* Serial clock output, ASCLK
-* Protocols
-	* UART
-	* LIN
-	* SPI
-- Sequences
 
-**[입력을 받을 때]**
-1. 입력 데이터가 들어옴 (ARX)
-2. Robust한 통신을 위한 필터링 (Filter, Oversampling, Decimate)
-3. FIFO기반 unpackaging (RxFIFO)
-4. handshake 요청 (ARTS)
+### Protocols
+* 사람과 다르게 기계들의 통신은 명확하게 미리 정한 약속에 따라 진행이 되며,
+* 이 약속을 통신 **Protocol** 이라고 한다.
+* Asclin은 다음과 같은 protocol들을 제공
+	* ASC: 일반적인 Asclin 통신 프로토콜 (본 예제에서 사용)
+	* LIN: Local interconnect network, 차량에서 느린 속도로 data를 전송할 때 사용
+	* SPI: Serial Peripheral Interface, 비동기 직렬통신과 반대로 동기화하여 병렬통신을 진행할 수 있음
 
-**[출력을 보낼 때]**
-1. 입력 데이터가 들어옴 (ATX)
-2. FIFO기반 packaging (TxFIFO)
-3. handshake 응답 (ACTS)
+### Sequences
+* 직렬통신은 한 번에 data를 한 bit씩 밖에 전송을 못 하기 때문에,
+* 전송하고자 하는 data를 순차적으로 관리해 주는 것이 필요
+* Asclin은 먼저 들어온 data를 먼저 내보내는 FIFO 방식을 사용 (First-In-First-Out)
+* 아래 그림은 TX FIFO의 example
 
+![HelloWorld_FIFO](images/HelloWorld_FIFO.png)
+
+### Communication process
+* Data를 수신할 때
+	1. 입력 데이터가 들어옴 (ARX)
+	2. Robust한 통신을 위한 필터링 (Filter, Oversampling, Decimate)
+	3. FIFO기반 unpackaging (RxFIFO)
+	4. handshake 요청 (ARTS)
+
+* Data를 송신할 때
+	1. 송신하려는 데이터가 들어옴 (ATX)
+	2. FIFO기반 packaging (TxFIFO)
+	3. handshake 응답 (ACTS)
+
+* Handshake
+	- Data를 송신하거나 수신할때 데이터 송수신이 이상없이 완료됨을 알려주는 signal
+	- 송신일 경우 받는쪽에서 잘 받았음을 ACTS를 통해서 알려주면 그 다음 bit을 송신
+	- 받는 경우는 그 반대로 동작
+
+* Interrupt
+	- 비동기 직렬통신이기 때문에 언제 data 수신이 일어날지 알 수 없음
+	- Data 수신이 일어나는 경우 interrupt를 발생시킨 후 data 수신을 위한 작업을 진행
+	- 송신도 마찬가지로 interrupt를 통해서 진행
 
 ![HelloWorld_AscLinArchitecture](images/HelloWorld_AscLinArchitecture.png)
 
@@ -83,11 +109,11 @@ date: 2018-04-23
 
 ### Module Configuration
 
-* 기계들 간의 커뮤니케이션을 위해선 signal에 대한 약속이 필요
-	* 무슨 프로토콜을 이용해(AsclinAsc; uart),
-	* 어떠한 pin을 통해,
-	* 어느 정도의 속도로 전송할 것인지,
-	* 등의 통신을 위한 설정들을 채워 넣는다.
+* Asclin의 모듈 초기화
+	* 사용할 protocol (AsclinAsc; uart)
+	* 송수신이 일어날 물리적 pin
+	* Data 전송 속도 (AURIX와 통신을 진행하는 기기와 동일하게 맞춤)
+	* 통신관련 Interrupt priorities assign
 
 ```c
 void AsclinAscDemo_init(void)
@@ -135,15 +161,17 @@ void AsclinAscDemo_init(void)
 
 ### Interrupt Configuration
 
-* 통신 간 데이터 송수신을 위한 인터럽트 등록이 필요
+* 통신 간 데이터 송수신을 위한 인터럽트 설정
+	* Interrupt priorities define,
+	* 사용할 CPU 등 기본적인 interrupt 관련 설정
 
 ```c
 // in ConfigurationIsr.h
-#define ISR_PRIORITY_ASC_0_RX 4         
-#define ISR_PRIORITY_ASC_0_TX 5         
-#define ISR_PRIORITY_ASC_0_EX 6        
+#define ISR_PRIORITY_ASC_0_RX 4
+#define ISR_PRIORITY_ASC_0_TX 5
+#define ISR_PRIORITY_ASC_0_EX 6
 
-#define ISR_PROVIDER_ASC_0    IfxSrc_Tos_cpu0         
+#define ISR_PROVIDER_ASC_0    IfxSrc_Tos_cpu0
 
 #define INTERRUPT_ASC_0_RX    ISR_ASSIGN(ISR_PRIORITY_ASC_0_RX, ISR_PROVIDER_ASC_0)
 #define INTERRUPT_ASC_0_TX    ISR_ASSIGN(ISR_PRIORITY_ASC_0_TX, ISR_PROVIDER_ASC_0)

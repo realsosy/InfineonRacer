@@ -130,10 +130,10 @@ void AsclinShellInterface_init(void)
 }
 ```
 
-* Command 정의
-  * Callback 함수의 형태로 구현되며,
-  * {이름, 도움말, &data, &handler} 의 구조로 구성,
-  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행한다.
+* Command
+  * Callback 함수로 구현되며,
+  * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
+  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
 
 ```c
 // in AsclinShellInterface.c
@@ -227,7 +227,7 @@ void appTaskfu_idle(void){
 }
 ```
 
-* 연결된 차량의 state를 관측할 수 있는 shell command를 구성
+* 연결된 차량의 state를 관측할 수 있도록 shell command를 구성
 
 ```c
 //in AsclinShellInterface.c

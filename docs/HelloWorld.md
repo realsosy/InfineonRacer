@@ -38,11 +38,11 @@ date: 2018-04-23
 ## Example Description
 
 * 터미널을 통해 다음의 기능이 동작하는지 확인한다.
-	* 프로그램 시작 시 '12345' 라는 문자열을 출력
+	* 프로그램 시작 시 '12345'라는 문자열을 출력
 	* 메세지를 5개 입력받을 때마다 입력받은 데이터를 출력
 
-* 디버거의 Simulated IO를 통해 다음 기능이 동작하는지 확인한다.
-	* 일치여부에 따라 error 또는 성공 메세지를 출력
+- 디버거의 Simulated IO를 통해 다음 기능이 동작하는지 확인한다.
+	* 일치 여부에 따라 error 또는 성공 메세지를 출력
 
 ## AURIX -related
 
@@ -50,33 +50,34 @@ date: 2018-04-23
 * 빠르고(fast) 유연한(flexible) 직렬(serial) 통신 인터페이스 구축을 위한 모듈로
 	* 어떠한 signal들을,
 	* 어떠한 protocol을 통해서,
-	* 어떠한 sequence로 데이터를 처리할지를 결정해 준다
-* AURIX의 Module은 구성은 다음과 같음
+	* 어떠한 sequence로 데이터를 처리할지를 결정해 준다.
+- AURIX의 Module은 구성은 다음과 같음
 
 ![HelloWorld_AscLinHardware](images/HelloWorld_AscLinHardware.png)
 
 ### Signals
-* Asclin의 signal 들은 다음과 같이 data 통신에 관한 signal
-	- ​Receive data input, ARX
+* Asclin의 signal 들은 다음과 같이 data 통신에 관한 signal,
+	* Receive data input, ARX
 	* Transmit data output, ATX
 	* Request to send handshake output, ARTS
 	* Clear to send handshake input, ACTS
-* Modul에 관한 signal이 존재
+- Module에 관한 signal이 존재
 	* Slave select signal output, ASLSO
 	* Serial clock output, ASCLK
 
 ### Protocols
 * 사람과 다르게 기계들의 통신은 명확하게 미리 정한 약속에 따라 진행이 되며,
-* 이 약속을 통신 **Protocol**이라고 한다
+* 이 약속을 통신 **Protocol** 이라고 한다.
 * Asclin은 다음과 같은 protocol들을 제공
 	* ASC: 일반적인 Asclin 통신 프로토콜 (본 예제에서 사용)
-	* LIN: Local interconnect network 프로토콜로 차량에서 느린속도로 data를 전송할때 사용
-	* SPI: Serial Peripheral Interface 프로토콜은 비동기 직렬통신과 반대로 동기화하여 병렬통신을 진행 할 수 있는 프로토콜
+	* LIN: Local interconnect network, 차량에서 느린 속도로 data를 전송할 때 사용
+	* SPI: Serial Peripheral Interface, 비동기 직렬통신과 반대로 동기화하여 병렬통신을 진행할 수 있음
 
 ### Sequences
-* 직렬통신인 경우 한번에 data를 한 bit씩 밖에 전송을 못하기 때문에 전송하고자 하는 data를 순차적으로 관리해 주는것이 필요
-* Asclin은 먼저 들어온 data를 먼저 내보내는 FIFO 방식을 사용(First-In-First-Out)
-* 아래 그림은 TX FIFO example
+* 직렬통신은 한 번에 data를 한 bit씩 밖에 전송을 못 하기 때문에,
+* 전송하고자 하는 data를 순차적으로 관리해 주는 것이 필요
+* Asclin은 먼저 들어온 data를 먼저 내보내는 FIFO 방식을 사용 (First-In-First-Out)
+* 아래 그림은 TX FIFO의 example
 
 ![HelloWorld_FIFO](images/HelloWorld_FIFO.png)
 
@@ -93,7 +94,7 @@ date: 2018-04-23
 	3. handshake 응답 (ACTS)
 
 * Handshake
-	- Data를 송신하거나 수신할때 데이터가 이성 없게 송신, 혹은 수신이 완료됨을 알려주는 signal
+	- Data를 송신하거나 수신할때 데이터 송수신이 이상없이 완료됨을 알려주는 signal
 	- 송신일 경우 받는쪽에서 잘 받았음을 ACTS를 통해서 알려주면 그 다음 bit을 송신
 	- 받는 경우는 그 반대로 동작
 
@@ -161,8 +162,8 @@ void AsclinAscDemo_init(void)
 ### Interrupt Configuration
 
 * 통신 간 데이터 송수신을 위한 인터럽트 설정
-	- Interrupt priorities define,
-	- 사용할 CPU 등 기본적인 interrupt 관련 설정
+	* Interrupt priorities define,
+	* 사용할 CPU 등 기본적인 interrupt 관련 설정
 
 ```c
 // in ConfigurationIsr.h

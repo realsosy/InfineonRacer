@@ -1,7 +1,7 @@
 ---
 title: My own terminal
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
+author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)  
+date: 2018-04-25
 ---
 
 # My own terminal
@@ -32,8 +32,8 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ## References
 
-* iLLD_TC23A_1_0_1_4_0 - Modules/ Service software/ System Engineering/ Communication/ Shell
-* iLLD_TC23A_1_0_1_4_0 - Modules/ Standard interface/ Standard interface: Data Pipe
+* iLLD_TC23A_1_0_1_4_0 - Modules/Service software/System Engineering/Communication/Shell
+* iLLD_TC23A_1_0_1_4_0 - Modules/Service software/Standard interface: Data Pipe
 * [Hello World](./HelloWorld.md)
 
 **[Example Code]**
@@ -44,12 +44,12 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 
 
-## Example Description 
+## Example Description
 
 다음의 기능을 수행하는 쉘을 구성한다.
 
 * Booting 시, 혹은 "info"  명령 입력시 초기화면(Welcome 화면)을 출력한다.
-* " status" 명령 입력시 시스템의 정보를 출력한다.
+* "status" 명령 입력시 시스템의 정보를 출력한다.
 * "help" 명령 입력시 도움말을 출력한다.
 
 
@@ -58,74 +58,85 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ## Background 정보
 
-* Shell 의 계층적 구조
+* 하드웨어 추상화 계층 (Hardware Abstraction Layer)
+  * 물리적인 하드웨어와 실행되는 소프트웨어 사이에 존재
+  * 하드웨어의 차이를 숨겨서 응용 프로그램이 작동할 수 있는 일관된 플랫폼을 제공
+
+- Shell의 계층적 구조
+  * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화
+  * 통신 종류에 구애받지 않고 일관된 인터페이스를 사용
 
 ![MyOwnTerminal_ShellLayer](images/MyOwnTerminal_ShellLayer.png)
 
-  
-
-> 직렬 통신 계층을 Pipe 계층을 통해서 한번더 추상화
->
-> ​	통신이 꼭 ASC일 필요는 없습니다. USB, LIN 등 다른 직렬 통신과 연결될 수도, 그러므로 중간에 StdIf-DPipe 계층을 사용
->
-> 참고) 이런 용도로 하드웨어의 의존성을 좀 더 줄여서 추상화 시켜놓은 계층이 iLLD 의 Standard Interface 계층, 다른 예 Timer 
+* Standard interface
+  * 추상화를 통해 프로그램 구성을 도와주는 iLLD 내부 인터페이스 모듈
 
 
 
 ## AURIX - related
 
-* 쉘은 아래 계층으로 Asc 모듈을 사용하고 있습니다.
-
-
-
-
+* 이번 예제에서 쉘은 아래 계층으로 Asc 모듈을 사용합니다.
 
 ## iLLD - related
 
 ### Module Configuration
 
-* ASC  통신관련 초기화 생략
+* Asc 통신 관련 초기화 생략
 
-  ​
-
+- 추상화 계층을 통해 시리얼 통신과 shell을 연결
 
 ```c
+// in AsclinShellInterface.c
 void initSerialInterface(void)
 {
-    {   /** - Serial interface */
+    {
         IfxAsclin_Asc_Config config;
         IfxAsclin_Asc_initModuleConfig(&config, &MODULE_ASCLIN0);
-		// 중간 생략       
+
+	// 중간 생략     
+
         IfxAsclin_Asc_initModule(&g_AsclinShellInterface.drivers.asc, &config);
 
-        /* Connect the standard asc interface to the device driver*/
+        // 초기화한 asc 설정을 data pipe와 connect
         IfxAsclin_Asc_stdIfDPipeInit(&g_AsclinShellInterface.stdIf.asc, &g_AsclinShellInterface.drivers.asc);
     }
-		// 중간 생략       
-}
 
+	// 중간 생략    
+
+}
+```
+
+* Shell interface 초기화
+
+```c
+// in AsclinShellInterface.c
 void AsclinShellInterface_init(void)
 {
-	//중간 생략
-    /** - Initialise the serial interface and the console */
-    initSerialInterface();
-	//중간 생략
-
-    /** - Simple print using IfxStdIf_DPipe_print API */
-    IfxStdIf_DPipe_print(&g_AsclinShellInterface.stdIf.asc, ENDL "Hello world!  => print using IfxStdIf_DPipe_print()"ENDL);
 
 	//중간 생략
-    /** - Initialise the shell interface  */
+
     {
         Ifx_Shell_Config config;
         Ifx_Shell_initConfig(&config);
+
+        // 어떤 통신으로 데이터를 주고 받을 것인가
         config.standardIo     = &g_AsclinShellInterface.stdIf.asc;
+
+        // 어떤 command를 사용할 것인가
         config.commandList[0] = &AppShell_commands[0];
 
         Ifx_Shell_init(&g_AsclinShellInterface.shell, &config);
     }
 }
+```
 
+* Command
+  * Callback 함수로 구현되며,
+  * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
+  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
+
+```c
+// in AsclinShellInterface.c
 const Ifx_Shell_Command AppShell_commands[] = {
     {"status", "   : Show the application status", &g_AsclinShellInterface,       &AppShell_status,    },
     {"info",   "     : Show the welcome screen",   &g_AsclinShellInterface,       &AppShell_info,      },
@@ -134,11 +145,12 @@ const Ifx_Shell_Command AppShell_commands[] = {
 };
 ```
 
-
-
 ### Interrupt Configuration
 
+* 인터럽트가 일어나면 data pipe 모듈을 통해 처리
+
 ```c
+// in AsclinShellInterface.c
 IFX_INTERRUPT(ISR_Asc_0_rx, 0, ISR_PRIORITY_ASC_0_RX);
 
 void ISR_Asc_0_rx(void)
@@ -147,9 +159,9 @@ void ISR_Asc_0_rx(void)
     IfxStdIf_DPipe_onReceive(&g_AsclinShellInterface.stdIf.asc);
 }
 
-void ISR_Asc_0_tx(void){ /* rx 인터럽트와 유사하게 */ }
-void ISR_Asc_0_ex(void){ /* rx 인터럽트와 유사하게 */ }
-
+// rx 인터럽트와 유사
+IFX_INTERRUPT(ISR_Asc_0_tx, 0, ISR_PRIORITY_ASC_0_TX);
+IFX_INTERRUPT(ISR_Asc_0_ex, 0, ISR_PRIORITY_ASC_0_EX);
 ```
 
 
@@ -157,24 +169,99 @@ void ISR_Asc_0_ex(void){ /* rx 인터럽트와 유사하게 */ }
 ### Shell 동작
 
 ```c
+// in AsclinShellInterface.c
 void AsclinShellInterface_run(void)
 {
-    /** Handle the shell interface */
     Ifx_Shell_process(&g_AsclinShellInterface.shell);
 }
 ```
 
-> * 중요한 이야기... 이런 서비스는 제어일을 방해하면 안됩니다.  그러므로 schedule 상으로 idle 같이 노는 시간에 서비스를 해줘야 합니다.
-> * 그리고 각 명령들, 이 예에서는 AppShell_status, AppShell_info 등, 이 실행시간이 너무 길면 제어 스케쥴링을 흐트러 놓을 수 있습니다.  짧고 간결하게, 꼭 필요한 동작만
+**[주의]**
 
+* 이러한 서비스는 본래의 제어를 방해해선 안되며,
+* Schedule의 비는 시간에 동작해야 한다.
+* 각각의 command 역시 같은 맥락에서 최대한 짧고 간결하게, 꼭 필요한 동작만.
 
 
 
 ## 추가적인 설명
 
-> InfineonRacer 에서 명령어 한두개 정도 선택해서 어떤 방식으로 설계되었는지 설명해 주세요.
+### In InfineonRacer
 
+* STM을 바탕으로 스케줄러를 구성하고 idle 시간에 shell interface를 동작
 
+```c
+//in BasicStm.c
+void BasicStm_run(void)
+{
+
+	if(task_flag_1m == TRUE){
+		appTaskfu_1ms();
+		task_flag_1m = FALSE;
+	}
+
+	if(task_flag_10m == TRUE){
+		appTaskfu_10ms();
+		task_flag_10m = FALSE;
+	}
+
+	if(task_flag_100m == TRUE){
+		appTaskfu_100ms();
+		task_flag_100m = FALSE;
+	}
+
+	if(task_flag_1000m == TRUE){
+		appTaskfu_1000ms();
+		task_flag_1000m = FALSE;
+	}
+
+	appTaskfu_idle();
+
+}
+
+//in AppTaskFu.c
+void appTaskfu_idle(void){
+
+    AsclinShellInterface_run();
+
+}
+```
+
+* 연결된 차량의 state를 관측할 수 있도록 shell command를 구성
+
+```c
+//in AsclinShellInterface.c
+const Ifx_Shell_Command AppShell_commands[] = {
+	// 중간 생략
+
+    {"srv", "      : Servo Angle", &g_AsclinShellInterface, &AppShell_srv,    },
+
+	// 중간 생략
+};
+
+boolean AppShell_srv(pchar args, void *data, IfxStdIf_DPipe *io)
+{
+	float32 vol;
+	if (Ifx_Shell_matchToken(&args, "?") != FALSE)
+    {
+        IfxStdIf_DPipe_print(io, "  Syntax     : srv frac-value"ENDL);
+    }
+    else
+    {
+    	if(Ifx_Shell_parseFloat32(&args, &vol) == TRUE){
+    		IR_setSrvAngle(vol);
+    	}
+    	IfxStdIf_DPipe_print(io, "  SrvAngle: %4.2f fraction"ENDL, IR_getSrvAngle());
+    }
+
+    return TRUE;
+
+}
+
+```
+* 그렇다면 차량의 analog 데이터는 어떤 식으로 board 안으로 들어오는 것이지?
+
+- 답은 앞으로 진행할 예제들을 통해 얻을 수 있다.
 
 ## 마치며...
 

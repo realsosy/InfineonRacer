@@ -57,7 +57,7 @@ date: 2018-04-23
 
 ### Signals
 * Asclin의 signal 들은 다음과 같이 data 통신에 관한 signal,
-	- ​Receive data input, ARX
+	* Receive data input, ARX
 	* Transmit data output, ATX
 	* Request to send handshake output, ARTS
 	* Clear to send handshake input, ACTS

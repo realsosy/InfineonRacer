@@ -103,7 +103,6 @@ date: 2018-04-10
 
  ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
-
 ---
 ## InfineonRacer Project Build
 
@@ -304,6 +303,8 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * 특정 명령어셋의 사용법(syntax)을 확인하기 위해서는 *"(명령어) ?""* 를 입력 후 enter를 입력한다.
+
+     ```
 
      ```
     Shell>bpon ?
@@ -557,19 +558,12 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
   - *php.exe* 파일이 실행은 되지만 아래 사진과 같이 에러가 발생
   ![GettingStarted_PhpMsvc](images/GettingStarted_PhpMsvc.png)
 
-    - [msvcr110.dll 파일을 다운로드](msvcr110.dll)
+    - [msvcr110.dll 파일을 다운로드](https://drive.google.com/open?id=1PNwUwMD-6SpE53mg-y7Iv8WzPXUfSWsH)
     - 다운 받은 파일을 *C:\Windows\SysWOW64* 폴더(운영체제 Windows 64bit 기준)에 저장
-    - 다시 php.exe 파일을 실행하여 실행이 되는지 확인 (정상적으로 실행이 되면 검은 도스창이 뜸) 후 다시 빌드 실행
+    - 다시 php.exe 파일을 실행하여 실행이 되는지 확인 (정상적으로 실행이 되면 검은 도스창이 뜬다) 후 다시 빌드 실행
 
   - *php.exe* 파일이 실행되지 않을 경우
   ![GettingStarted_PhpExee](images/GettingStarted_PhpExee.png)
 
     - 설치된 백신 프로그램(ex. 알약)을 종료시키고 **BIFACES** 를 다시 설치
     - 다시 *php.exe* 파일을 실행하여 실행이 되는지 확인 후 다시 빌드 실행
-
-## ToDo!
-
-* Java 설명 추가 [O]
-* SerialPlot 설치 설명 추가 [O]
-* Workspaces 설정 수정 [O]
-* Php 관련 이슈 [O]

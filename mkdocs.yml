@@ -7,11 +7,13 @@ pages:
     - InfineonRacer User Guide: InfineonRacerUserGuide.md
     - Connection Guide for InfineonRacer: ConnectionGuide.md
 - Dive into AURIX world:
-    - How to use BIFACES?: HowToUseBIFACES.md
-#    - How to study AURIX?: HowToStudyAurix.md
+    - How to study AURIX?: HowToStudyAurix.md
+#    - How to use BIFACES?: HowToUseBIFACES.md
     - What is iLLD?: WhatIsIlld.md
+    - Do me a favor?: DoMeAFavor.md
     - Twinkle twinkle little star: TwinkleTwinkleLittleStar.md
-#    - Hello world: HelloWorld.md
+    - Multiple infinite loops: MultipleInfiniteLoops.md 
+    - Hello world: HelloWorld.md
 #    - My own terminal: MyOwnTerminal.md
 #    - Multi channel voltmeter: MultiChannelVoltmeter.md
 #    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
@@ -20,10 +22,12 @@ pages:
 #    - Synchronized PWM: SynchronizedPwm.md
 #    - Where are you?: WhereAreYou.md
 #    - TFT as modern Man-Machine Interface: TftAsModernMmi.md 
-    - Multiple infinite loops: MultipleInfiniteLoops.md 
+#    - Simulink as a programming language: SimulinkAsAProgrammingLanguage.md
 #    - OSEK-Certified ErikaOS & RT-Druid: OsekCertificedErikaOsRtDruid.md
 
 - References: 'References.md'
+
+
 
 theme: readthedocs
 

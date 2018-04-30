@@ -13,7 +13,7 @@ Twinkle twinkle little star
 
 "반짝 반짝 작은 별~~~" 우리가 즐겨 부르던 동요입니다.
 
-마이크로컨트롤러에 프로그래밍 할 때도 첫 번째로 만들어 봐야 하는 프로그램입니다. 단 불빛만 반짝인다고 만족해서는 안 됩니다. 이 프로그램으로 우리는 다음의 사항들을 확실하게 할 수 있게 됩니다.
+마이크로컨트롤러에 프로그래밍 할 때도 첫 번째로 만들어 봐야 하는 프로그램으로 일정 시간주기를 정해주고 주기마다 LED를 반짝이게 하는 것입니다. 단 불빛만 반짝인다고 만족해서는 안 됩니다. 이 프로그램으로 우리는 다음의 사항들을 확실하게 할 수 있게 됩니다.
 
 * 디지털 출력을 내보낼 수 있고,
 * 시스템타이머를 사용할 줄 알게 되고,
@@ -68,12 +68,15 @@ AURIX - related
 #### STM (System timer)
 
 * 64-bit timer of 32-bit microcontroller
-	- TC237이 한 번의 명령어로 가져올 수 있는 데이터량은 32 bit.
-  - 두 번의 명령으로 나눌 경우 그 사이의 overflow 등을 간과할 수 없다.
-  - STM에서는 이를 위해 capture라는 개념을 이용한다.
+	- TC237이 한 번의 명령어로 다룰 수 있는 데이터량은 32 bit 이며,
+	- 이럴 경우 타이머는 *Tick*을 최대  2^32 까지 밖에 누적 할 수 없다.
+  - TC237은 *Tick*의 누적량을 늘리기 위해서 == 더 유연하게 시스템 타이머를 사용하기 위해서 32-bit 레지스터 두개를 사용하는 64-bit timer counter를 제공한다.
+  - 64 bit counter는 일정한 주기(*f_stm*)에 따라 자동으로 값이 더해져 증가한다 (이를 Free-running 이라 함 )
+  - 64-bit counter의 두 레지스터 값이 나타내는 하나의 *Tick* 값을 읽어들이기 위해서,  STM에서는  capture라는 기능을 이용한다.
 
 
-- Timer register와 capture register
+- Timer 값의 정확한 시간 알기 (***Timer register와 capture register***)
+	- 64-bit free-running counter의 값을 읽어 옴으로써 시스템의 정확한 동작 시간을 알 수 있다.
 	- STM의 내부에는 별개의 range를 가지는 32bit timer register(STM_TIMx)들이 있고,
 	- 동기화를 위한 capture register(STM_CAP)가 존재한다.
 	- 만약 사용자가 하위단의 시간정보를 요청한다면(TIM0~TIM5),
@@ -81,10 +84,12 @@ AURIX - related
 
 ![TwinkleTwinkleLittleStar_GeneralBlockDiagram](images/TwinkleTwinkleLittleStar_GeneralBlockDiagram.png)
 
-- Compare register
-	- STM은 interrupt를 발생시키기 위한 trigger 역할을 할 수도 있다.
+- 정해진 시간에 동작하기 (***Timer의 시간을 이용하여 Compare register***)
+	- Timer를 이용하는 가장 큰 이유는 마이크로컨트롤러가 정확한 시간 혹은 주기로 정해진 동작을 수행하도록 하기 위해서이다. (= 정해진 주기에 LED를 껐다 킴)
+	- 이를 위해서 timer 를 interrupt를 발생시키기 위한 trigger 역할로 이용 할 수 있다.
 	- 이때는 compare register라는 것을 따로 구성할 필요가 있고,
 	- 구성된 register는 tick이 쌓일 때마다 비교를 하여 일치할 시 flag를 발생시킨다.
+	- TC237은 두개의 compare 레지스터를 제공하며 선택적으로 사용할 수 있다.
 
 ![TwinkleTwinkleLittleStar_CompareMode](images/TwinkleTwinkleLittleStar_CompareMode.png)
 
@@ -94,7 +99,9 @@ iLLD - related
 
 ### Module Configuration
 
-* 앞장에서 배운대로 필요한 값을 변경하며 모듈을 초기화한다.
+* 모듈을 이용하기 위해 필요한 값들을 정하여 초기화한다.
+	- 어떤 compare register를 사용할지
+	- 얼마의 주기로 인터럽트를 발생 시킬지
 
 ```c
 // in StmDemo.c
@@ -131,17 +138,17 @@ typedef struct
 ```
 
 * 각각의 대략적인 의미는 아래와 같다.
- 	* `comparator` : 사용할 compare register의 번호(STM_CMPx)
+		* `comparator` : 사용할 compare register의 번호(STM_CMPx)
 	* `comparatorInterrupt` : 인터럽트 flag를 어디로 내보낼지
 	* `compareOffset` : compare를 시작할 bit (MSTARTx)
 	* `compareSize` : compare register의 사이즈 (MSIZEx)
-	* `ticks` : 어느 정도의 tick을 누적시킬지
+	* `ticks` : 인터럽트를 발생시키기는 주기의  tick의 값
 	* `triggerPriority` : 인터럽트 우선순위
 	* `typeOfService` : 사용할 CPU 번호
-- 이 예제에서는 이 중 ticks를 수정하여 인터럽트 flag를 발생시킬 주기를 결정할 것이다.
+- 이 중 ticks를 수정하여 인터럽트 flag를 발생시킬 주기를 결정 할 수 있다. (아래 BSP에 정의된 변수 사용)
 
 ### Interrupt Configuration
-
+* Tick 값이 compare register의 값과 같아졌을때 발생하는 interrupt에 관한 설정.
 ```c
 // in ConfigurationIsr.h
 #define ISR_PRIORITY_STM_INT0       40
@@ -155,11 +162,9 @@ IFX_INTERRUPT(STM_Int0Handler, 0, ISR_PRIORITY_STM_INT0);
 
 ### Stm 동작
 
-* compare register를 설정했을 때 인터럽트 flag를 내보내는 것은 한 번 뿐이다.
-
-- 때문에 STM으로 주기적인 응답처리를 하기 위해선 그를 위한 루틴이 필요하고,
-
-* 그것을 interrupt가 발생할 때마다 실행되는 handler function을 이용해 구현한다.
+* Counter의 *Tick* 값이 compare register의 값과 같아진다면 interrupt가 한번 발생하게 된다.
+* 하지만 프로그램을 일정 주기로 실행시키기 위해서는 정해진 주기에 따라 반복되어 interrupt가 발생할 필요가 있다.
+* 이를 위해서 인터럽트가 발생할 때 마다 compare register의 값을 주기 만큼 증가시켜 줘야 하며 이는 handler function에 구현한다.
 
 
 ```c
@@ -175,7 +180,7 @@ void STM_Int0Handler(void)
 
 * Handler 함수는 실행되자마자 다음 inerrupt를 준비한다.	 
 	1. Interrupt flag를 reset하고, `IfxStm_clearCompareFlag`
-	2. Compare register의 ticks 값을 연장하고, `IfxStm_increaseCompare`
+	2. Compare register의 값을 주기만큼 더해주며,  `IfxStm_increaseCompare`
 	3. Interrupt를 다시 활성화. `IfxCpu_enableInterrupts`
 
 - 이후 `IfxBlinkLed_Task`함수를 통해 LED를 제어한다.

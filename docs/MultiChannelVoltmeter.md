@@ -80,9 +80,7 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 * Result handling
 	* 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
 	* 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
-	* Wait-for-read mode[^wfrm]를 사용하여 overwrite에 의한 데이터 손실을 방지
-	[^wfrm]: Target result register가 read 될 때까지 conversion을 정지시킨다. valid flag를 통해 state를 표시.
-
+	* Wait-for-read mode<sup id="a1">[1](#f1)</sup>를 사용하여 overwrite에 의한 데이터 손실을 방지
 
 
 ![MultiChannelVoltmeter_KernelDiagram](images/MultiChannelVoltmeter_KernelDiagram.png)
@@ -292,3 +290,7 @@ void appTaskfu_1000ms(void)
 관련 설정을 하면서 무척 놀랐을 것입니다.  '고작 두채널의 정보를 읽어들이는데 이렇게 많은 사항을 고려하고 길게 프로그래밍해야 하나?' 하고 말입니다.  시작하며 이야기 했던 것 처럼, VADC는 뛰어난 기능을 가진 ADC 입니다.  그 기능을 활용하기 위해서 앞서 강조한 바와 같이 섬세하게 설정해 준 것입니다.  일단 이렇게 섬세하게 설정해 주면 VADC는 우리를 배신(?)하지 않습니다.  빠른 속도로 값을 변환하여 언제든지 읽을 수 있게 만들어 줍니다.
 
 이제 여러 채널의 아날로그 전압을 읽어들일 수 있게 되었습니다.  약간 과장하면 Multi Channel Voltmeter를 가지게 되었다고 말할 수 있습니다.  이 전압값을 적절하게 스케일 하면 이 전압을 만들어 냈었던 센서의 측정값으로 변경할 수도 있습니다.
+
+
+---
+<b id="f1">Wait-for-read mode</b> : Target result register가 read 될 때까지 conversion을 정지시킨다. valid flag를 통해 state를 표시. [↩](#a1):

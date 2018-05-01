@@ -223,25 +223,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 
 
-
-
-
-
-
-
 ## iLLD - related
-
-> * 여러 요청들을 관리하는 방법에 대한 간략한 소개
->
->   * QUEUE, AutoScan, BackgroundScan 
->
-> * Arbiter를 사용해서 중재되는 상황에 대한 설명
->
->   ​
->
->   그리고 설명하고 싶으신 것들 .... 
->
-> * Timer 등과 연결해서 트리거링 시키는 이야기 같은 것을 더 하면.... 너무 어려울까?
 
 **Queue request source handling**
 
@@ -256,59 +238,61 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 
 
-
-
 ### Module Configuration
 
-* Background scan과 다른점
-  * autoscanEnabled 가 필요
-  * ​
+* 상위단에서 하위단까지 단계별 설정이 필요
+  1. ADC configuration
+  2. Group configuration
+  3. Channel configuration
+* 설정은 개별적인 구조체와 계측적인 명명법을 사용한 method로 구분하여 구현되어 있다.
 
 ```c
 void VadcAutoScanDemo_init(void)
 {
     /* VADC Configuration */
 
-    /* create configuration */
+	// ADC module configuration 생성
     IfxVadc_Adc_Config adcConfig;
     IfxVadc_Adc_initModuleConfig(&adcConfig, &MODULE_VADC);
 
-    /* initialize module */
+    // ADC module configuration 초기화
     IfxVadc_Adc_initModule(&g_VadcAutoScan.vadc, &adcConfig);
 
-    /* create group config */
+    // Group configuration 구조체화
     IfxVadc_Adc_GroupConfig adcGroupConfig;
     IfxVadc_Adc_initGroupConfig(&adcGroupConfig, &g_VadcAutoScan.vadc);
 
-    /* with group 0 */
+    // Group 0에 관련된 세부 설정 세팅
     adcGroupConfig.groupId = IfxVadc_GroupId_0;
     adcGroupConfig.master  = adcGroupConfig.groupId;
 
     /* enable scan source */
     adcGroupConfig.arbiter.requestSlotScanEnabled = TRUE;
 
-    /* enable auto scan */
+    // Auto scan enable 설정
     adcGroupConfig.scanRequest.autoscanEnabled = TRUE;
 
     /* enable all gates in "always" mode (no edge detection) */
     adcGroupConfig.scanRequest.triggerConfig.gatingMode = IfxVadc_GatingMode_always;
 
-    /* initialize the group */
+    // 변경된 설정을 적용하기 위해 다시 초기화
     /*IfxVadc_Adc_Group adcGroup;*/    //declared globally
     IfxVadc_Adc_initGroup(&g_VadcAutoScan.adcGroup, &adcGroupConfig);
 
     uint32                    chnIx;
-    /* create channel config */
+    // Channel configuration 생성
     IfxVadc_Adc_ChannelConfig adcChannelConfig[4];
 
     for (chnIx = 0; chnIx < 4; ++chnIx)
     {
+      	// Channel configuration 초기화
         IfxVadc_Adc_initChannelConfig(&adcChannelConfig[chnIx], &g_VadcAutoScan.adcGroup);
 
+      	// Channel configuration 설정
         adcChannelConfig[chnIx].channelId      = (IfxVadc_ChannelId)(chnIx);
         adcChannelConfig[chnIx].resultRegister = (IfxVadc_ChannelResult)(chnIx);  /* use dedicated result register */
 
-        /* initialize the channel */
+        // 변경된 설정을 적용하기 위해 다시 초기화
         IfxVadc_Adc_initChannel(&adcChannel[chnIx], &adcChannelConfig[chnIx]);
 
         /* add to scan */
@@ -321,7 +305,6 @@ void VadcAutoScanDemo_init(void)
     IfxVadc_Adc_startScan(&g_VadcAutoScan.adcGroup);
 
 }
-
 
 ```
 
@@ -356,7 +339,7 @@ void VadcAutoScanDemo_run(void)
 		do
 		{
 			conversionResult = IfxVadc_Adc_getResult(&adcChannel[chnIx]);
-		} while (!conversionResult.B.VF);
+		} while (!conversionResult.B.VF);	// conversionResult.B.VF; 유효데이터임을 알려주는 valid flag
 
 		volatile uint32 actual = conversionResult.B.RESULT;
 		/* print result, check with expected value */
@@ -400,17 +383,22 @@ int core0_main(void)
 
 ## 추가적인 설명
 
-> InfineonRacer 에서 msl 명령과 SerialPlot 을 사용해서 화면에 결과값을 살펴보는 부분을 설명해 주면 좋을 듯,
->
-> 이것이 진짜로 오실로스코프 동작 이니까.
+### In InfineonRacer; ADC 값 확인
+
+* InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
+* Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
 
 ![ADCLinescanPort](.\images\ADCInputPortSet.png)
 
 ![ADCLinescanPort](.\images\ADCLinescanPort.jpg)
 
-![CheckADCwithDeguger](.\images\CheckADCwithDeguger.png)
+* Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
+* 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
 ![ADCmls](.\images\ADCmls.jpg)
+
+* SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
+* 아래 예시는 SerialPort에서 500ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
 ![ADCmlsSerialport](.\images\ADCmlsSerialport.jpg)
 

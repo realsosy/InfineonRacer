@@ -147,7 +147,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
     * 최대 8개의 channel을 할당할 수 있습니다.
 
-      ![QueuedRequestSource](images\MyOwnCheapOscilloscope_QueuedRequestSource.png)
+      ![QueuedRequestSource](images/MyOwnCheapOscilloscope_QueuedRequestSource.png)
 
 
   * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
@@ -158,7 +158,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
     * Request source 2는 background scan source로 사용됩니다. Background scan source는 모든 group의 모든 channel에 대한 scan을 요청할 수 있습니다.
 
-      ![ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
+      ![ScanRequestSource](images/MyOwnCheapOscilloscope_ScanRequestSource.png)
 
 
 
@@ -176,7 +176,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
   * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
     * *Synchronized source (manual, p2768) 은 무슨 말인지 이해가 안됩니다.
 
-    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images\MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
+    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images/MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
 
 
   * Conversion start mode
@@ -190,7 +190,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
       * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
       * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
-![MyOwnCheapOscilloscope_ConversionStartModes](images\MyOwnCheapOscilloscope_ConversionStartModes.png)
+![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
 =======
 
@@ -202,7 +202,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
     * Request source 2는 background scan source로 사용됩니다. Background scan source는 모든 group의 모든 channel에 대한 scan을 요청할 수 있습니다.
 
-      ![ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
+      ![ScanRequestSource](images/MyOwnCheapOscilloscope_ScanRequestSource.png)
 
 
 
@@ -220,7 +220,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
   * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
     * *Synchronized source (manual, p2768) 은 무슨 말인지 이해가 안됩니다.
 
-    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images\MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
+    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images/MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
 
 
   * Conversion start mode
@@ -235,7 +235,6 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
       * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
       * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
-
 **Analog input channel configuration**
 
 * Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다. 
@@ -261,9 +260,9 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 * 변환 된 결과는 16개의 group result register 중 한 곳에서 저장되거나 global result register에 저장됩니다.
 * 저장되는 위치는 어플리케이션의 사용 용도에 따라 사용자가 지정할 수 있으며, 보통 CPU load 나 DMA 전송의 성능을 최적화 할 수 있도록  설정합니다.
 
-![MyOwnCheapOscilloscope_ConversionResultStorage](images\MyOwnCheapOscilloscope_ConversionResultStorage.png)
+![MyOwnCheapOscilloscope_ConversionResultStorage](images/MyOwnCheapOscilloscope_ConversionResultStorage.png)
 
-![MyOwnCheapOscilloscope_ConversionStartModes](images\MyOwnCheapOscilloscope_ConversionStartModes.png)
+![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
 
 
@@ -293,7 +292,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 * 변환 된 결과는 16개의 group result register 중 한 곳에서 저장되거나 global result register에 저장됩니다.
 * 저장되는 위치는 어플리케이션의 사용 용도에 따라 사용자가 지정할 수 있으며, 보통 CPU load 나 DMA 전송의 성능을 최적화 할 수 있도록  설정합니다.
 
-![MyOwnCheapOscilloscope_ConversionResultStorage](images\MyOwnCheapOscilloscope_ConversionResultStorage.png)
+![MyOwnCheapOscilloscope_ConversionResultStorage](images/MyOwnCheapOscilloscope_ConversionResultStorage.png)
 
 
 
@@ -462,19 +461,19 @@ int core0_main(void)
 * InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
 * Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
 
-![ADCLinescanPort](.\images\ADCInputPortSet.png)
+![ADCLinescanPort](images/ADCInputPortSet.png)
 
-![ADCLinescanPort](.\images\ADCLinescanPort.jpg)
+![ADCLinescanPort](images/ADCLinescanPort.jpg)
 
 * Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
 * 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
-![ADCmls](.\images\ADCmls.jpg)
+![ADCmls](images/ADCmls.jpg)
 
 * SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
 * 아래 예시는 SerialPort에서 500ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
-![ADCmlsSerialport](.\images\ADCmlsSerialport.jpg)
+![ADCmlsSerialport](images/ADCmlsSerialport.jpg)
 
 ------
 

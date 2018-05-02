@@ -1,23 +1,4 @@
----
-title: My own terminal
-author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)  
-date: 2018-04-25
----
-
-# My own terminal
-
-## 시작하는 질문
-
-* 터미날(Terminal), 쉘(Shell), 이런 것들이 뭐지?  이것이 왜 필요하지?
-
-
-
-
-Window로 컴퓨터를 처음 접한 세대에게는 좀 낯설은 단어일 수 있습니다.  Window 로 대표되는 GUI 환경으로 컴퓨터를 사용하기 이전 시대에는 검은색 텍스트 창에 키보드로 타이핑을 하면서 컴퓨터를 사용했었습니다.  물론 그 시대에는 마우스도 없었습니다.  화려하지는 않지만, GUI 처럼 직관적이지는 않지만 지금 GUI로 하는 모든 조작을 다 했었습니다.  몇몇 작업들은 지금도 GUI 보다 텍스트 기반의 환경으로 하는 것이 훨씬 효율적입니다.  그중에 대표적인 것이 프로그래밍 입니다.  현재의 프로그래밍 작업환경은 예전의 텍스트 환경으로 했던 것들을 여러개의 윈도우를 사용해서 잘 정리해서 보여주는 것입니다.  내부적으로는 역시 텍스트 기반의 정보들이 움직이고 있습니다.  대표적으로 eclipse 의 console 창이 컴파일을 포함한 빌드 과정을 이러한 방식으로 보여주는 것입니다.
-
-Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사용환경을 쉘이라고 부릅니다.  이 쉘에서 제공하는 명령어들을 사용해서 컴퓨터를 조작할 수 있게 됩니다.  파일과 디렉토리 조작, 때로는 간단한 스크립트 언어를 제공해서 프로그래밍을 할 수도 있어서, 컴퓨터를 편하게 사용할 수 있는 기본 환경이 됩니다.  네트워크나 통신으로 원격으로 다른 컴퓨터의 쉘에 접속하여 조작하는 환경을 터미날이라 부릅니다.  Tera term, 혹은 putty 와 같은 터미날 프로그램이 많이 사용되고 있습니다.
-
-컴퓨터의 쉘과 같은 환경이 임베디드 시스템에서도 꼭 필요할까요?  꼭 필요하지는 않습니다.  개발 단계에서는 터미날 보다 전용 디버거를 사용하는 것이 훨씬 효율적입니다.  그러나 시스템 시험단계, 혹은 유지보수를 하는 단계에서는 디버거를 연결하는 것이 어렵거나 불가능 할 수 있습니다.  이런 경우에는 통신을 통하여 기본적인 조작을 할 수 있는 쉘을 사용할 수 있도록 하는 것이 바람직 합니다.  결론적으로 쉘을 꼭 프로그래밍 할 필요는 없습니다.  그러나 몇몇 환경에서는 약간의 노력(?)을 들여서 쉘을 구성해 놓는 다면, 향후 시스템을 운영할 때, 유지보수 할 때 매우 유용하게 사용할 수 있습니다.
+ 때 매우 유용하게 사용할 수 있습니다.
 
 (참고) 일반적인 네트워크, 이더넷이나 USB, SCI 등, 를 사용하지 않는 자동차의 제어시스템에서는 CAN 네트워크를 통하여 접속할 수 있는 환경을 구성합니다.  자동차 업계에서는 이런 접속 환경을 용도에 맞게 더욱 세분화 하여서 전용 프로그램을 별도로 사용하기도 합니다.
 
@@ -60,11 +41,16 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 * 하드웨어 추상화 계층 (Hardware Abstraction Layer)
   * 물리적인 하드웨어와 실행되는 소프트웨어 사이에 존재
-  * 하드웨어의 차이를 숨겨서 응용 프로그램이 작동할 수 있는 일관된 플랫폼을 제공
+  * 하드웨어를 제어하기 위한 중간계층으로 하드웨어에 연관되어 설계
+  * 사용자 입장에서 응용프로그램을 동작시키기 위해 하드웨어에 일일히 대응하지 않아도 됨
+
 
 - Shell의 계층적 구조
+  * 통신모듈인 경우 한 하드웨어에서 여러 종류의 통신방식을 제공하고,
+  * 모듈과 프로토콜에 따라 대응을 해 줘야하기 때문에,
+  * 사용자 입장에서 일관된 인터페이스로 통신하기 위해 한단계의 추상화 과정을 더 거침
   * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화
-  * 통신 종류에 구애받지 않고 일관된 인터페이스를 사용
+    - Shell을 통해서 송신 혹은 수신되는 data들을 data-pipe interface를 통해 관리
 
 ![MyOwnTerminal_ShellLayer](images/MyOwnTerminal_ShellLayer.png)
 
@@ -75,9 +61,45 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ## AURIX - related
 
-* 이번 예제에서 쉘은 아래 계층으로 Asc 모듈을 사용합니다.
+* 이번 예제에서 쉘은 아래 계층으로 Asc 모듈을 사용
 
 ## iLLD - related
+
+### Shell 개요
+
+- Asc 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 따라 관련된 명령을 수행
+  * Call-back 함수인 Command 함수를 구성하여 사용자가 입력하는 명령을 수행
+  * Data-pipe를 통하여 사용자가 입력하는 명령어를 수신
+  * 미리 정의된 Command에 따라서 명령을 수행
+
+
+* Command
+  * Call-back 함수로 구현되며,
+  * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
+  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
+
+
+- 동작에 관하여 아래 command 코드를 살펴보면
+  * 사용자가 shell을 통해 "help"라는 입력을 준다면 data-pipe interface를 통하여 그 입력을 수신: ```g_AsclinShellInterface```
+  * 그 후 정의된 "help"에 맞는 handler 함수를 수행: ```Ifx_Shell_showHelp```
+
+
+```c
+  // in AsclinShellInterface.c
+  const Ifx_Shell_Command AppShell_commands[] = {
+      {"status", "   : Show the application status", &g_AsclinShellInterface,       &AppShell_status,    },
+      {"info",   "     : Show the welcome screen",   &g_AsclinShellInterface,       &AppShell_info,      },
+      {"help",   SHELL_HELP_DESCRIPTION_TEXT,        &g_AsclinShellInterface.shell, &Ifx_Shell_showHelp, },
+      IFX_SHELL_COMMAND_LIST_END
+  };
+  ```
+* Terminal에 연결 후 실행하거나 info 명령어를 넣었을 때 나오는 화면
+  ![MyOwnTerminal_CommandInfo](images/MyOwnTerminal_CommandInfo.png)
+
+* "help" command를 입력하면 설정된 함수에 의해 다음과 같이 표시된다.
+  ![MyOwnTerminal_CommandHelp](images/MyOwnTerminal_CommandHelp.png)
+
+
 
 ### Module Configuration
 
@@ -93,7 +115,7 @@ void initSerialInterface(void)
         IfxAsclin_Asc_Config config;
         IfxAsclin_Asc_initModuleConfig(&config, &MODULE_ASCLIN0);
 
-	// 중간 생략     
+	// 중간 생략
 
         IfxAsclin_Asc_initModule(&g_AsclinShellInterface.drivers.asc, &config);
 
@@ -101,7 +123,7 @@ void initSerialInterface(void)
         IfxAsclin_Asc_stdIfDPipeInit(&g_AsclinShellInterface.stdIf.asc, &g_AsclinShellInterface.drivers.asc);
     }
 
-	// 중간 생략    
+	// 중간 생략
 
 }
 ```
@@ -128,21 +150,6 @@ void AsclinShellInterface_init(void)
         Ifx_Shell_init(&g_AsclinShellInterface.shell, &config);
     }
 }
-```
-
-* Command
-  * Callback 함수로 구현되며,
-  * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
-  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
-
-```c
-// in AsclinShellInterface.c
-const Ifx_Shell_Command AppShell_commands[] = {
-    {"status", "   : Show the application status", &g_AsclinShellInterface,       &AppShell_status,    },
-    {"info",   "     : Show the welcome screen",   &g_AsclinShellInterface,       &AppShell_info,      },
-    {"help",   SHELL_HELP_DESCRIPTION_TEXT,        &g_AsclinShellInterface.shell, &Ifx_Shell_showHelp, },
-    IFX_SHELL_COMMAND_LIST_END
-};
 ```
 
 ### Interrupt Configuration
@@ -175,15 +182,6 @@ void AsclinShellInterface_run(void)
     Ifx_Shell_process(&g_AsclinShellInterface.shell);
 }
 ```
-* Terminal에 연결 후 실행하거나 info 명령어를 넣었을 때 나오는 화면
-
-![MyOwnTerminal_CommandInfo](images/MyOwnTerminal_CommandInfo.png)
-
-* "help" command를 입력하면 설정된 함수에 의해 다음과 같이 표시된다.
-
-![MyOwnTerminal_CommandHelp](images/MyOwnTerminal_CommandHelp.png)
-
-
 **[주의]**
 
 * 이러한 서비스는 본래의 제어를 방해해선 안되며,
@@ -236,6 +234,10 @@ void appTaskfu_idle(void){
 ```
 
 * 연결된 차량의 state를 관측할 수 있도록 shell command를 구성
+  * 차량의 servo motor angle을 확인
+  * "srv"라는 command를 shell을 통해 입력
+  * ```AppShell_srv```를 통하여 servo motor angle을 출력
+
 
 ```c
 //in AsclinShellInterface.c
@@ -273,6 +275,7 @@ boolean AppShell_srv(pchar args, void *data, IfxStdIf_DPipe *io)
 
 ## 마치며...
 
-목표 지점에 빨리 도달해야 겠다는 욕심으로 최종 결과물에만 집중하게 됩니다.  작은 일이면, 그리고 그 일을 한번만 할 것이라면, 좌우를 살피지 않고 앞만 보고 달려가는 것이 최선입니다.  그러나, 작지 않은 일이어서 중간에 몇번 쉬어야 하는 일이라면, 그리고 그 일을 계속 반복적으로 할 것이라면, 달려가기 전에 한번 생각해 보아야 합니다.  '일을 어떻게 나누어야지?', '이 일을 좀 더 효율적으로 할 수 있는 방법은 없을까?' 등등의 고민을 해야 합니다.  반복적으로 해야 하는 일이라면 효율적인 환경과 도구를 만들어 두는 것이 결과적으로는 더욱 빨리 최종 결과물을 만들 수 있는 방법입니다.  
+목표 지점에 빨리 도달해야 겠다는 욕심으로 최종 결과물에만 집중하게 됩니다.  작은 일이면, 그리고 그 일을 한번만 할 것이라면, 좌우를 살피지 않고 앞만 보고 달려가는 것이 최선입니다.  그러나, 작지 않은 일이어서 중간에 몇번 쉬어야 하는 일이라면, 그리고 그 일을 계속 반복적으로 할 것이라면, 달려가기 전에 한번 생각해 보아야 합니다.  '일을 어떻게 나누어야지?', '이 일을 좀 더 효율적으로 할 수 있는 방법은 없을까?' 등등의 고민을 해야 합니다.  반복적으로 해야 하는 일이라면 효율적인 환경과 도구를 만들어 두는 것이 결과적으로는 더욱 빨리 최종 결과물을 만들 수 있는 방법입니다.
 
 'Shell' 이 바로 그런 도구 입니다.  최종 결과물의 핵심 기능은 아니지만, 좋은 결과물을 만들어 낼 때 활용할 수 있는 좋은 도구가 됩니다.  이 프로젝트에서도 'Shell'을 적극적으로 사용할 것입니다.  귀찮지만, 그 수고러움은 편의성으로 충분히 보상됩니다.
+

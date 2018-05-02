@@ -91,13 +91,13 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
   * 미리 정의된 Command에 따라서 명령을 수행
 
 
-- Command
+* Command
   * Callback 함수로 구현되며,
   * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
   * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
 
 
-- 동작에 관하여 아래 command 코드를 살펴보면
+* 동작에 관하여 아래 command 코드를 살펴보면
   * 사용자가 shell을 통해 "help"라는 입력을 준다면 data-pipe interface를 통하여 사용자의 입력을 수신: ```g_AsclinShellInterface```
   * 그 후 정의된 "status"에 맞는 handler 함수를 수행: ```Ifx_Shell_showHelp```
 

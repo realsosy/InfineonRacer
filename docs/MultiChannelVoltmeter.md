@@ -188,9 +188,6 @@ void VadcBackgroundScanDemo_init(void)
 
 * 새로운 valid data가 갱신될 경우 valid flag 신호가 나옴
 * Signal을 기준으로 결과값을 저장
-* 독립적인 converter group들은 각각 별도의 14개의 채널을 가지고 있다.
-* 이번 예제의 경우 group 0 만을 사용했지만,
-* 복수의 group을 사용하는 경우 그룹과 채널에 대한 분별적인 고려가 필요
 
 
 ```c
@@ -217,6 +214,26 @@ void VadcBackgroundScanDemo_run(void)
 	}
 }
 ```
+* 저장된 결과는 main loop에서 0.5초의 주기로 출력
+
+```c
+// in Cpu0_Main.c
+int core0_main(void)
+{
+  // 중략
+
+  while (TRUE)
+  {
+      VadcBackgroundScanDemo_run();
+      wait(TimeConst_100ms*5);
+  }
+
+return 0;
+}
+```
+* 디버거와 연결이 되어있다면 Sim I/O 창을 통해 확인할 수 있다.
+
+![MultiChannelVoltmeter_Output](images/MultiChannelVoltmeter_Output.png)
 
 
 

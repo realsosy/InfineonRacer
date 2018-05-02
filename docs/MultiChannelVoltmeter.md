@@ -80,15 +80,15 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
   * 각 모듈별 이용하고자 하는 채널을 다른 명령없이 연속적으로 스캔하여 컨버팅
     * 채널별 할당 된 핀으로 부터 아날로그 볼트 값을 스캔
     * 이를 디지털 값으로 변환
-  * 하나의 채널이 자동으로 컨버팅이 완료된 후 사용자가 컨버팅된 값을 읽어가면 컨버팅 시작
   * 각각 채널이 독립적으로 동작
+  * 사용자가 컨버팅된 값을 이용하기 위해선 그 result가 어떻게 handling되는지 이해할 필요가 있음
 
 
-* Result handling
+- Result handling
 	* 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
 	* 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
-	* Wait-for-read mode(*WFRM*)를 사용하여 overwrite에 의한 데이터 손실을 방지
-	* *WFRM*: Target result register가 read 될 때까지 conversion을 정지시키며 valid flag를 통해 state를 표시
+	* Wait-for-read mode를 사용하여 overwrite에 의한 데이터 손실을 방지
+	* **Wait-for-read mode** : target result register가 read 될 때까지 conversion을 정지시키며 valid flag를 통해 state를 표시
 
 
 

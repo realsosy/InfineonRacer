@@ -11,13 +11,10 @@ date: 2018-05-01
 
 * ADC 라는 것은 알겠는데, AURIX에는 VADC라고 되어 있네? **Versatile** 이라고? 이것은 또 뭐냐?
 
-
-
-
 아날로그 신호를 디지탈 값으로 바꿔주는 장치를 ADC(Analog-to-Digital Converter)라고 부르고 대부분의 마이크로컨트롤러들은 이 모듈을 가지고 있습니다.  ADC를 이야기 할 때 채널의 갯수, 변환속도, 그리고 분해능 등이 중요한 스펙(Specification) 입니다.  아날로그 변환값을 CPU에서 사용하기 위해서는 다음의 몇가지 사항에 대해서 프로그래밍을 해줘야 합니다.
 
 * 변환한 값은 어느 곳에 **어떻게 보관**할 것인지?
-* 언제 샘플링** 할 것인지?
+* 언제 **샘플링** 할 것인지?
 
 ADC 하드웨어가 이 두 가지 사항에 대해서 어떻게 지원해 주는지에 따라 소프트웨어는 확연하게 다른 방식으로 구성되어 집니다.  하드웨어에서 이 사항을 충실하게 지원해 주면 ADC 모듈의 **설정**에 관심을 가지고 세심하게 프로그래밍 해야 하고, 그렇지 않다면 설정은 간단하지만 샘플링 마다 관련된 동작을 **반복적으로 실행**해야만 합니다.
 
@@ -55,15 +52,16 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 ## Background 정보
 
 * Analog to digital conveter
-	* ADC는 디지털 출력이 아날로그 입력에 비례하는 전자 회로
-	* 그런데 analog 입력신호는 오디오, 비디오, 온도 등 매우 다양한 종류가 존재하며,
-	* 그에 따른 매우 다양한 주파수 특성을 가지고 있다.
-	* 이런 다양한 유형의 신호특성에 최적화하기 위해 멀티채널 방식을 사용
+	* ADC는 아날로그 측정 값을 디지털 값으로 출력하는 전자 회로
+	* 아날로그 입력신호는 오디오, 비디오, 온도 등 매우 종류가 다양
+	* 자동차에서 아날로그 값으로 측정하는 센서가 많기때문에
+	* AURIX에서는 여러 채널의 아날로그 값을 측정할 수 있는 멀티채널 방식을 적용
+
+
 - Multi channel ADC
 	* 여러 채널을 변환하기 위해서 복수개의 ADC를 사용하는 것 보다는,
-	* 한 개의 ADC를 채택하고 analog MUX를 사용하는 것이 더 경제적
-	* 대신 ADC는 고정밀의 아날로그 회로로 구성이되며 복잡한 구조를 갖게 됨
-
+	* 한 개의 ADC모듈을 사용하여 analog MUX를 적용하는 것이 더 경제적
+	* 대신 ADC는 하나의 모듈이 여러 채널을 제어하기 위해서 복잡한 구조를 갖게 됨
 
 
 ## AURIX - related
@@ -71,17 +69,26 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 * ​2개의 converter group과 14개의 input channel
 	* 각 그룹은 독립적으로 작동하는 ADC kernel
 	* 그룹별로 14채널의 전용 아날로그 input multiplexer를 보유
-	* Sample, arbitration 등 multi channel 동작 설정을 위한 register 역시 존재하지만,
-	* 이번 장에서는 가장 낮은 우선순위로 모든 채널에서 신호를 받아올 수 있는 background scan을 이용
+	* 각 ADC 그룹별 14채널의 ADC 값을 스캔하여 컨버팅 할 수 있음
+	* 각 그룹별 어떤 채널(channel)을 어떤 타이밍(sample)에 어떤 우선순위(arbitration)을 갖고 스캔을 할지 제어 가능 - 각 기능들의 의미와 설정은 다음장에서 자세하게 다룸
+	* 이번 장에서는 가장 낮은 우선순위로 모든 채널에서 원하는 신호를 받아와 컨버팅을 수행하는 background scan을 이용
 
 
 ![MultiChannelVoltmeter_StructureOverview](images/MultiChannelVoltmeter_StructureOverview.png)
 
+* Backgound scan
+  * 각 모듈별 이용하고자 하는 채널을 다른 명령없이 연속적으로 스캔하여 컨버팅
+    * 채널별 할당 된 핀으로 부터 아날로그 볼트 값을 스캔
+    * 이를 디지털 값으로 변환
+  * 하나의 채널이 자동으로 컨버팅이 완료된 후 사용자가 컨버팅된 값을 읽어가면 컨버팅 시작
+  * 각각 채널이 독립적으로 동작
+
+
 * Result handling
 	* 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
 	* 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
-	* Wait-for-read mode[^wfrm]를 사용하여 overwrite에 의한 데이터 손실을 방지
-	[^wfrm]: Target result register가 read 될 때까지 conversion을 정지시킨다. valid flag를 통해 state를 표시.
+	* Wait-for-read mode(*WFRM*)를 사용하여 overwrite에 의한 데이터 손실을 방지
+	* *WFRM*: Target result register가 read 될 때까지 conversion을 정지시키며 valid flag를 통해 state를 표시
 
 
 
@@ -172,19 +179,19 @@ void VadcBackgroundScanDemo_init(void)
 
 ### Interrupt Configuration
 
-* 모듈 설정을 통해서 ADC 동작을 모두 자동으로 실행하도록 하였습니다.
-  * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없습니다.
-  * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있습니다.
+* Background 스켄 모듈은 ADC 동작을 모두 자동으로 실행하도록 설정
+  * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없음
+  * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있음
 
 
 ### Module Behavior
 
 * 새로운 valid data가 갱신될 경우 valid flag 신호가 나옴
 * Signal을 기준으로 결과값을 저장
+* 독립적인 converter group들은 각각 별도의 14개의 채널을 가지고 있다.
+* 이번 예제의 경우 group 0 만을 사용했지만,
+* 복수의 group을 사용하는 경우 그룹과 채널에 대한 분별적인 고려가 필요
 
-- 독립적인 converter group들은 각각 별도의 14개의 채널을 가지고 있다.
-- 이번 예제의 경우 group 0 만을 사용했지만,
-- 복수의 group을 사용하는 경우 그룹과 채널에 대한 분별적인 고려가 필요
 
 ```c
 //in VadcBackgroundScanDemo.c
@@ -268,6 +275,7 @@ void BasicVadcBgScan_run(void)
 }
 ```
 * 스케쥴러를 이용해 1초마다 결과값을 출력
+* Shell인터페이스를 통해서 출력
 
 ```c
 // in AppTaskFu.c

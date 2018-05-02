@@ -175,6 +175,14 @@ void AsclinShellInterface_run(void)
     Ifx_Shell_process(&g_AsclinShellInterface.shell);
 }
 ```
+* Terminal에 연결 후 실행하거나 info 명령어를 넣었을 때 나오는 화면
+
+![MyOwnTerminal_CommandInfo](images/MyOwnTerminal_CommandInfo.png)
+
+* "help" command를 입력하면 설정된 함수에 의해 다음과 같이 표시된다.
+
+![MyOwnTerminal_CommandHelp](images/MyOwnTerminal_CommandHelp.png)
+
 
 **[주의]**
 

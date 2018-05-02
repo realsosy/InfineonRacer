@@ -86,7 +86,7 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ### Shell 개요
 
-* Asc 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 따라 관련된 명령을 수행
+- Asc 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 따라 관련된 명령을 수행
   * Call-back 함수인 Command 함수를 구성하여 사용자가 입력하는 명령을 수행
   * Data-pipe를 통하여 사용자가 입력하는 명령어를 수신
   * 미리 정의된 Command에 따라서 명령을 수행
@@ -98,12 +98,12 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
   * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
 
 
-* 동작에 관하여 아래 command 코드를 살펴보면
-  * 사용자가 shell을 통해 "help"라는 입력을 준다면 data-pipe interface를 통하여 사용자의 입력을 수신: ```g_AsclinShellInterface```
+- 동작에 관하여 아래 command 코드를 살펴보면
+  * 사용자가 shell을 통해 "help"라는 입력을 준다면 data-pipe interface를 통하여 그 입력을 수신: ```g_AsclinShellInterface```
   * 그 후 정의된 "help"에 맞는 handler 함수를 수행: ```Ifx_Shell_showHelp```
 
 
-  ```c
+```c
   // in AsclinShellInterface.c
   const Ifx_Shell_Command AppShell_commands[] = {
       {"status", "   : Show the application status", &g_AsclinShellInterface,       &AppShell_status,    },

@@ -108,7 +108,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 * Input channel selection
    * Multiplexer가 여러 개의 아날로그 입력 중 하나를 선택합니다.
    * 세 가지 소스들은 (Request source 1-3) linear sequence, arbitrary sequence, 또는 specific channel 중 선택 가능합니다.
-     * 사용자는 소스들의 우선 순위를 결정할 수 있고, 이 우선 순위를 Arbiter가 중재 시 참조하게 됩니다.
+      * 사용자는 소스들의 우선 순위를 결정할 수 있고, 이 우선 순위를 Arbiter가 중재 시 참조하게 됩니다.
  * Conversion control
    * 선택된 아날로그 입력은 conversion control 설정 값에 따라 변환되게 됩니다.
      * Sample phase duration 또는 result resolution 등을 설정합니다.
@@ -148,6 +148,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     * 최대 8개의 channel을 할당할 수 있습니다.
 
       ![QueuedRequestSource](images\MyOwnCheapOscilloscope_QueuedRequestSource.png)
+
 
   * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
 
@@ -191,6 +192,48 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 ![MyOwnCheapOscilloscope_ConversionStartModes](images\MyOwnCheapOscilloscope_ConversionStartModes.png)
 
+=======
+
+  * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
+
+    * Request source 1과 2가 channel scan source에 사용될 수 있습니다.
+
+    * Request source 1은 group scan source로 사용됩니다. Group scan source는 해당 group에 포함된 모든 channel에 대한 scan을 요청할 수 있습니다.
+
+    * Request source 2는 background scan source로 사용됩니다. Background scan source는 모든 group의 모든 channel에 대한 scan을 요청할 수 있습니다.
+
+      ![ScanRequestSource](images\MyOwnCheapOscilloscope_ScanRequestSource.png)
+
+
+
+
+**Request source arbitration**
+
+* Arbiter operation
+  * Arbiter는 다수의 request source로부터 동시에 ADC 요청이 왔을 때 중재자 역할을 합니다.
+  * Polling 방식으로 중재를 하며 중재 구간을 arbitration round라고 합니다.
+  * Arbitration round는 다수 개의 arbitration slot으로 구성되어 있습니다.
+  * 하나의 Arbitration slot에는 request source가 할당됩니다.
+  * 또한, arbitration round에 몇 개의 arbitration slot이 포함될 지도 설정이 가능합니다. 최소 4개부터 20개까지 slot을 포함시킬 수 있습니다.
+  * 사용자는 Arbitration slot은 duration을 설정할 수 있습니다.
+  * 사용자는 각각의 request source의 우선순위를 정할 수 있습니다.
+  * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
+    * *Synchronized source (manual, p2768) 은 무슨 말인지 이해가 안됩니다.
+
+    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images\MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
+
+
+  * Conversion start mode
+      * Arbitration winner는 현재 converter의 상태에 따라 어떻게 처리될 지 결정됩니다.
+    * 만약, converter가 유휴 상태인 경우는 arbitration winner의 변환을 즉시 처리합니다.
+
+    * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위와 같을 경우 변환이 끝날 때까지 대기하고, 변환이 완료되면 arbitration winner의 변환을 처리합니다.
+
+    * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위보다 낮을 경우, 사용자 설정에 따라 다르게 처리됩니다.
+
+
+      * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
+      * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
 
 **Analog input channel configuration**
@@ -205,7 +248,38 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
   * Result position: 결과 값이 left-aligned 또는 right-aligned 되도록 설정
 
-    ​
+
+**Conversion Timing and Result Handling**
+
+* ADC 변환에 소요되는 시간은 다양한 사용자 설정에 따라 달라집니다.
+  * ADC conversion clock frequency
+  * Sample time
+  * Operating mode (normal conversion / fast compare mode)
+  * Result width (8/10/12 bits)
+  * Post calibration time
+* 일반적으로 변환 시간은 sample time, conversion steps, synchronization 시간을 모두 합한 시간을 말합니다.
+* 변환 된 결과는 16개의 group result register 중 한 곳에서 저장되거나 global result register에 저장됩니다.
+* 저장되는 위치는 어플리케이션의 사용 용도에 따라 사용자가 지정할 수 있으며, 보통 CPU load 나 DMA 전송의 성능을 최적화 할 수 있도록  설정합니다.
+
+![MyOwnCheapOscilloscope_ConversionResultStorage](images\MyOwnCheapOscilloscope_ConversionResultStorage.png)
+
+![MyOwnCheapOscilloscope_ConversionStartModes](images\MyOwnCheapOscilloscope_ConversionStartModes.png)
+
+
+
+**Analog input channel configuration**
+
+
+* Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다. 
+
+  * Channel parameters: sample time과 result data width 설정 (8/10/12 bits)
+
+  * Reference selection: alternate reference voltage 설정 가능
+
+  * Result target: 변환 결과가 group result register 또는 global result register 중 한 곳에 저장되도록 설정
+
+  * Result position: 결과 값이 left-aligned 또는 right-aligned 되도록 설정
+
 
 **Conversion Timing and Result Handling**
 
@@ -224,24 +298,16 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 
 
-
-
-
-
-
 ## iLLD - related
 
-> * 여러 요청들을 관리하는 방법에 대한 간략한 소개
->
->   * QUEUE, AutoScan, BackgroundScan 
->
-> * Arbiter를 사용해서 중재되는 상황에 대한 설명
->
->   ​
->
->   그리고 설명하고 싶으신 것들 .... 
->
-> * Timer 등과 연결해서 트리거링 시키는 이야기 같은 것을 더 하면.... 너무 어려울까?
+**Queue request source handling**
+
+*  Queue request source는 활성화된 채널의 고정된 conversion 순서가 있는 scan request source와 달리 임의의 채널의 short conversion sequence 를 지원합니다. (최대 8개)
+*  프로그래밍 된 sequence는 queue buffer에 저장됩니다. (FIFO 메커니즘 기반)
+*  요청된 채널 번호가 Queue input을 통해 입력되고, Queue stage 0은 다음 변환될 채널을 정의합니다.
+*  Arbiter가 priority 가 높은 request로 인해 queued request source에 의해 발생된 conversion을 중단하면, 해당 conversion parameter가 자동으로 백업 단계에 저장됩니다. 이렇게 하면 중단된 conversion이 손실되지 않고 다음 arbitration round(stage 0 이전)에 참여하게 됩니다.
+*  Trigger와 gating unit은 선택된 외부 트리거 및 gating signal로부터 이벤트를 생성합니다.
+*  Trigger event는 queued sequence를 시작하고 소프트웨어나 선택된 하드웨어를 통해 생성될 수 있습니다.
 
 
 
@@ -249,50 +315,62 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 ### Module Configuration
 
+* 상위단에서 하위단까지 단계별 설정이 필요
+  1. ADC configuration
+  2. Group configuration
+  3. Channel configuration
+* 설정은 개별적인 구조체와 계측적인 명명법을 사용한 method로 구분하여 구현되어 있다.
+
 ```c
 void VadcAutoScanDemo_init(void)
 {
-    /* ADC Configuration ***************************************************************/
+    /* VADC Configuration */
+
+	// ADC module configuration 생성
     IfxVadc_Adc_Config adcConfig;
     IfxVadc_Adc_initModuleConfig(&adcConfig, &MODULE_VADC);
+
+    // ADC module configuration 초기화
     IfxVadc_Adc_initModule(&g_VadcAutoScan.vadc, &adcConfig);
 
-    /* group config *******************************************************************/
+    // Group configuration 구조체화
     IfxVadc_Adc_GroupConfig adcGroupConfig;
     IfxVadc_Adc_initGroupConfig(&adcGroupConfig, &g_VadcAutoScan.vadc);
 
-    /* with group 0 */
+    // Group 0에 관련된 세부 설정 세팅
     adcGroupConfig.groupId = IfxVadc_GroupId_0;
     adcGroupConfig.master  = adcGroupConfig.groupId;
 
     /* enable scan source */
     adcGroupConfig.arbiter.requestSlotScanEnabled = TRUE;
 
-    /* enable auto scan */
+    // Auto scan enable 설정
     adcGroupConfig.scanRequest.autoscanEnabled = TRUE;
 
     /* enable all gates in "always" mode (no edge detection) */
     adcGroupConfig.scanRequest.triggerConfig.gatingMode = IfxVadc_GatingMode_always;
 
-    /* initialize the group */
+    // 변경된 설정을 적용하기 위해 다시 초기화
+    /*IfxVadc_Adc_Group adcGroup;*/    //declared globally
     IfxVadc_Adc_initGroup(&g_VadcAutoScan.adcGroup, &adcGroupConfig);
 
-    /* channel config *****************************************************************/
     uint32                    chnIx;
-    /* create channel config */
+    // Channel configuration 생성
     IfxVadc_Adc_ChannelConfig adcChannelConfig[4];
 
     for (chnIx = 0; chnIx < 4; ++chnIx)
     {
+      	// Channel configuration 초기화
         IfxVadc_Adc_initChannelConfig(&adcChannelConfig[chnIx], &g_VadcAutoScan.adcGroup);
 
+      	// Channel configuration 설정
         adcChannelConfig[chnIx].channelId      = (IfxVadc_ChannelId)(chnIx);
         adcChannelConfig[chnIx].resultRegister = (IfxVadc_ChannelResult)(chnIx);  /* use dedicated result register */
 
-        /* initialize the channel */
+        // 변경된 설정을 적용하기 위해 다시 초기화
         IfxVadc_Adc_initChannel(&adcChannel[chnIx], &adcChannelConfig[chnIx]);
 
-        /* add to scan ***************************************************************/
+        /* add to scan */
         unsigned channels = (1 << adcChannelConfig[chnIx].channelId);
         unsigned mask     = channels;
         IfxVadc_Adc_setScan(&g_VadcAutoScan.adcGroup, channels, mask);
@@ -320,6 +398,8 @@ void VadcAutoScanDemo_init(void)
 ```c
 void VadcAutoScanDemo_run(void)
 {
+    printf("VadcAutoScanDemo_run() called\n");
+
     uint32                    chnIx;
 
 	/* check results */
@@ -334,9 +414,14 @@ void VadcAutoScanDemo_run(void)
 		do
 		{
 			conversionResult = IfxVadc_Adc_getResult(&adcChannel[chnIx]);
-		} while (!conversionResult.B.VF);
+		} while (!conversionResult.B.VF);	// conversionResult.B.VF; 유효데이터임을 알려주는 valid flag
 
 		volatile uint32 actual = conversionResult.B.RESULT;
+		/* print result, check with expected value */
+		{
+			/* FIXME result verification pending ?? */
+			printf("Group %d Channel %d : %u\n", group, channel, actual);
+		}
 	}
 }
 ```
@@ -367,19 +452,29 @@ int core0_main(void)
   * 이 예제에서는 ADC 는 자동으로 변환을 반복하도록 (AutoScan) 설정하여 두고
   * 사용자는 훨씬 늦은 주기로 이 값을 읽어 간다.
 
-  ​
 
 
 
 ## 추가적인 설명
 
-> InfineonRacer 에서 msl 명령과 SerialPlot 을 사용해서 화면에 결과값을 살펴보는 부분을 설명해 주면 좋을 듯,
->
-> 이것이 진짜로 오실로스코프 동작 이니까.
+### In InfineonRacer; ADC 값 확인
 
+* InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
+* Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
 
+![ADCLinescanPort](.\images\ADCInputPortSet.png)
 
+![ADCLinescanPort](.\images\ADCLinescanPort.jpg)
 
+* Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
+* 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
+
+![ADCmls](.\images\ADCmls.jpg)
+
+* SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
+* 아래 예시는 SerialPort에서 500ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
+
+![ADCmlsSerialport](.\images\ADCmlsSerialport.jpg)
 
 ------
 

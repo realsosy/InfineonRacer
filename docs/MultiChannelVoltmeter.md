@@ -33,7 +33,7 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 ## References
 
 * TC23x TC22x Family User's Manual v1.1 - Chap27 VADC
-* iLLD_TC23A Help/ Modules/ VADC/
+* iLLD_TC23A_1_0_1_4_0 - Modules/iLLD/VADC
 
 **[Example Code]**
 
@@ -54,7 +54,7 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 * Analog to digital conveter
 	* ADC는 아날로그 측정 값을 디지털 값으로 출력하는 전자 회로
 	* 아날로그 입력신호는 오디오, 비디오, 온도 등 매우 종류가 다양
-	* 자동차에서 아날로그 값으로 측정하는 센서가 많기때문에
+	* 자동차에서 아날로그 값으로 측정하는 센서가 많기 때문에
 	* AURIX에서는 여러 채널의 아날로그 값을 측정할 수 있는 멀티채널 방식을 적용
 
 
@@ -69,26 +69,30 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 * ​2개의 converter group과 14개의 input channel
 	* 각 그룹은 독립적으로 작동하는 ADC kernel
 	* 그룹별로 14채널의 전용 아날로그 input multiplexer를 보유
-	* 각 ADC 그룹별 14채널의 ADC 값을 스캔하여 컨버팅 할 수 있음
-	* 각 그룹별 어떤 채널(channel)을 어떤 타이밍(sample)에 어떤 우선순위(arbitration)을 갖고 스캔을 할지 제어 가능 - 각 기능들의 의미와 설정은 다음장에서 자세하게 다룸
-	* 이번 장에서는 가장 낮은 우선순위로 모든 채널에서 원하는 신호를 받아와 컨버팅을 수행하는 background scan을 이용
+	* 어떤 채널을 어떤 타이밍(sample)에 어떤 우선순위(arbitration)을 갖고 스캔을 할지 제어 가능
+  (각 기능들의 의미와 설정은 다음장에서)
+	* 이번 장에서는 background scan을 이용하여 데이터를 받아올 것이다.
 
 
 ![MultiChannelVoltmeter_StructureOverview](images/MultiChannelVoltmeter_StructureOverview.png)
 
 * Backgound scan
-  * 각 모듈별 이용하고자 하는 채널을 다른 명령없이 연속적으로 스캔하여 컨버팅
-    * 채널별 할당 된 핀으로 부터 아날로그 볼트 값을 스캔
+  * 가장 낮은 우선순위를 지님
+  * 모든 그룹의 모든 채널을 scan할 수 있음
+  * 이용하고자 하는 채널을 다른 명령없이 연속적으로 scan하여 컨버팅
+    * 채널별 할당 된 핀으로 부터 아날로그 voltage 값을 스캔
     * 이를 디지털 값으로 변환
-  * 각각 채널이 독립적으로 동작
-  * 사용자가 컨버팅된 값을 이용하기 위해선 그 result가 어떻게 handling되는지 이해할 필요가 있음
+  * 각각 채널은 독립적으로 동작한다.
+  * 사용자가 컨버팅된 값을 이용하기 위해선 그 result가 어떻게 처리되는지 이해할 필요가 있다.
 
 
 - Result handling
 	* 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
 	* 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
-	* Wait-for-read mode를 사용하여 overwrite에 의한 데이터 손실을 방지
-	* **Wait-for-read mode** : target result register가 read 될 때까지 conversion을 정지시키며 valid flag를 통해 state를 표시
+	* Wait-for-read mode를 사용하여 overwrite에 의한 데이터 손실을 방지한다.
+
+**[참고]** Wait-for-read mode란?
+  - Target result register가 read 가능한 상태가 될 때까지 컨버팅을 정지시키는 모드
 
 
 
@@ -179,7 +183,7 @@ void VadcBackgroundScanDemo_init(void)
 
 ### Interrupt Configuration
 
-* Background 스켄 모듈은 ADC 동작을 모두 자동으로 실행하도록 설정
+* Background 스캔은 ADC 동작을 모두 자동으로 실행하도록 설정
   * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없음
   * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있음
 
@@ -187,7 +191,7 @@ void VadcBackgroundScanDemo_init(void)
 ### Module Behavior
 
 * 새로운 valid data가 갱신될 경우 valid flag 신호가 나옴
-* Signal을 기준으로 결과값을 저장
+- Signal을 기준으로 결과값을 저장
 
 
 ```c
@@ -214,7 +218,7 @@ void VadcBackgroundScanDemo_run(void)
 	}
 }
 ```
-* 저장된 결과는 main loop에서 0.5초의 주기로 출력
+* 저장된 결과는 main loop에서 0.5초의 주기로 출력된다.
 
 ```c
 // in Cpu0_Main.c
@@ -231,7 +235,7 @@ int core0_main(void)
 return 0;
 }
 ```
-* 디버거와 연결이 되어있다면 Sim I/O 창을 통해 확인할 수 있다.
+* 디버거와 연결이 되어있다면 Simulated I/O 창을 통해 확인할 수 있다.
 
 ![MultiChannelVoltmeter_Output](images/MultiChannelVoltmeter_Output.png)
 
@@ -242,7 +246,7 @@ return 0;
 ### In InfineonRacer; TestVadcBgScan
 
 * AN15, 16, 20, 21에서 들어오는 input을 사용할 것이다.
-* Board에는 이미 pin과 converter가 맵핑되어있다.
+- Board에는 이미 pin과 converter가 맵핑되어있다.
 * User manual을 통해 사용해야하는 group과 channel을 확인
 
 ![MultiChannelVoltmeter_Pin](images/MultiChannelVoltmeter_Pin.png)
@@ -268,7 +272,7 @@ for (chnIx = 0; chnIx < ADC_CHN_MAX; ++chnIx)
 ```
 
 * Default 분해능은 12bit이기 때문에 결과값은 0~4095의 수치로 나올 것이다.
-* 직관적인 사용을 위해 nomalization하여 저장한다.
+- 직관적인 사용을 위해 nomalization하여 저장한다.
 
 ```c
 // in BasicVadcBgScan.c
@@ -291,8 +295,7 @@ void BasicVadcBgScan_run(void)
         }
 }
 ```
-* 스케쥴러를 이용해 1초마다 결과값을 출력
-* Shell인터페이스를 통해서 출력
+* 스케쥴러를 이용해 1초마다 결과를 출력한다
 
 ```c
 // in AppTaskFu.c
@@ -309,6 +312,10 @@ void appTaskfu_1000ms(void)
 	IfxStdIf_DPipe_print(&g_AsclinShellInterface.stdIf.asc, "  Ch21: %5d"ENDL,(uint32) (IR_getChn21()*4096));
 }
 ```
+* Data pipe를 이용하므로 터미널을 통해 확인할 수 있다.
+
+![MultiChannelVoltmeter_InfineonRacer](images/MultiChannelVoltmeter_InfineonRacer.png)
+
 
 ------
 

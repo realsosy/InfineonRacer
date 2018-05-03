@@ -48,7 +48,7 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 다음의 기능을 수행하는 쉘을 구성한다.
 
-* Booting 시, 혹은 "info"  명령 입력시 초기화면(Welcome 화면)을 출력한다.
+* Booting 시, 혹은 "info"  명령 입력시 초기화면을 출력한다.
 * "status" 명령 입력시 시스템의 정보를 출력한다.
 * "help" 명령 입력시 도움말을 출력한다.
 
@@ -66,10 +66,10 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 - Shell의 계층적 구조
   * 통신모듈인 경우 한 하드웨어에서 여러 종류의 통신방식을 제공하고,
-  * 모듈과 프로토콜에 따라 대응을 해 줘야하기 때문에,
-  * 사용자 입장에서 일관된 인터페이스로 통신하기 위해 한단계의 추상화 과정을 더 거침
-  * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화
-    - Shell을 통해서 송신 혹은 수신되는 data들을 data-pipe interface를 통해 관리
+  * 모듈과 프로토콜에 따라 대응을 해줘야하기 때문에,
+  * 사용자 입장에서 일관된 인터페이스로 통신하기 위해 한단계의 추상화 과정을 더 거친다.
+  * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화하고,
+  * Shell을 통해서 송신 혹은 수신되는 data들을 data-pipe interface를 통해 관리
 
 ![MyOwnTerminal_ShellLayer](images/MyOwnTerminal_ShellLayer.png)
 
@@ -86,10 +86,10 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 ### Shell 개요
 
-- Asc 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 따라 관련된 명령을 수행
-  * Call-back 함수인 Command 함수를 구성하여 사용자가 입력하는 명령을 수행
-  * Data-pipe를 통하여 사용자가 입력하는 명령어를 수신
-  * 미리 정의된 Command에 따라서 명령을 수행
+- 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 대응되는 명령을 수행
+  * Call-back 함수인 command를 정의하여 명령을 수행할 것이다.
+  * Data pipe를 통하여 사용자가 입력하는 명령어를 수신하고 그것이 아는 명령일 때,
+  * 미리 정의된 command에 따라서 대응대는 동작을 행한다.
 
 
 * Command
@@ -98,9 +98,10 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
   * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
 
 
-- 동작에 관하여 아래 command 코드를 살펴보면
-  * 사용자가 shell을 통해 "help"라는 입력을 준다면 data-pipe interface를 통하여 그 입력을 수신: ```g_AsclinShellInterface```
-  * 그 후 정의된 "help"에 맞는 handler 함수를 수행: ```Ifx_Shell_showHelp```
+- 예를들어,
+  * 사용자가 shell을 통해 "help"라는 입력을 준다면,
+  * Data-pipe interface를 통하여 그 입력을 수신 : ```g_AsclinShellInterface```
+  * 그 후 정의된 "help"에 맞는 handler 함수를 수행 : ```Ifx_Shell_showHelp```
 
 
 ```c
@@ -112,11 +113,14 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
       IFX_SHELL_COMMAND_LIST_END
   };
   ```
+
 * Terminal에 연결 후 실행하거나 info 명령어를 넣었을 때 나오는 화면
-  ![MyOwnTerminal_CommandInfo](images/MyOwnTerminal_CommandInfo.png)
+
+![MyOwnTerminal_CommandInfo](images/MyOwnTerminal_CommandInfo.png)
 
 * "help" command를 입력하면 설정된 함수에 의해 다음과 같이 표시된다.
-  ![MyOwnTerminal_CommandHelp](images/MyOwnTerminal_CommandHelp.png)
+
+![MyOwnTerminal_CommandHelp](images/MyOwnTerminal_CommandHelp.png)
 
 
 
@@ -124,7 +128,7 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 
 * Asc 통신 관련 초기화 생략
 
-- 추상화 계층을 통해 시리얼 통신과 shell을 연결
+- 추상화 계층(data pipe)을 통해 시리얼 통신과 shell을 연결
 
 ```c
 // in AsclinShellInterface.c
@@ -146,6 +150,7 @@ void initSerialInterface(void)
 
 }
 ```
+
 
 * Shell interface 초기화
 
@@ -252,10 +257,10 @@ void appTaskfu_idle(void){
 }
 ```
 
-* 연결된 차량의 state를 관측할 수 있도록 shell command를 구성
-  * 차량의 servo motor angle을 확인
-  * "srv"라는 command를 shell을 통해 입력
-  * ```AppShell_srv```를 통하여 servo motor angle을 출력
+* 연결된 차량의 state를 관측할 수 있는 shell command를 구성
+  * 예를 들어 차량의 servo motor angle을 확인하려면
+  * "srv"라는 command를 shell을 통해 입력하면 된다.
+  * 미리 구성된 ```AppShell_srv```를 통하여 servo motor angle을 출력
 
 
 ```c

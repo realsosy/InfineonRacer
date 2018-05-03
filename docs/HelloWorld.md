@@ -2,7 +2,7 @@
 
 title: Hello world.md
 author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)
-date: 2018-04-23
+date: 2018-05-03
 
 ---
 
@@ -28,11 +28,11 @@ date: 2018-04-23
 
 ## References
 
-*	TC23x TC22x Family User's Manual v1.1 - 19 Asynchronous/Synchronous Interface (ASCLIN)
-* iLLD_TC23A 1.0.1.4.0 도움말 - ASCLIN
-* iLLD_TC23A_Demos_1_0_1_4_0 - AsclinAscDemo
+*	TC23x TC22x Family User's Manual v1.1 - 19 ASCLIN
+* iLLD_TC23A 1.0.1.4.0 - Modules/iLLD/ASCLIN
 
 **[Example Code]**
+
 * MyIlldModule_TC23A - AsclinAsc
 
 ## Example Description
@@ -71,13 +71,13 @@ date: 2018-04-23
 * Asclin은 다음과 같은 protocol들을 제공
 	* ASC: 일반적인 Asclin 통신 프로토콜 (본 예제에서 사용)
 	* LIN: Local interconnect network, 차량에서 느린 속도로 data를 전송할 때 사용
-	* SPI: Serial Peripheral Interface, 비동기 직렬통신과 반대로 동기화하여 병렬통신을 진행할 수 있음
+	* SPI: Serial Peripheral Interface, 동기화된 병렬통신을 이용할 때 사용
 
 ### Sequences
 * 직렬통신은 한 번에 data를 한 bit씩 밖에 전송을 못 하기 때문에,
-* 전송하고자 하는 data를 순차적으로 관리해 주는 것이 필요
-* Asclin은 먼저 들어온 data를 먼저 내보내는 FIFO 방식을 사용 (First-In-First-Out)
-* 아래 그림은 TX FIFO의 example
+* 전송하고자 하는 data를 순차적으로 관리해 주는 것이 필요하며,
+* Asclin은 먼저 들어온 data를 먼저 내보내는 FIFO 방식을 사용한다. (First-In-First-Out)
+- 아래 그림은 TX FIFO의 처리 구조
 
 ![HelloWorld_FIFO](images/HelloWorld_FIFO.png)
 
@@ -88,20 +88,23 @@ date: 2018-04-23
 	3. FIFO기반 unpackaging (RxFIFO)
 	4. handshake 요청 (ARTS)
 
-* Data를 송신할 때
+- Data를 송신할 때
 	1. 송신하려는 데이터가 들어옴 (ATX)
 	2. FIFO기반 packaging (TxFIFO)
 	3. handshake 응답 (ACTS)
 
 * Handshake
-	- Data를 송신하거나 수신할때 데이터 송수신이 이상없이 완료됨을 알려주는 signal
-	- 송신일 경우 받는쪽에서 잘 받았음을 ACTS를 통해서 알려주면 그 다음 bit을 송신
-	- 받는 경우는 그 반대로 동작
+	- Data를 송수신할때 통신이 가능한지 상태를 주고받아 원활한 통신을 가능하게 한다.
+	- RTS는 자신의 수신버퍼 상태를 알려주는 신호이며,
+	- CTS는 상대의 수신버퍼의 상태를 받았다는 신호.
+	- 이런 신호들을 주고 받는 행위을 handshake라고 한다.
+	- 받는쪽에서 받을 준비가 됬음을 RTS를 통해서 알리고,
+	- 송신쪽에서 그 신호를 받았음을 CTS를 통해 응답한다.
 
-* Interrupt
-	- 비동기 직렬통신이기 때문에 언제 data 수신이 일어날지 알 수 없음
-	- Data 수신이 일어나는 경우 interrupt를 발생시킨 후 data 수신을 위한 작업을 진행
-	- 송신도 마찬가지로 interrupt를 통해서 진행
+- Interrupt
+	- 비동기 직렬통신이기 때문에 언제 data 전송이 일어날지 알 수 없음
+	- 때문에 인터럽트를 이용해 비동기 통신에 대응한다.
+	- 인터럽트를 발생시킨 후 data 처리을 위한 작업을 진행
 
 ![HelloWorld_AscLinArchitecture](images/HelloWorld_AscLinArchitecture.png)
 
@@ -110,10 +113,11 @@ date: 2018-04-23
 ### Module Configuration
 
 * Asclin의 모듈 초기화
-	* 사용할 protocol (AsclinAsc; uart)
-	* 송수신이 일어날 물리적 pin
-	* Data 전송 속도 (AURIX와 통신을 진행하는 기기와 동일하게 맞춤)
-	* 통신관련 Interrupt priorities assign
+	* 사용할 protocol(AsclinAsc; uart)을 정하고,
+	* 송수신이 일어날 물리적 pin(P14.0, 14.1)을 고르고,
+	* Data 전송 속도를 정한 뒤,
+	(AURIX와 통신을 진행하는 기기와 동일하게 맞춤)
+	* 통신관련 Interrupt 설정
 
 ```c
 void AsclinAscDemo_init(void)
@@ -161,9 +165,7 @@ void AsclinAscDemo_init(void)
 
 ### Interrupt Configuration
 
-* 통신 간 데이터 송수신을 위한 인터럽트 설정
-	* Interrupt priorities define,
-	* 사용할 CPU 등 기본적인 interrupt 관련 설정
+* 통신 간 데이터 송수신을 위한 인터럽트를 등록한다.
 
 ```c
 // in ConfigurationIsr.h
@@ -196,7 +198,7 @@ IFX_INTERRUPT(asclin0ErISR, 0, ISR_PRIORITY_ASC_0_EX)
 
 
 
-### Module 동작
+### Module Behavior
 
 * 통신 검증을 위한 test function 구성
 	* `IfxAsclin_Asc_write`을 통한 데이터 송신
@@ -266,7 +268,7 @@ void AsclinAscDemo_run(void)
 ![HelloWorld_Terminal](images/HelloWorld_Terminal.png)
 
 
-### Simulated IO를 통한 메세지 확인
+### Simulated I/O를 통한 메세지 확인
 
 1. 만약 board와 디버거가 연결되어 실행되고 있다면,
 

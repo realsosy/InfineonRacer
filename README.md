@@ -47,7 +47,10 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ### InfineonRacer Guide
 
-1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
+* InfineonRacer의 코드만 참고하실 것이라면 이 파트만 살펴보면 됩니다.
+* 활용에 필요한 필수적인 정보들만 모아 놓았습니다.
+
+1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
 2.  [InfineonRacer User Guide](./docs/InfineonRacerUserGuide.md)  SW Architecture & API
 
 
@@ -55,6 +58,9 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 * [Pins & API](./docs/PinsApi.xlsx)
 
 ### Dive into AURIX world using InfineonRacer
+
+* AURIX, 마이크로컨트롤러를 심도있게 공부해 보고 싶으시다면 이 부분을 단계별로 학습하시기 바랍니다.
+* **How to stduy AURIX** 부터 **Twinkle twinkle little start** 까지는 순서대로 보셔야 합니다.  그 이후는 독립적으로 구성되어 있어서 순서에 관계없이 관심있는 챕터를 보시면 됩니다.
 
 1.  [How to study AURIX?](./docs/HowToStudyAurix.md) MCU 학습 방법 제안
 2.  [How to use BIFACES? (작성중)](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz

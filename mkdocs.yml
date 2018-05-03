@@ -15,7 +15,7 @@ pages:
     - Multiple infinite loops: MultipleInfiniteLoops.md 
     - Hello world: HelloWorld.md
     - My own terminal: MyOwnTerminal.md
-#    - Multi channel voltmeter: MultiChannelVoltmeter.md
+    - Multi channel voltmeter: MultiChannelVoltmeter.md
 #    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
 #    - Line Scan Camera(Optional): LineScanCamera.md
 #    - Chronos ruler: ChronosRuler.md

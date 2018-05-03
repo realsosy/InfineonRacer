@@ -14,7 +14,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ## Links
 * [Github](https://github.com/realsosy/InfineonRacer): 문서와 프로그램 소스
-* [ReadTheDocs](http://infineonracer.readthedocs.io/ko/latest/) : 메뉴얼 스타링로 열람
+* [ReadTheDocs](http://infineonracer.readthedocs.io/ko/latest/) : 메뉴얼 스타로 열람
 
 **[NOTE]**
 

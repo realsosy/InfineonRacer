@@ -211,7 +211,7 @@ void AsclinShellInterface_run(void)
 
 ## 추가적인 설명
 
-### In InfineonRacer
+### In InfineonRacer; TestShellInterface
 
 * STM을 바탕으로 스케줄러를 구성하고 idle 시간에 shell interface를 동작
 

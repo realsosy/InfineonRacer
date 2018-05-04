@@ -1,6 +1,6 @@
 ---
 title: Simulink As a Programming Language
-author: Kyunghan Min (kyunghah.min@gmail.com)  
+author: Kyunghan Min (kyunghah.min@gmail.com)
 date: 2018-05-04
 ---
 
@@ -30,7 +30,7 @@ date: 2018-05-04
 
 * InfineonRacer/src/matlab
 
-## Example Description 
+## Example Description
 
 ####  MATLAB Simulink
 
@@ -58,23 +58,26 @@ date: 2018-05-04
 * MATLAB project는 다음과 같이 이루어져 있다.
   ![Simulink_01_ProjectOverview](images/Simulink_01_ProjectOverview.png)
 
+
 * utilities - Project의 각 기능들을 구성하고 있는 script들
   * clean_up_project: Project를 clear
   * set_up_project: Project를 시작할때 동작시키며, project_paths, pid_param_type등 프로젝트 동작에 관련된 script들을 실행시켜 프로젝트를 동작시킬 준비를 완료함
 
-  ​
+
 * controller - 차량의 속도 및 핸들링을 제어하는 제어 알고리즘
   * 2개의 PID 제어 알고리즘 (종방향/횡방향)
   * Motor drive enable 기능
   * 알고리즘 동작여부 확인을 위한 beep on, LED 기능으로 구성
   ![Simulink_02_ControllerModel](images/Simulink_02_ControllerModel.png)
 
+
 * plant - 차량의 모델
   * 종방향 모델과 횡방향 모델로 구성
   ![Simulink_03_InfineonRacerModel](images/Simulink_03_InfineonRacerModel.png)
 
+
 * harness - control algorithm과 plant를 연결시켜 주는 모델
-  * controller와 plant가 model reference 형태로 동작
+  * ```controller.slx```와 ```plant.slx```가 model reference 형태로 동작
   * Control algorithm to plant model
     * Motor enable
     * Motor voltage
@@ -92,77 +95,53 @@ date: 2018-05-04
 #### Controller design
 
 * Controller는 차량의 종방향 속도를 제어하는 PID 제어기와
-
 * Lane을 따라 횡방향 스티어링을 제어하는 PID 제어기로 이루어져 있다.
-
 * 각 제어 알고리즘은 P, I, D gain 값을 변경하여 알고리즘의 성능을 조절한다
-
   * 제어기의 gain들은 **Workspace**에 변수로 선언되어 있다.
-
   * LatPid = Lateral control gains
-
   * LongiPid = Longitudinal control gains
-
-  * MATLAB command를 이용하여 다음과 같이 값을 변경 할 수 있다. 
-
+  * MATLAB command를 이용하여 다음과 같이 값을 변경 할 수 있다.
   * ex) LatPid의 P gain: 0.7, I gain: 7
-
-  * ```matlab
+    ```matlab
     >> LatPid.Value.P = 0.7
     ```
-
 * 제어 결과는 plant model에서 확인 가능하다.
-
   * 제어 알고리즘의 gain 값들을 변경한 후 harness model을 동작시킨다
   * 각 system의 output 값을 확인하여 제어알고리즘의 성능을 확인한다
   * 아래그림은 횡방향 제어의 PID gain 값 변화에 따른 제어 결과이다
-  ![Simulink_05_ControlResultDemo](images/Simulink_05_ControlResultDemo.png)
+    ![Simulink_05_ControlResultDemo](images/Simulink_05_ControlResultDemo.png)
 
 #### Code generation
-
 * Algorithm 설계가 완료되었다면 이를 code generation을 통하여 c-code로 생성하자
-
 * Code generation은 utilities의 ```generation_controller_code```를 실행시키면 된다.
-
   * 생성된 code를 기존 project에 통합하기 위해서 code가 생성될 경로를 지정해 주어야 한다
   * generation_controller_code내의 code를 수정하여 진행한다
 
-  ```matlab
-  %in generation_controller_code.m
+  ````matlab
+   %in generation_controller_code.m
   function generate_controller_code()
-  %generate_controller_code
-  %
-   
-  %   Copyright 2012 The MathWorks, Inc.
-   
-  % Use the Simulink Coder API to generate code for controllerModel:
-   
+  % ----- 내용 생략
   controllerModel = 'IR_Controller';
-   
+
   if(~bdIsLoaded(controllerModel))
       open_system(controllerModel);
   end
-   
+
   slbuild(controllerModel);
   % coder.report.generate(controllerModel);
 
-  !cp ./work/IR_Controller_ert_rtw/IR_Controller.c ../InfineonRacer_TC23A/0_Src/AppSw/Tricore/Algorithm/ert 
+  !cp ./work/IR_Controller_ert_rtw/IR_Controller.c ../InfineonRacer_TC23A/0_Src/AppSw/Tricore/Algorithm/ert
   % (생성된 코드가 저장될 project path)
 
   % ------ 이하 생략
   ```
-
-* 이때 controller의 input과 output을 실제 project내의 signal과 matching을 시켜줘야 한다.
-
-  * 예를들어 controller는 *input*으로 **vehicle speed**를 받아서 제어결과 **motor voltage**를 *output*으로 내보낸다
-
+* controller의 input과 output을 실제 project내의 signal과 matching을 시켜줘야 한다.
+  * controller는 *input*으로 **vehicle speed**를 받아서 제어결과 **motor voltage**를 *output*으로 내보낸다
   * 이때 **vehicle speed**와 **motor voltage**등의 signal들은 이미 위의 실습들을 통하여 basic software나 다른 iLLD driver, 혹은 hand coding 된 interface를 통해서 읽거나 쓸 수 있다.
-
     * 예를들어 vehicle 속도는 encode speed를 측정하여 받을 수 있다
     * Controller 내에 EncSpd는 EncSpeed signal로 정의되어 있고,
     * 이를 model explorer에서 열어보면 아래 그림과 같이 EncSpeed의 code generation 항에서 값을 받고 쓰는 interface 함수를 연결해 줄 수 있다.
     * EncSpeed를 받는 interface 함수는 project의 Basic.h 파일내에 IR_getEncSpeed()로 정의되어 있다
-
     ```c
     /******************************************************************************/
     /*-----------------------------------Macros-----------------------------------*/
@@ -171,33 +150,26 @@ date: 2018-05-04
     #define IR_getEncPosition() IR_Encoder.rawPosition
     #define IR_getEncDirection() IR_Encoder.direction
     ```
-
   ![Simulink_06_ModelExplorer](images/Simulink_06_ModelExplorer.png)
-  
+
 #### Integration to algorithm
-
 * Code 생성이 완료되면 프로젝트의 설정한 경로(*Algorithm/ert*)에 파일들이 생성되며,
-
 * 이중 ```IR_Controller.h``` 에 정의되는 함수들을 스케쥴러인 ```AppTask.c```에서 task period에 맞게 동작시킨다
-
   ```c
   // 초기화시 실행시키는 function //
   extern void IR_Controller_initialize(void);
 
-  // 매 주기마다 동작하는 function으로 simulink에서 design한 control algorithm이 수행 // 
+  // 매 주기마다 동작하는 function으로 simulink에서 design한 control algorithm이 수행 //
   extern void IR_Controller_step(void);
 
   // 모든 프로그램이 종료될때 실행이 필요한 function이나 일반적으로 사용하지 않는 경우가 많음 //
   extern void IR_Controller_terminate(void);
   ```
-
-
 * 초기화를 위한 ```IR_Controller_initialize(void)```는 initial task에
-
   ```c
   //in AppTask.c
   void appTaskfu_init(void){
-  // 이상 생략 
+  // 이상 생략
   #ifdef CODE_ERT
     /-------------------------/
     IR_Controller_initialize();
@@ -207,7 +179,6 @@ date: 2018-05-04
   #endif
   }
   ```
-
 * 제어를 위해 ```IR_Controller_Step(void)```는 20 ms task에서 실행된다
   ```c
   //in AppTask.c
@@ -215,7 +186,7 @@ date: 2018-05-04
   {
   // 이상 생략 //
 
-  // 20ms task //    
+  // 20ms task //
   if(task_cnt_10m%2 == 0){
 
   	if(IR_Ctrl.basicTest == FALSE){
@@ -230,14 +201,10 @@ date: 2018-05-04
   	AsclinShellInterface_runLineScan();
   }
   ```
-
-
 * 마지막으로 code를 build할때 control algorithm을 simulink에서 생성된 제어 알고리즘을 사용할지,
 
 * 혹은 hand coding으로 설계한 제어 알고리즘을 사용할지 결정해준다.
-
   * ```Configuration.h```에서 CODE_ERT를 define
-
   ```c
   //in Cfg_Illd/Configuration.h
   // 이상 생략 //

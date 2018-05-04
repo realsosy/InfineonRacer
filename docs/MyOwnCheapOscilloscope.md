@@ -165,7 +165,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
       * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
       * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
-![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
+    ![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
 
 
@@ -193,7 +193,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 * 변환 된 결과는 16개의 group result register 중 한 곳에서 저장되거나 global result register에 저장됩니다.
 * 저장되는 위치는 어플리케이션의 사용 용도에 따라 사용자가 지정할 수 있으며, 보통 CPU load 나 DMA 전송의 성능을 최적화 할 수 있도록  설정합니다.
 
-![MyOwnCheapOscilloscope_ConversionResultStorage](images/MyOwnCheapOscilloscope_ConversionResultStorage.png)
+    ![MyOwnCheapOscilloscope_ConversionResultStorage](images/MyOwnCheapOscilloscope_ConversionResultStorage.png)
 
 
 

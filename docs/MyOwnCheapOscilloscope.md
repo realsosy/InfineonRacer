@@ -120,7 +120,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
  * Service request generation
    * ADC가 완료되면 완료 event를 CPU와 DMA에 알려주는 역할을 합니다.
 
-![MyOwnCheapOscilloscope_ConversionReqUnit](images/MyOwnCheapOscilloscope_ConversionReqUnit.png)
+    ![MyOwnCheapOscilloscope_ConversionReqUnit](images/MyOwnCheapOscilloscope_ConversionReqUnit.png)
 
 ### Modules for ADC
 
@@ -166,7 +166,6 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
       * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
     ![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
-
 
 
 **Analog input channel configuration**

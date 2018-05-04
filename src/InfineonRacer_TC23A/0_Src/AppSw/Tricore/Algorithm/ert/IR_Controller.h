@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'IR_Controller'.
  *
- * Model version                  : 1.127
- * Simulink Coder version         : 8.11 (R2016b) 25-Aug-2016
- * C/C++ source code generated on : Tue Feb 06 00:39:45 2018
+ * Model version                  : 1.135
+ * Simulink Coder version         : 8.13 (R2017b) 24-Jul-2017
+ * C/C++ source code generated on : Fri May  4 09:46:39 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Infineon->TriCore
@@ -45,11 +45,6 @@ typedef struct {
   int32_T clockTickCounter_a;          /* '<Root>/Pulse Generator1' */
 } D_Work_IR_Controller;
 
-/* External inputs (root inport signals with auto storage) */
-typedef struct {
-  real_T Ls1Margin;                    /* '<Root>/L1Margin' */
-} ExternalInputs_IR_Controller;
-
 /* Parameters (auto storage) */
 struct Parameters_IR_Controller_ {
   pid_param LatPid;                    /* Variable: LatPid
@@ -76,9 +71,6 @@ extern Parameters_IR_Controller IR_Controller_P;
 
 /* Block states (auto storage) */
 extern D_Work_IR_Controller IR_Controller_DWork;
-
-/* External inputs (root inport signals with auto storage) */
-extern ExternalInputs_IR_Controller IR_Controller_U;
 
 /* Model entry point functions */
 extern void IR_Controller_initialize(void);

@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'IR_Controller'.
  *
- * Model version                  : 1.127
- * Simulink Coder version         : 8.11 (R2016b) 25-Aug-2016
- * C/C++ source code generated on : Tue Feb 06 00:39:45 2018
+ * Model version                  : 1.135
+ * Simulink Coder version         : 8.13 (R2017b) 24-Jul-2017
+ * C/C++ source code generated on : Fri May  4 09:46:39 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Infineon->TriCore

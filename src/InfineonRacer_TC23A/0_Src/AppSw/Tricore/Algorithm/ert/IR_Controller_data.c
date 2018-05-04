@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'IR_Controller'.
  *
- * Model version                  : 1.127
- * Simulink Coder version         : 8.11 (R2016b) 25-Aug-2016
- * C/C++ source code generated on : Tue Feb 06 00:39:45 2018
+ * Model version                  : 1.135
+ * Simulink Coder version         : 8.13 (R2017b) 24-Jul-2017
+ * C/C++ source code generated on : Fri May  4 09:46:39 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Infineon->TriCore
@@ -22,29 +22,31 @@
 
 /* Block parameters (auto storage) */
 Parameters_IR_Controller IR_Controller_P = {
+  /* Variable: LatPid
+   * Referenced by:
+   *   '<S1>/Derivative Gain'
+   *   '<S1>/Integral Gain'
+   *   '<S1>/Proportional Gain'
+   */
   {
-    0.5,
-    5.0,
+    0.7,
+    7.0,
     0.02,
     0.0
-  },                                   /* Variable: LatPid
-                                        * Referenced by:
-                                        *   '<S1>/Derivative Gain'
-                                        *   '<S1>/Integral Gain'
-                                        *   '<S1>/Proportional Gain'
-                                        */
+  },
 
+  /* Variable: LongiPid
+   * Referenced by:
+   *   '<S2>/Derivative Gain'
+   *   '<S2>/Integral Gain'
+   *   '<S2>/Proportional Gain'
+   */
   {
     0.1,
     1.0,
     0.004,
     0.0
-  }                                    /* Variable: LongiPid
-                                        * Referenced by:
-                                        *   '<S2>/Derivative Gain'
-                                        *   '<S2>/Integral Gain'
-                                        *   '<S2>/Proportional Gain'
-                                        */
+  }
 };
 
 /*

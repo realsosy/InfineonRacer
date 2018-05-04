@@ -103,8 +103,8 @@
 							// Max refresh rate ~ 40 ms due to QSPI-load
 
 /* 다음 3개중의 하나만 정의해서 사용*/
-#define CODE_HAND			// Hand code : default
-//#define CODE_ERT			// Using embedded coder
+//#define CODE_HAND			// Hand code : default
+#define CODE_ERT			// Using embedded coder
 //#define CODE_SCILAB			// Using SciLab
 
 

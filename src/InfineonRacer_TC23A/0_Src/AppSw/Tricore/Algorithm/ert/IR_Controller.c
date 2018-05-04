@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'IR_Controller'.
  *
- * Model version                  : 1.127
- * Simulink Coder version         : 8.11 (R2016b) 25-Aug-2016
- * C/C++ source code generated on : Tue Feb 06 00:39:45 2018
+ * Model version                  : 1.135
+ * Simulink Coder version         : 8.13 (R2017b) 24-Jul-2017
+ * C/C++ source code generated on : Fri May  4 09:46:39 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Infineon->TriCore
@@ -22,9 +22,6 @@
 
 /* Block states (auto storage) */
 D_Work_IR_Controller IR_Controller_DWork;
-
-/* External inputs (root inport signals with auto storage) */
-ExternalInputs_IR_Controller IR_Controller_U;
 
 /* Real-time model */
 RT_MODEL_IR_Controller IR_Controller_M_;
@@ -85,7 +82,7 @@ void IR_Controller_step(void)
    *  Inport: '<Root>/L0Margin'
    *  Inport: '<Root>/L1Margin'
    */
-  rtb_LaneOffset = IR_Controller_U.Ls1Margin - IR_getLs0Margin();
+  rtb_LaneOffset = IR_getLs1Margin() - IR_getLs0Margin();
 
   /* SampleTimeMath: '<S3>/TSamp' incorporates:
    *  Gain: '<S1>/Derivative Gain'

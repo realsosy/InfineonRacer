@@ -16,13 +16,13 @@ pages:
     - Hello world: HelloWorld.md
     - My own terminal: MyOwnTerminal.md
     - Multi channel voltmeter: MultiChannelVoltmeter.md
-#    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
+    - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
 #    - Line Scan Camera(Optional): LineScanCamera.md
 #    - Chronos ruler: ChronosRuler.md
 #    - Synchronized PWM: SynchronizedPwm.md
 #    - Where are you?: WhereAreYou.md
 #    - TFT as modern Man-Machine Interface: TftAsModernMmi.md 
-#    - Simulink as a programming language: SimulinkAsAProgrammingLanguage.md
+    - Simulink as a programming language: SimulinkAsAProgrammingLanguage.md
 #    - OSEK-Certified ErikaOS & RT-Druid: OsekCertificedErikaOsRtDruid.md
 
 - References: 'References.md'

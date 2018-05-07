@@ -72,13 +72,13 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 7.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
 8.  [My own terminal](./docs/MyOwnTerminal.md) Shell
 9.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan
-10.  [My own cheap oscilloscope(작성중)](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
+10.  [My own cheap oscilloscope](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
 11.  [Line Scan Camera(작성중)](./docs/LineScanCamera.md) TSL1401
 12.  [Chronos ruler(작성중)](./docs/ChronosRuler.md) GtmTomTimer + Beeper, Servo
 13.  [Synchronized PWM(작성중)](./docs/SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
 14.  [Where are you?(작성중)](./docs/WhereAreYou.md) Gpt12 + Encoder
 15.  [TFT as modern Man-Machine Interface(작성중)](./docs/TftAsModernMmi.md)
-16.  [Simulink as a programming language(작성중)](./docs/SimulinkAsAProgrammingLanguage.md)
+16.  [Simulink as a programming language](./docs/SimulinkAsAProgrammingLanguage.md)
 17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./docs/OsekCertificedErikaOsRtDruid.md)
 
 

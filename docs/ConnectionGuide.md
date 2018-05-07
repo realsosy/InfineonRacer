@@ -28,7 +28,3 @@ date: 2018-01-30
 
 ![MotorDriver](images/ConnectionGuide_MotorDriver.png)
 
-* !ToDo
-  * 실물의 모델 정보 정확하게 반영 [X] - 모터와 서보모터 스펙 필요
-  * 외부 구성 요소와 보드와의 연결 핀 정보 구체적으로 기술 [O]
-  * Board 에서 수정할 사항 [O]

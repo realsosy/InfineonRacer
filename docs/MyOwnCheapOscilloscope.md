@@ -52,7 +52,6 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 * MyIlldModule_TC23A - VadcAutoScan
 * InfineonRacer_TC23A - X
 
-
 ------
 
 
@@ -75,27 +74,27 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 * 사전적 의미, 중재: 누가 무엇 때문에 싸움이 일어나서 중재가 필요하다는 말일까?
 
-  * 통신 버스에 연결된 노드들 사이에서
-  * ADC 변환을 기다리는 아날로그 채널들 사이에서
-  * CPU의 처리를 기다리는 여러 인터럽드들 사이에서
-  * OS의 서비스를 기다리는 여러 Task 들 사이에서
+    * 통신 버스에 연결된 노드들 사이에서
+    * ADC 변환을 기다리는 아날로그 채널들 사이에서
+    * CPU의 처리를 기다리는 여러 인터럽드들 사이에서
+    * OS의 서비스를 기다리는 여러 Task 들 사이에서
 
 * 중재 방안: 중요한 것 먼저하자 (우선순위)
 
-  * 급하다고, 여기 저기서 요청한다고, 공유된 자원(리소스)를 한순간에 두군데 이상에서 동시에 사용할 수는 없다.
-  * 순서를 결정해 주어야 하고,
-  * 그 순서를 결정하는 메카니즘을 잘 활용해서 효율을 높여주어야 한다.
+    * 급하다고, 여기 저기서 요청한다고, 공유된 자원(리소스)를 한순간에 두군데 이상에서 동시에 사용할 수는 없다.
+    * 순서를 결정해 주어야 하고,
+    * 그 순서를 결정하는 메카니즘을 잘 활용해서 효율을 높여주어야 한다.
 
 * 중요하다는 말은 빨리 처리해야 한다는 말?
 
-  * 일반적으로 중요하다는 말과 빨리 처리해야 한다는 말은 다른 말입니다.
-  * Rate-Monotonic: 그러나 일반적으로 주기적으로 일어나는 사건들 사이에서는 빨리 처리해야 하는 일이 중요한 일이 됩니다
-  * 좀 더 자세한 사항은 Real-Time System, 혹은 Real-Time OS 관련 교재를 참고하시기 바랍니다.
+    * 일반적으로 중요하다는 말과 빨리 처리해야 한다는 말은 다른 말입니다.
+    * Rate-Monotonic: 그러나 일반적으로 주기적으로 일어나는 사건들 사이에서는 빨리 처리해야 하는 일이 중요한 일이 됩니다
+    * 좀 더 자세한 사항은 Real-Time System, 혹은 Real-Time OS 관련 교재를 참고하시기 바랍니다.
 
 * VADC를 사용하여 여러 채널의 정보를 주기적으로 읽어 들여야 하는 경우에도 
 
-  * 동시에 변환을 요청하는 경우가 발생하고
-  * 중재자(Arbiter)는 설계자가 부여한 우선순위에 따라 순차적으로 변환하게 됩니다.
+    * 동시에 변환을 요청하는 경우가 발생하고
+    * 중재자(Arbiter)는 설계자가 부여한 우선순위에 따라 순차적으로 변환하게 됩니다.
 
   ​
 
@@ -104,21 +103,21 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 ### ADC 동작
 
 * Conversion Modes
-   * Fixed Channel Conversion (single or continuous)
-   * Auto Scan Conversion (single or continuous)
-   * Channel Sequence Conversion (single or continuous)
+    * Fixed Channel Conversion (single or continuous)
+    * Auto Scan Conversion (single or continuous)
+    * Channel Sequence Conversion (single or continuous)
 * Input channel selection
-   * Multiplexer가 여러 개의 아날로그 입력 중 하나를 선택합니다.
-   * 세 가지 소스들은 (Request source 0,1,3) linear sequence, arbitrary sequence, 또는 specific channel 중 선택 가능합니다.
+    * Multiplexer가 여러 개의 아날로그 입력 중 하나를 선택합니다.
+    * 세 가지 소스들은 (Request source 0,1,3) linear sequence, arbitrary sequence, 또는 specific channel 중 선택 가능합니다.
  * Conversion control
-   * 선택된 아날로그 입력은 conversion control 설정 값에 따라 변환되게 됩니다.
-   * Conversion parameter는 4개의 input classes (2 group-specific classes, 2 global classes)에 설정됩니다.
-   * 각각의 input channel들은 4개의 input classes 중 하나로 개별적 할당이 가능합니다.
+    * 선택된 아날로그 입력은 conversion control 설정 값에 따라 변환되게 됩니다.
+    * Conversion parameter는 4개의 input classes (2 group-specific classes, 2 global classes)에 설정됩니다.
+    * 각각의 input channel들은 4개의 input classes 중 하나로 개별적 할당이 가능합니다.
  * Result handling
-   * 변환 결과값은 16개의 group-specific result register 중 하나에 저장되고, 1개의 global result register에 저장됩니다.
-   * Result register는 channels 그룹에 할당될 수도 있고, 단일 channel에만 할당될 수 도 있습니다.
+    * 변환 결과값은 16개의 group-specific result register 중 하나에 저장되고, 1개의 global result register에 저장됩니다.
+    * Result register는 channels 그룹에 할당될 수도 있고, 단일 channel에만 할당될 수 도 있습니다.
  * Service request generation
-   * ADC가 완료되면 완료 event를 CPU와 DMA에 알려주는 역할을 합니다.
+    * ADC가 완료되면 완료 event를 CPU와 DMA에 알려주는 역할을 합니다.
 
     ![MyOwnCheapOscilloscope_ConversionReqUnit](images/MyOwnCheapOscilloscope_ConversionReqUnit.png)
 
@@ -132,9 +131,9 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 * Types of request sources
 
-  * Queued source: 입력 채널을 임의 순서로 변환하는 방식으로, 입력 채널 수 또는 순서는 자유롭게 변경 가능합니다.  채널 설정에 따라 매우 짧은 변환도 가능합니다. 스캔 순서는 queue buffer로 설정합니다.
+    * Queued source: 입력 채널을 임의 순서로 변환하는 방식으로, 입력 채널 수 또는 순서는 자유롭게 변경 가능합니다.  채널 설정에 따라 매우 짧은 변환도 가능합니다. 스캔 순서는 queue buffer로 설정합니다.
 
-  * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
+    * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
 
     ​
 
@@ -142,28 +141,28 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 **Request source arbitration**
 
 * Arbiter operation
-  * Arbiter는 다수의 request source로부터 동시에 ADC 요청이 왔을 때 중재자 역할을 합니다.
-  * Polling 방식으로 중재를 하며 중재 구간을 arbitration round라고 합니다.
-  * Arbitration round는 다수 개의 arbitration slot으로 구성되어 있습니다.
-  * 하나의 Arbitration slot에는 request source가 할당됩니다.
-  * 또한, arbitration round에 몇 개의 arbitration slot이 포함될 지도 설정이 가능합니다. 최소 4개부터 20개까지 slot을 포함시킬 수 있습니다.
-  * 사용자는 Arbitration slot은 duration을 설정할 수 있습니다.
-  * 사용자는 각각의 request source의 우선순위를 정할 수 있습니다.
-  * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
+    * Arbiter는 다수의 request source로부터 동시에 ADC 요청이 왔을 때 중재자 역할을 합니다.
+    * Polling 방식으로 중재를 하며 중재 구간을 arbitration round라고 합니다.
+    * Arbitration round는 다수 개의 arbitration slot으로 구성되어 있습니다.
+    * 하나의 Arbitration slot에는 request source가 할당됩니다.
+    * 또한, arbitration round에 몇 개의 arbitration slot이 포함될 지도 설정이 가능합니다. 최소 4개부터 20개까지 slot을 포함시킬 수 있습니다.
+    * 사용자는 Arbitration slot은 duration을 설정할 수 있습니다.
+    * 사용자는 각각의 request source의 우선순위를 정할 수 있습니다.
+    * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
 
     ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images/MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
 
 
-  * Conversion start mode
-      * Arbitration winner는 현재 converter의 상태에 따라 어떻게 처리될 지 결정됩니다.
-    * 만약, converter가 유휴 상태인 경우는 arbitration winner의 변환을 즉시 처리합니다.
+* Conversion start mode
+    * Arbitration winner는 현재 converter의 상태에 따라 어떻게 처리될 지 결정됩니다.
+        * 만약, converter가 유휴 상태인 경우는 arbitration winner의 변환을 즉시 처리합니다.
 
-    * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위와 같을 경우 변환이 끝날 때까지 대기하고, 변환이 완료되면 arbitration winner의 변환을 처리합니다.
+        * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위와 같을 경우 변환이 끝날 때까지 대기하고, 변환이 완료되면 arbitration winner의 변환을 처리합니다.
 
-    * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위보다 낮을 경우, 사용자 설정에 따라 다르게 처리됩니다.
+        * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위보다 낮을 경우, 사용자 설정에 따라 다르게 처리됩니다.
 
-      * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
-      * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
+        * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
+        * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
     ![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
@@ -172,10 +171,10 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 * Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다. 
 
-  * Channel parameters: sample time과 result data width 설정 (8/10/12 bits)
-  * Reference selection: alternate reference voltage 설정 가능
-  * Result target: 변환 결과가 group result register 또는 global result register 중 한 곳에 저장되도록 설정
-  * Result position: 결과 값이 left-aligned 또는 right-aligned 되도록 설정
+    * Channel parameters: sample time과 result data width 설정 (8/10/12 bits)
+    * Reference selection: alternate reference voltage 설정 가능
+    * Result target: 변환 결과가 group result register 또는 global result register 중 한 곳에 저장되도록 설정
+    * Result position: 결과 값이 left-aligned 또는 right-aligned 되도록 설정
 
   ​
 
@@ -183,11 +182,11 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 **Conversion Timing and Result Handling**
 
 * ADC 변환에 소요되는 시간은 다양한 사용자 설정에 따라 달라집니다.
-  * ADC conversion clock frequency
-  * Sample time
-  * Operating mode (normal conversion / fast compare mode)
-  * Result width (8/10/12 bits)
-  * Post calibration time
+    * ADC conversion clock frequency
+    * Sample time
+    * Operating mode (normal conversion / fast compare mode)
+    * Result width (8/10/12 bits)
+    * Post calibration time
 * 일반적으로 변환 시간은 sample time, conversion steps, synchronization 시간을 모두 합한 시간을 말합니다.
 * 변환 된 결과는 16개의 group result register 중 한 곳에서 저장되거나 global result register에 저장됩니다.
 * 저장되는 위치는 어플리케이션의 사용 용도에 따라 사용자가 지정할 수 있으며, 보통 CPU load 나 DMA 전송의 성능을 최적화 할 수 있도록  설정합니다.
@@ -287,8 +286,8 @@ void VadcAutoScanDemo_init(void)
 ### Interrupt Configuration
 
 * 모듈 설정을 통해서 ADC 동작을 모두 자동으로 실행하도록 하였습니다.
-  * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없습니다.
-  * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있습니다.
+    * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없습니다.
+    * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있습니다.
 
 
 
@@ -345,11 +344,11 @@ int core0_main(void)
 ```
 
 * 주기적 샘플링 방법1 (사용하는 주기 = 샘플링하는 주기,  일반적으로 고속의 신호처리)
-  * ADC 변환 자체를 주기적으로 실행하고
-  * 변환이 마친후 인터럽트등을 실행하여 그 값을 처리하는 프로그램을 실행
+    * ADC 변환 자체를 주기적으로 실행하고
+    * 변환이 마친후 인터럽트등을 실행하여 그 값을 처리하는 프로그램을 실행
 * 주기적 샘플링 방법2 (사용하는 주기 >> 샘플링하는 주기, 일반적으로 제어시스템)
-  * 이 예제에서는 ADC 는 자동으로 변환을 반복하도록 (AutoScan) 설정하여 두고
-  * 사용자는 훨씬 늦은 주기로 이 값을 읽어 간다.
+    * 이 예제에서는 ADC 는 자동으로 변환을 반복하도록 (AutoScan) 설정하여 두고
+    * 사용자는 훨씬 늦은 주기로 이 값을 읽어 간다.
 
 
 

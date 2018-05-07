@@ -198,7 +198,8 @@ Mathworks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     #define IR_getEncPosition() IR_Encoder.rawPosition
     #define IR_getEncDirection() IR_Encoder.direction
 ```
-    ![Simulink_06_ModelExplorer](images/Simulink_06_ModelExplorer.png)
+
+![Simulink_06_ModelExplorer](images/Simulink_06_ModelExplorer.png)
 
 ### Integration to algorithm
 * Code 생성이 완료되면 프로젝트의 설정한 경로(*Algorithm/ert*)에 파일들이 생성되며,

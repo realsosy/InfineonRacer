@@ -38,40 +38,41 @@ date: 2018-05-03
 ## Example Description
 
 * 터미널을 통해 다음의 기능이 동작하는지 확인한다.
-	* 프로그램 시작 시 '12345'라는 문자열을 출력
-	* 메세지를 5개 입력받을 때마다 입력받은 데이터를 출력
+  	* 프로그램 시작 시 '12345'라는 문자열을 출력
+  	* 메세지를 5개 입력받을 때마다 입력받은 데이터를 출력
 
 - 디버거의 Simulated IO를 통해 다음 기능이 동작하는지 확인한다.
-	* 일치 여부에 따라 error 또는 성공 메세지를 출력
+  	* 일치 여부에 따라 error 또는 성공 메세지를 출력
 
 ## AURIX -related
 
 ### Asclin ( Asynchronous/Synchronous Interface )
 * 빠르고(fast) 유연한(flexible) 직렬(serial) 통신 인터페이스 구축을 위한 모듈로
-	* 어떠한 signal들을,
-	* 어떠한 protocol을 통해서,
-	* 어떠한 sequence로 데이터를 처리할지를 결정해 준다.
+  	* 어떠한 signal들을,
+  	* 어떠한 protocol을 통해서,
+  	* 어떠한 sequence로 데이터를 처리할지를 결정해 준다.
 - AURIX의 Module은 구성은 다음과 같음
 
 ![HelloWorld_AscLinHardware](images/HelloWorld_AscLinHardware.png)
 
 ### Signals
+
 * Asclin의 signal 들은 다음과 같이 data 통신에 관한 signal,
-	* Receive data input, ARX
-	* Transmit data output, ATX
-	* Request to send handshake output, ARTS
-	* Clear to send handshake input, ACTS
+    * Receive data input, ARX
+    * Transmit data output, ATX
+    * Request to send handshake output, ARTS
+    * Clear to send handshake input, ACTS
 - Module에 관한 signal이 존재
-	* Slave select signal output, ASLSO
-	* Serial clock output, ASCLK
+    * Slave select signal output, ASLSO
+    * Serial clock output, ASCLK
 
 ### Protocols
 * 사람과 다르게 기계들의 통신은 명확하게 미리 정한 약속에 따라 진행이 되며,
 * 이 약속을 통신 **Protocol** 이라고 한다.
 * Asclin은 다음과 같은 protocol들을 제공
-	* ASC: 일반적인 Asclin 통신 프로토콜 (본 예제에서 사용)
-	* LIN: Local interconnect network, 차량에서 느린 속도로 data를 전송할 때 사용
-	* SPI: Serial Peripheral Interface, 동기화된 병렬통신을 이용할 때 사용
+    * ASC: 일반적인 Asclin 통신 프로토콜 (본 예제에서 사용)
+    * LIN: Local interconnect network, 차량에서 느린 속도로 data를 전송할 때 사용
+    * SPI: Serial Peripheral Interface, 동기화된 병렬통신을 이용할 때 사용
 
 ### Sequences
 * 직렬통신은 한 번에 data를 한 bit씩 밖에 전송을 못 하기 때문에,
@@ -94,17 +95,17 @@ date: 2018-05-03
 	3. handshake 응답 (ACTS)
 
 * Handshake
-	- Data를 송수신할때 통신이 가능한지 상태를 주고받아 원활한 통신을 가능하게 한다.
-	- RTS는 자신의 수신버퍼 상태를 알려주는 신호이며,
-	- CTS는 상대의 수신버퍼의 상태를 받았다는 신호.
-	- 이런 신호들을 주고 받는 행위을 handshake라고 한다.
-	- 받는쪽에서 받을 준비가 됬음을 RTS를 통해서 알리고,
-	- 송신쪽에서 그 신호를 받았음을 CTS를 통해 응답한다.
+  	- Data를 송수신할때 통신이 가능한지 상태를 주고받아 원활한 통신을 가능하게 한다.
+  	- RTS는 자신의 수신버퍼 상태를 알려주는 신호이며,
+  	- CTS는 상대의 수신버퍼의 상태를 받았다는 신호.
+  	- 이런 신호들을 주고 받는 행위을 handshake라고 한다.
+  	- 받는쪽에서 받을 준비가 됬음을 RTS를 통해서 알리고,
+  	- 송신쪽에서 그 신호를 받았음을 CTS를 통해 응답한다.
 
 - Interrupt
-	- 비동기 직렬통신이기 때문에 언제 data 전송이 일어날지 알 수 없음
-	- 때문에 인터럽트를 이용해 비동기 통신에 대응한다.
-	- 인터럽트를 발생시킨 후 data 처리을 위한 작업을 진행
+    * 비동기 직렬통신이기 때문에 언제 data 전송이 일어날지 알 수 없음
+    * 때문에 인터럽트를 이용해 비동기 통신에 대응한다.
+    * 인터럽트를 발생시킨 후 data 처리을 위한 작업을 진행
 
 ![HelloWorld_AscLinArchitecture](images/HelloWorld_AscLinArchitecture.png)
 
@@ -113,11 +114,11 @@ date: 2018-05-03
 ### Module Configuration
 
 * Asclin의 모듈 초기화
-	* 사용할 protocol(AsclinAsc; uart)을 정하고,
-	* 송수신이 일어날 물리적 pin(P14.0, 14.1)을 고르고,
-	* Data 전송 속도를 정한 뒤,
-	(AURIX와 통신을 진행하는 기기와 동일하게 맞춤)
-	* 통신관련 Interrupt 설정
+    * 사용할 protocol(AsclinAsc; uart)을 정하고,
+    * 송수신이 일어날 물리적 pin(P14.0, 14.1)을 고르고,
+    * Data 전송 속도를 정한 뒤,
+    (AURIX와 통신을 진행하는 기기와 동일하게 맞춤)
+    * 통신관련 Interrupt 설정
 
 ```c
 void AsclinAscDemo_init(void)
@@ -201,9 +202,9 @@ IFX_INTERRUPT(asclin0ErISR, 0, ISR_PRIORITY_ASC_0_EX)
 ### Module Behavior
 
 * 통신 검증을 위한 test function 구성
-	* `IfxAsclin_Asc_write`을 통한 데이터 송신
-	* `IfxAsclin_Asc_read`을 통한 데이터 수신
-	* 입출력 데이터를 비교하여 메세지 출력
+    * `IfxAsclin_Asc_write`을 통한 데이터 송신
+    * `IfxAsclin_Asc_read`을 통한 데이터 수신
+    * 입출력 데이터를 비교하여 메세지 출력
 
 ```c
 // in AsclinAscDemo.c

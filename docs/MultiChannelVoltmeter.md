@@ -45,51 +45,50 @@ AURIX의 VADC는 위의 두가지 사항을 충실하게 지원해 주고 있습
 ## Example Description
 
 * AN0 와 AN1 의 아날로그 전압을 디지탈로 변환하여 읽어들인다.
-  * 두채널의 아날로그 전압값을 전압계로 읽어들이는 것과 마찬가지로 동작한다.
+    * 두채널의 아날로그 전압값을 전압계로 읽어들이는 것과 마찬가지로 동작한다.
 
 
 
 ## Background 정보
 
 * Analog to digital conveter
-	* ADC는 아날로그 측정 값을 디지털 값으로 출력하는 전자 회로
-	* 아날로그 입력신호는 오디오, 비디오, 온도 등 매우 종류가 다양
-	* 자동차에서 아날로그 값으로 측정하는 센서가 많기 때문에
-	* AURIX에서는 여러 채널의 아날로그 값을 측정할 수 있는 멀티채널 방식을 적용
+    * ADC는 아날로그 측정 값을 디지털 값으로 출력하는 전자 회로
+    * 아날로그 입력신호는 오디오, 비디오, 온도 등 매우 종류가 다양
+    * 자동차에서 아날로그 값으로 측정하는 센서가 많기 때문에
+    * AURIX에서는 여러 채널의 아날로그 값을 측정할 수 있는 멀티채널 방식을 적용
 
 
 - Multi channel ADC
-	* 여러 채널을 변환하기 위해서 복수개의 ADC를 사용하는 것 보다는,
-	* 한 개의 ADC모듈을 사용하여 analog MUX를 적용하는 것이 더 경제적
-	* 대신 ADC는 하나의 모듈이 여러 채널을 제어하기 위해서 복잡한 구조를 갖게 됨
+    * 여러 채널을 변환하기 위해서 복수개의 ADC를 사용하는 것 보다는,
+    * 한 개의 ADC모듈을 사용하여 analog MUX를 적용하는 것이 더 경제적
+    * 대신 ADC는 하나의 모듈이 여러 채널을 제어하기 위해서 복잡한 구조를 갖게 됨
 
 
 ## AURIX - related
 
 * ​2개의 converter group과 14개의 input channel
-	* 각 그룹은 독립적으로 작동하는 ADC kernel
-	* 그룹별로 14채널의 전용 아날로그 input multiplexer를 보유
-	* 어떤 채널을 어떤 타이밍(sample)에 어떤 우선순위(arbitration)을 갖고 스캔을 할지 제어 가능
-  (각 기능들의 의미와 설정은 다음장에서)
-	* 이번 장에서는 background scan을 이용하여 데이터를 받아올 것이다.
+    * 각 그룹은 독립적으로 작동하는 ADC kernel
+    * 그룹별로 14채널의 전용 아날로그 input multiplexer를 보유
+    * 어떤 채널을 어떤 타이밍(sample)에 어떤 우선순위(arbitration)을 갖고 스캔을 할지 제어 가능
+    (각 기능들의 의미와 설정은 다음장에서)
+    * 이번 장에서는 background scan을 이용하여 데이터를 받아올 것이다.
 
 
 ![MultiChannelVoltmeter_StructureOverview](images/MultiChannelVoltmeter_StructureOverview.png)
 
 * Backgound scan
-  * 가장 낮은 우선순위를 지님
-  * 모든 그룹의 모든 채널을 scan할 수 있음
-  * 이용하고자 하는 채널을 다른 명령없이 연속적으로 scan하여 컨버팅
-    * 채널별 할당 된 핀으로 부터 아날로그 voltage 값을 스캔
-    * 이를 디지털 값으로 변환
-  * 각각 채널은 독립적으로 동작한다.
-  * 사용자가 컨버팅된 값을 이용하기 위해선 그 result가 어떻게 처리되는지 이해할 필요가 있다.
+    * 가장 낮은 우선순위를 지님
+    * 모든 그룹의 모든 채널에 scan 권한이 있음
+    * 채널별 할당 된 핀으로 부터 아날로그 voltage 값을 취득
+    * 다른 명령없이도 스캔한 값을 지속적으로 디지털 값으로 변환
+    * 각각 채널은 독립적으로 동작한다.
+    * 사용자가 컨버팅된 값을 이용하기 위해선 그 result가 어떻게 처리되는지 이해할 필요가 있다.
 
 
 - Result handling
-	* 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
-	* 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
-	* Wait-for-read mode를 사용하여 overwrite에 의한 데이터 손실을 방지한다.
+    * 여러 입력을 동시에 받기 때문에 체계적인 처리과정 없이는 데이터 손실이 발생할 수 있음
+    * 각 채널에 병렬적으로 사용가능한 16개의 result register와 1개의 global register가 존재하며,
+    * Wait-for-read mode를 사용하여 overwrite에 의한 데이터 손실을 방지한다.
 
 **[참고]** Wait-for-read mode란?
   - Target result register가 read 가능한 상태가 될 때까지 컨버팅을 정지시키는 모드
@@ -184,8 +183,8 @@ void VadcBackgroundScanDemo_init(void)
 ### Interrupt Configuration
 
 * Background 스캔은 ADC 동작을 모두 자동으로 실행하도록 설정
-  * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없음
-  * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있음
+    * 그러므로 ADC 변환과 관련해서 인터럽트를 발생해서 실행해야 하는 동작은 없음
+    * 사용자의 필요에 의해서 추가적으로 인터럽트를 발생시킬 수는 있음
 
 
 ### Module Behavior

@@ -67,30 +67,30 @@ AURIX - related
 #### STM (System timer)
 
 * 64-bit timer of 32-bit microcontroller
-	- TC237이 한 번의 명령어로 다룰 수 있는 데이터량은 32 bit 이며,
-	- 하나의 레지스터에는 최대 2^32의 *Tick*을 누적시킬 수 있다.
-  - STM은 복수의 32-bit 레지스터를 사용하여 *Tick*의 누적허용량을 늘리면서,
-  - 더욱 유연하게 동작할 수 있는 시스템 타이머이다.
-  - *Tick*은 일정한 주기(*f_stm*)에 따라 자동으로 값이 더해져 증가한다.(Free-running)
-  - 이 때 여러 레지스터에서 하나의 *Tick* 값을 읽어들이기 위해  capture라는 기능이 있다.
+    - TC237이 한 번의 명령어로 다룰 수 있는 데이터량은 32 bit 이며,
+  	- 하나의 레지스터에는 최대 2^32의 *Tick* 을 누적시킬 수 있다.
+    - STM은 복수의 32-bit 레지스터를 사용하여 *Tick* 의 누적허용량을 늘리면서,
+    - 더욱 유연하게 동작할 수 있는 시스템 타이머이다.
+    - *Tick* 은 일정한 주기(*f_stm*)에 따라 자동으로 값이 더해져 증가한다.(Free-running)
+    - 이 때 여러 레지스터에서 하나의 *Tick* 값을 읽어들이기 위해  capture라는 기능이 있다.
 
 
 - Timer 값의 정확한 시간 알기 (***Timer register와 capture register***)
-	- 64-bit의 *Tick* 값을 동기화해 읽어 옴으로써 시스템의 정확한 동작 시간을 알 수 있다.
-	- STM의 내부에는 별개의 range를 가지는 32bit timer register(STM_TIMx)들이 있고,
-	- 동기화를 위한 capture register(STM_CAP)가 존재한다.
-	- 만약 사용자가 하위단의 시간정보를 요청한다면(TIM0~TIM5),
-	- 그 요청와 동시에 capture register에서 상위단(32~63bit,TIM6)의 시간을 capture한다.
+  	- 64-bit의 *Tick* 값을 동기화해 읽어 옴으로써 시스템의 정확한 동작 시간을 알 수 있다.
+  	- STM의 내부에는 별개의 range를 가지는 32bit timer register(STM_TIMx)들이 있고,
+  	- 동기화를 위한 capture register(STM_CAP)가 존재한다.
+  	- 만약 사용자가 하위단의 시간정보를 요청한다면(TIM0~TIM5),
+  	- 그 요청와 동시에 capture register에서 상위단(32~63bit,TIM6)의 시간을 capture한다.
 
 ![TwinkleTwinkleLittleStar_GeneralBlockDiagram](images/TwinkleTwinkleLittleStar_GeneralBlockDiagram.png)
 
 - 정해진 시간에 동작하기 (***Timer의 누적시간을 이용하는 Compare register***)
-	- Timer를 이용하는 가장 큰 이유는 정확한 시간 혹은 주기로 정해진 동작을 수행하기 위해서이다.
-  (ex 정해진 주기로 LED를 껐다 킴)
-	- 이를 위해서 timer를 인터럽트를 발생시키기 위한 trigger 역할로 이용 할 수 있다.
-	- STM에서는 이를 위한 compare register라는 것이 존재하며 구성하여 이용할 수 있다.
-	- 구성된 register는 tick이 쌓일 때마다 비교를 하여 일치할 시 flag를 발생시킨다.
-	- TC237은 두 개의 compare 레지스터를 제공하며 선택적으로 사용할 수 있다.
+  	- Timer를 이용하는 가장 큰 이유는 정확한 시간 혹은 주기로 정해진 동작을 수행하기 위해서이다.
+    (ex 정해진 주기로 LED를 껐다 킴)
+  	- 이를 위해서 timer를 인터럽트를 발생시키기 위한 trigger 역할로 이용 할 수 있다.
+  	- STM에서는 이를 위한 compare register라는 것이 존재하며 구성하여 이용할 수 있다.
+  	- 구성된 register는 tick이 쌓일 때마다 비교를 하여 일치할 시 flag를 발생시킨다.
+  	- TC237은 두 개의 compare 레지스터를 제공하며 선택적으로 사용할 수 있다.
 
 ![TwinkleTwinkleLittleStar_CompareMode](images/TwinkleTwinkleLittleStar_CompareMode.png)
 

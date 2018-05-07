@@ -165,8 +165,8 @@ Mathworks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     * generation_controller_code내의 code를 수정하여 진행한다
 
 ```
-   %in generation_controller_code.m
-  function generate_controller_code()
+%in generation_controller_code.m
+function generate_controller_code()
   % ----- 내용 생략
   controllerModel = 'IR_Controller';
   
@@ -181,7 +181,7 @@ Mathworks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
   % (생성된 코드가 저장될 project path)
   
   % ------ 이하 생략
-```
+```  
 
 * controller의 input과 output을 실제 project내의 signal과 matching을 시켜줘야 한다.
     * controller는 *input*으로 **vehicle speed**를 받아서 제어결과 **motor voltage**를 *output*으로 내보낸다

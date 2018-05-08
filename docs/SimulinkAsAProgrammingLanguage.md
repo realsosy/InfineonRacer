@@ -119,7 +119,7 @@ MathWorks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
         * Control algorithm period: 20 ms
         * Plant model: 1 ms
     * 실제 Plant의 거동을 잘 표현하기 위해서는 가능한한 sample time이 짧아야 하므로 일반적으로 Plant 모델의 sample time은 control algorithm의 sample time보다 작다
-        * 각 알고리즘의 실행주기는 Workspace에 T_IR_Control=0.02, T_IR_Plant=0.001로 선언되어있다
+    * 각 알고리즘의 실행주기는 Workspace에 T_IR_Control=0.02, T_IR_Plant=0.001로 선언되어있다
 
        ![Simulink_04_HarnessModel](images/Simulink_04_HarnessModel.png)
 

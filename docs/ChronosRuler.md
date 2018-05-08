@@ -1,11 +1,9 @@
 ---
 title: Chronos ruler.md
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
+date: 2018-05-08
 
 [기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* Timing IO의 종류와 필요성
-* GtmTom 특징
 * iLLD 활용하기
 * 예제 Beeper, Servo
 EXAMPLE: 

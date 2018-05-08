@@ -55,40 +55,40 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 * InfineonRacer의 코드만 참고하실 것이라면 이 파트만 살펴보면 됩니다.
 * 활용에 필요한 필수적인 정보들만 모아 놓았습니다.
 
-1.  [Getting Started](./docs/GettingStarted.md)  HW Setup & Quick-Start
-2.  [InfineonRacer User Guide](./docs/InfineonRacerUserGuide.md)  SW Architecture & API
+1.  [Getting Started](./GettingStarted.md)  HW Setup & Quick-Start
+2.  [InfineonRacer User Guide](./InfineonRacerUserGuide.md)  SW Architecture & API
 
 
-* [Connection Guide for Infineon Racer](./docs/ConnectionGuide.md)
-* [Pins & API](./docs/PinsApi.xlsx)
+* [Connection Guide for Infineon Racer](./ConnectionGuide.md)
+* [Pins & API](./PinsApi.xlsx)
 
 ### Dive into AURIX world using InfineonRacer
 
 * AURIX, 마이크로컨트롤러를 심도있게 공부해 보고 싶으시다면 이 부분을 단계별로 학습하시기 바랍니다.
 * **How to stduy AURIX** 부터 **Twinkle twinkle little start** 까지는 순서대로 보셔야 합니다.  그 이후는 독립적으로 구성되어 있어서 순서에 관계없이 관심있는 챕터를 보시면 됩니다.
 
-1.  [How to study AURIX?](./docs/HowToStudyAurix.md) MCU 학습 방법 제안
-2.  [How to use BIFACES? (작성중)](./docs/HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
-3.  [What is iLLD?](./docs/WhatIsIlld.md) PORT
-4.  [Do ma a favor?](./docs/DoMeAFavor.md) Config, Init, ISR in iLLD
-5.  [Twinkle twinkle little star](./docs/TwinkleTwinkleLittleStar.md)  STM
-6.  [Multiple infinite loops](./docs/MultipleInfiniteLoops.md) Static Cyclic Scheduler
-7.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
-8.  [My own terminal](./docs/MyOwnTerminal.md) Shell
-9.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan
-10.  [My own cheap oscilloscope(작성중)](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
-11.  [Line Scan Camera(작성중)](./docs/LineScanCamera.md) TSL1401
-12.  [Chronos ruler(작성중)](./docs/ChronosRuler.md) GtmTomTimer + Beeper, Servo
-13.  [Synchronized PWM(작성중)](./docs/SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
-14.  [Where are you?(작성중)](./docs/WhereAreYou.md) Gpt12 + Encoder
-15.  [TFT as modern Man-Machine Interface(작성중)](./docs/TftAsModernMmi.md)
-16.  [Simulink as a programming language(작성중)](./docs/SimulinkAsAProgrammingLanguage.md)
-17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./docs/OsekCertificedErikaOsRtDruid.md)
+1.  [How to study AURIX?](./HowToStudyAurix.md) MCU 학습 방법 제안
+2.  [How to use BIFACES? (작성중)](./HowToUseBIFACES.md)  eclipse, make, doxygen, graphviz
+3.  [What is iLLD?](./WhatIsIlld.md) PORT
+4.  [Do ma a favor?](./DoMeAFavor.md) Config, Init, ISR in iLLD
+5.  [Twinkle twinkle little star](./TwinkleTwinkleLittleStar.md)  STM
+6.  [Multiple infinite loops](./MultipleInfiniteLoops.md) Static Cyclic Scheduler
+7.  [Hello world](./HelloWorld.md)  ASC & Terminal
+8.  [My own terminal](./MyOwnTerminal.md) Shell
+9.  [Multi channel voltmeter](./MultiChannelVoltmeter.md)  Vadc Background Scan
+10.  [My own cheap oscilloscope](./MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
+11.  [Line Scan Camera(작성중)](./LineScanCamera.md) TSL1401
+12.  [Chronos ruler(작성중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
+13.  [Synchronized PWM(작성중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
+14.  [Where are you?(작성중)](./WhereAreYou.md) Gpt12 + Encoder
+15.  [TFT as modern Man-Machine Interface(작성중)](./TftAsModernMmi.md)
+16.  [Simulink as a programming language](./SimulinkAsAProgrammingLanguage.md)
+17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./OsekCertificedErikaOsRtDruid.md)
 
 
 ### etc
 
-* [References](./docs/References.md)
+* [References](./References.md)
 * [Source code list](./src/README.md)
 
 

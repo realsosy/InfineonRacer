@@ -59,22 +59,23 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 ## Background 정보
 
 * 하드웨어 추상화 계층 (Hardware Abstraction Layer)
-  * 물리적인 하드웨어와 실행되는 소프트웨어 사이에 존재
-  * 하드웨어를 제어하기 위한 중간계층으로 하드웨어에 연관되어 설계
-  * 사용자 입장에서 응용프로그램을 동작시키기 위해 하드웨어에 일일히 대응하지 않아도 됨
+    * 물리적인 하드웨어와 실행되는 소프트웨어 사이에 존재
+    * 하드웨어를 제어하기 위한 중간계층으로 하드웨어에 연관되어 설계
+    * 사용자 입장에서 응용프로그램을 동작시키기 위해 하드웨어에 일일히 대응하지 않아도 됨
 
 
 - Shell의 계층적 구조
-  * 통신모듈인 경우 한 하드웨어에서 여러 종류의 통신방식을 제공하고,
-  * 모듈과 프로토콜에 따라 대응을 해줘야하기 때문에,
-  * 사용자 입장에서 일관된 인터페이스로 통신하기 위해 한단계의 추상화 과정을 더 거친다.
-  * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화하고,
-  * Shell을 통해서 송신 혹은 수신되는 data들을 data-pipe interface를 통해 관리
+    * 통신모듈인 경우 한 하드웨어에서 여러 종류의 통신방식을 제공하고,
+    * 모듈과 프로토콜에 따라 대응을 해줘야하기 때문에,
+    * 사용자 입장에서 일관된 인터페이스로 통신하기 위해 한단계의 추상화 과정을 더 거친다.
+    * Standard interface > Data Pipe를 통해 통신 계층을 한번 더 추상화하고,
+    * Shell을 통해서 송신 혹은 수신되는 data들을 data-pipe interface를 통해 관리
+
 
 ![MyOwnTerminal_ShellLayer](images/MyOwnTerminal_ShellLayer.png)
 
 * Standard interface
-  * 추상화를 통해 프로그램 구성을 도와주는 iLLD 내부 인터페이스 모듈
+    * 추상화를 통해 프로그램 구성을 도와주는 iLLD 내부 인터페이스 모듈
 
 
 
@@ -87,21 +88,21 @@ Window 의 cmd과 powershell, Linux의 sh, bash 같은 텍스트 기반의 사�
 ### Shell 개요
 
 - 통신을 이용하여 사용자가 입력하는 명령을 확인하고 이에 대응되는 명령을 수행
-  * Call-back 함수인 command를 정의하여 명령을 수행할 것이다.
-  * Data pipe를 통하여 사용자가 입력하는 명령어를 수신하고 그것이 아는 명령일 때,
-  * 미리 정의된 command에 따라서 대응대는 동작을 행한다.
+    * Call-back 함수인 command를 정의하여 명령을 수행할 것이다.
+    * Data pipe를 통하여 사용자가 입력하는 명령어를 수신하고 그것이 아는 명령일 때,
+    * 미리 정의된 command에 따라서 대응대는 동작을 행한다.
 
 
 * Command
-  * Callback 함수로 구현되며,
-  * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
-  * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
+    * Callback 함수로 구현되며,
+    * {이름(call), 도움말, &data, &handler} 의 형태로 정의,
+    * Shell을 통해 들어온 data가 call을 만족할 때 handler함수를 실행하는 구조.
 
 
 - 예를들어,
-  * 사용자가 shell을 통해 "help"라는 입력을 준다면,
-  * Data-pipe interface를 통하여 그 입력을 수신 : ```g_AsclinShellInterface```
-  * 그 후 정의된 "help"에 맞는 handler 함수를 수행 : ```Ifx_Shell_showHelp```
+    * 사용자가 shell을 통해 "help"라는 입력을 준다면,
+    * Data-pipe interface를 통하여 그 입력을 수신 : ```g_AsclinShellInterface```
+     * 그 후 정의된 "help"에 맞는 handler 함수를 수행 : ```Ifx_Shell_showHelp```
 
 
 ```c
@@ -258,9 +259,9 @@ void appTaskfu_idle(void){
 ```
 
 * 연결된 차량의 state를 관측할 수 있는 shell command를 구성
-  * 예를 들어 차량의 servo motor angle을 확인하려면
-  * "srv"라는 command를 shell을 통해 입력하면 된다.
-  * 미리 구성된 ```AppShell_srv```를 통하여 servo motor angle을 출력
+    * 예를 들어 차량의 servo motor angle을 확인하려면
+    * "srv"라는 command를 shell을 통해 입력하면 된다.
+    * 미리 구성된 ```AppShell_srv```를 통하여 servo motor angle을 출력
 
 
 ```c

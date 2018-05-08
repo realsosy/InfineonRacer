@@ -72,13 +72,13 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 7.  [Hello world](./docs/HelloWorld.md)  ASC & Terminal
 8.  [My own terminal](./docs/MyOwnTerminal.md) Shell
 9.  [Multi channel voltmeter](./docs/MultiChannelVoltmeter.md)  Vadc Background Scan
-10.  [My own cheap oscilloscope(작성중)](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
+10.  [My own cheap oscilloscope](./docs/MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
 11.  [Line Scan Camera(작성중)](./docs/LineScanCamera.md) TSL1401
 12.  [Chronos ruler(작성중)](./docs/ChronosRuler.md) GtmTomTimer + Beeper, Servo
 13.  [Synchronized PWM(작성중)](./docs/SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
 14.  [Where are you?(작성중)](./docs/WhereAreYou.md) Gpt12 + Encoder
 15.  [TFT as modern Man-Machine Interface(작성중)](./docs/TftAsModernMmi.md)
-16.  [Simulink as a programming language(작성중)](./docs/SimulinkAsAProgrammingLanguage.md)
+16.  [Simulink as a programming language](./docs/SimulinkAsAProgrammingLanguage.md)
 17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./docs/OsekCertificedErikaOsRtDruid.md)
 
 
@@ -92,7 +92,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 
 ## 어느 개발자 아저씨의 이야기
 
-  요즈음은 재미있고 생생한 스토리텔링이 각광을 받고 있습니다.  상대방을 설득하거나 정보를 나눌 때도 효과적인 방법으로 사용되고 있지요.  많은 사람들은 스토리텔링이 말 잘하는 문과 출신들이나, 전문적인 훈련을 받은 사람들만의 전유물로 생각합니다.
+  요즘 재미있고 생생한 스토리텔링이 각광을 받고 있습니다.  상대방을 설득하거나 정보를 나눌 때도 효과적인 방법으로 사용되고 있지요.  많은 사람들은 스토리텔링이 말 잘하는 문과 출신들이나, 전문적인 훈련을 받은 사람들만의 전유물로 생각합니다.
 
   소프트웨어 엔지니어, 프로그래머의 길을 선택한 사람에게도 스토리텔링은 꼭 필요한 것입니다.  **소프트웨어 개발이란 스토리텔링, 그 중에도 My Story telling**입니다.  내가 만드는 소프트웨어, 프로그램에는 이미 My Story, 즉 나만의 이야기가 녹아 있는 것이기 때문입니다.
 

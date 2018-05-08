@@ -1,7 +1,7 @@
 ---
 title: Line Scan Camera.md
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
+date: 2018-05-08
 
 [기술할 내용들 - 기술하고 나면 해당 항목 지우기]
 * Line Scan Camera 이해하기
@@ -66,11 +66,32 @@ EXAMPLE:
 
 
 
+
 ## TS1401 정보
 
-대부분의 MEMS 기반 센서들은 마이크로컨트롤러와 인터페이스 하는 것에 SPI, IIC 와 같은 직렬통신을 사용합니다만 TS1401은 마이크로컨트롤러에서 클럭 신호를 발생해 주면 이 클럭 신호와 동기화 되어서 센서 값을 아날로그 출력으로 내보내 주는 전용 프로토콜을 사용합니다.  
+대부분의 MEMS 기반 센서들은 마이크로컨트롤러와 인터페이스 하는 것에 SPI, IIC 와 같은 직렬통신을 사용합니다만 TS1401은 마이크로컨트롤러에서 클럭 신호를 발생해 주면 이 클럭 신호와 동기화 되어서 센서 값을 아날로그 출력으로 내보내 주는 전용 프로토콜을 사용합니다. 해상도(Resolution)는 128 pixels 이며, Pixel 간 간격(space)은 8 um입니다.
 
-클락 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 입력되는 순간 부터 128 포인트의 측정결과를 AO 출력으로 내보낸다.
+
+
+**Functional Block Diagram**
+
+![LineScanCamera_TS_FuntionalBlockDiagram](images/LineScanCamera_TS_FuntionalBlockDiagram.png)
+
+
+
+$SI (Serial Port)$: Data output의 시작 시점을 정하게 됩니다.
+
+$CLK (Clock)$: 센서가 동작할 수 있도록 Clock을 입력하게 되며, clock과 동기화 하여 charge transfer, pixel output, 그리고 reset을 제어하게 됩니다.
+
+$AO (Analog Output)$: 센싱된 결과가 출력되는 포트 입니다.
+
+$V_{DD}$: 입력 전압입니다.
+
+$GND$: 접지를 나타냅니다.
+
+
+
+Clock 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 입력되는 순간 부터 128 포인트의 측정결과를 AO 출력으로 내보낸다.
 
 
 
@@ -79,6 +100,10 @@ EXAMPLE:
 
 
 ![LineScanCamera_DataSheetTimingWaveforms](images/LineScanCamera_DataSheetTimingWaveforms.png)
+
+SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO에 내보내게 됩니다. 동시에 18 clock cycles 동안 모든 pixel들의 integrators를 초기화 합니다. 19 clock cycles부터 모든 pixel 값을 integration 하게됩니다.
+
+이전 사이클에서 계측된 값은 129 clock cycles이 되면 AO로 내보내는 것을 중단하게 됩니다. 현재 사이클의 계측된 값은 최소지연시간 $t_{qt}$ 이후 출력됩니다.
 
 
 

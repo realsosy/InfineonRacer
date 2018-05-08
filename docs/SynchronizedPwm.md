@@ -1,7 +1,7 @@
 ---
 title: Synchronized PWM.md
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
+date: 2018-05-08
 [기술할 내용들 - 기술하고 나면 해당 항목 지우기]
 * Synchronized PWM의 필요성
 * BT....(인피니어 DC Driver) 의 특징
@@ -19,7 +19,7 @@ EXAMPLE:
 
 * Synchronized Swimming 은 들어 보았는데 Synchronized PWM은 뭐지?  무엇이 동기화(Synchnoized) 되었다는 말이지? 어짜피 PWM 신호라는 것이 밖으로 보이는 것도 아닌데 동기화 시켜서 예쁘게 보여야 할 이유가 있을까?
 
-PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse Width (도통시간:  on-time)에 필요한 정보를 넣는 방법이지요.  Synchronized 라는 것은 무엇일까요? 왜 필요할까요?  DC 모터의 양방향 구동을 위해서는 H-bridge 라 불리는 전력소자 4개가 붙어있는 회로가 필요합니다.  이 4개의 전력소자를 적절히 켜고 끄고 함으로써, 즉 PWM 신호를 인가 함으로써, 전압를 자유자재로 조정할 수 있고 양방향 구동도 가능해 집니다.  단 이 PWM 신호들이 서로 독립적이지 않고 의존적으로 사용되어져야 합니다.   PWM 신호들 한 주기 내에서 조화롭게 만들어 져야만 H-bridge 가 성능을 낼 수 있습니다.  AURIX는 이를 위해서 Synchnized  PWM 출력기능을 가지고 있습니다.  이 예에서는 DC 모터를 위한 H-bridge의 경우에 대해서 설명하고 있습니다만, 이 내용이 확장되어 3상 모터, 즉 BLDCM(Blush-Less DC Motor)와 PMSM(Permanent Magnet Synchronous Motor),를 위한 인버터 구동신호에 활용될 수 있습니다. 
+PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse Width (도통시간:  on-time)에 필요한 정보를 넣는 방법이지요.  Synchronized 라는 것은 무엇일까요? 왜 필요할까요?  DC 모터의 양방향 구동을 위해서는 H-bridge 라 불리는 전력소자 4개가 붙어있는 회로가 필요합니다.  이 4개의 전력소자를 적절히 켜고 끄고 함으로써, 즉 PWM 신호를 인가 함으로써, 전압를 자유자재로 조정할 수 있고 양방향 구동도 가능해 집니다.  단 이 PWM 신호들이 서로 독립적이지 않고 의존적으로 사용되어져야 합니다.   PWM 신호들 한 주기 내에서 조화롭게 만들어 져야만 H-bridge 가 성능을 낼 수 있습니다.  AURIX는 이를 위해서 Synchronized  PWM 출력기능을 가지고 있습니다.  이 예에서는 DC 모터를 위한 H-bridge의 경우에 대해서 설명하고 있습니다만, 이 내용이 확장되어 3상 모터, 즉 BLDCM(Blush-Less DC Motor)와 PMSM(Permanent Magnet Synchronous Motor)를 위한 인버터 구동신호에 활용될 수 있습니다. 
 
 
 
@@ -31,9 +31,11 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 * ​
 
+
+
 ## References
 
-* TC23x TC22x Family User's Manual v1.1 - Chap
+* TC23x TC22x Family User's Manual v1.1 - Chap 24. GTM
 * iLLD_TC23A Help / Modules/ 
 
 **[Example Code]**
@@ -50,12 +52,27 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 * ​
 
+
+
+
+
 ## Background 정보
 
-> * Bipolar PWM 에 대해서 설명하고 넣어 주시는 것이 좋겠네요.
-> * DC 모터의 구동을 꼭 이렇게 할 필요는 당연히 없는데 연습삼아 Synchronized PWM 기능을 사용하는 것으로
+* DC 모터 제어를 위한 H-bridge (Reference: http://www.ntrexgo.com/archives/23816)
+  * DC 모터 토크는 전류에 비례하고 모터에 인가는 전압을 제어함으로써 전류량을 조절할 수 있습니다.
+  * 일반적으로 DC 모터 구동을 위해 4개의 스위칭 소자 (MOSFET 또는 BJT)로 구성된 H-bridge 회로를 사용합니다.
+  * 스위칭 소자는 ON/OFF 스위칭을 통해 모터에 공급되는 전력 출력을 조절하게 됩니다.
+
+​    ![SynchronizedPwm_H_Bridge](images\SynchronizedPwm_H_Bridge.png)
+
+* H-bridge 제어 방법
+
+  * 유니폴라 (Unipolar) 방법: 모터를 정회전 하고자 할 때 $A$에 PWM을 인가하고 $\bar{B}$는 ON으로 유지하는 방식입니다. $B$와 $\bar{A}$는 이때 OFF 상태입니다. 역회전 하고자 할 때는 $B$에 PWM을 인가하고 $\bar{A}$는 ON으로 유지하는 방식입니다. $A$와 $\bar{B}$는 이때 OFF 상태입니다. 만약, 정회전 시 $A$에 인가되는 PWM의 DUTY Ratio가 50%라면 모터 최고 속도의 50%로 정회전 하게 됩니다.
+
+  ![SynchronizedPwm_Unipolar](images\SynchronizedPwm_Unipolar.png)
 
 
+  * 바이폴라 (Bipolar) 방법: 모터를 정회전 하고자 할 때 $A$에 ON, $B$는 OFF 상태를 만들고, 다음에 $B$를 ON, $A$는 OFF 상태를 만듭니다. 즉, $B$가 $A$의 역상으로 동작하도록 합니다. $A$에 인가되는 DUTY Ratio가 50%일 때 모터가 정지합니다. $A$에 인가되는 DUTY Ratio가 75%일 때 최고 속도의 50%로 정회전 하게 됩니다.  이 방식은 저속에서 속도 제어 특성을 좋게 하지만 모터의 인덕턴스가 낮은 겨우 대기 전류가 높아 전력 낭비를 야기하며 모터 발열을 일으킬 수 있습니다.  ![SynchronizedPwm_Bipolar](images\SynchronizedPwm_Bipolar.png)
 
 ## AURIX - related
 
@@ -63,11 +80,11 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 
 
+
 ## iLLD - related
 
-
-
 * ​
+
 
 
 

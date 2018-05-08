@@ -107,7 +107,7 @@ MathWorks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     * set_up_project: Project를 시작할때 동작시키며, project_paths, pid_param_type등 프로젝트 동작에 관련된 script들을 실행시켜 프로젝트를 동작시킬 준비를 완료함
 
 * harness.slx - control algorithm과 plant를 연결시켜 주는 모델
-    * 별도의 모델 파일인 ```controller.slx```와 ```plant.slx```을 model reference block을 사용하여 참조.
+    * 별도의 모델 파일인 ```controller.slx```와 ```plant.slx```을 model reference block을 사용하여 참조
     * Control algorithm to plant model
         * Motor enable
         * Motor voltage
@@ -115,10 +115,10 @@ MathWorks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     * Plant model to control algorithm
         * Vehicle speed
         * Lane Margin 0, 1
-    * Control algorithm과 plant model이 다른 주기로 simulation 되기 때문에 두 모델 사이에 rate transition block을 삽입.
+    * Control algorithm과 plant model이 다른 주기로 simulation 되기 때문에 두 모델 사이에 rate transition block을 삽입
         * Control algorithm period: 20 ms
         * Plant model: 1 ms
-        * 실제 Plant의 거동을 잘 표현하기 위해서는 가능한한 sample time이 짧아야 하므로 일반적으로 Plant 모델의 sample time은 control algorithm의 sample time보다 작다.
+    * 실제 Plant의 거동을 잘 표현하기 위해서는 가능한한 sample time이 짧아야 하므로 일반적으로 Plant 모델의 sample time은 control algorithm의 sample time보다 작다
         * 각 알고리즘의 실행주기는 Workspace에 T_IR_Control=0.02, T_IR_Plant=0.001로 선언되어있다
 
        ![Simulink_04_HarnessModel](images/Simulink_04_HarnessModel.png)
@@ -181,7 +181,7 @@ function generate_controller_code()
   % (생성된 코드가 저장될 project path)
   
   % ------ 이하 생략
-```  
+```
 
 * controller의 input과 output을 실제 project내의 signal과 matching을 시켜줘야 한다.
     * controller는 *input*으로 **vehicle speed**를 받아서 제어결과 **motor voltage**를 *output*으로 내보낸다

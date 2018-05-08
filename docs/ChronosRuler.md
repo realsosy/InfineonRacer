@@ -39,7 +39,11 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 ## Objectives
 
-* ​
+* Generic Timer Module (GTM) 이해
+* GTM 사용법 습득
+
+
+
 
 ## References
 
@@ -60,18 +64,81 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 * ​
 
+
+
+
 ## Background 정보
 
 > * 타이머의 사용법 중에 Output Compare 활용 방법에 대한 일반론 설명은 어떨까?
 > * 참고로 input capture 에 대한 일반론 설명은 WhereAreYou 에서 하고
 
+
+
 ## AURIX - related
 
-* ​
+* Generic Timer Module은 시간 관리 플랫폼으로 다양한 application에서 필요로 하는 기준 시간을 생성하는 역할을 합니다. 또한, Timer Input Module (TIM), Timer Output Module (TOM), Dead Time Module (DTM) 등 시간을 다루는 서브모듈의 기준 시간을 생성하기도 합니다.
+* Clock Management Module (CMU): 13개의 서로 다른 내부 clocks과 3개의 서로 다른 외부 clocks을 생성할 수 있습니다.
+* Time Base Unit (TBU): 3개의 독립적인 공용 기준 시간을 생성할 수 있습니다.
+* GTM의 output 신호는 DTM 또는 TOM으로 발생될 수 있으며, 일반적으로 TOM channel은 Pulse Width Manipulation (PWM)을 출력할 수 있습니다.
+
+    ![ChronosRuler_GTM_ArchitectureBlockDiagram](images\ChronosRuler_GTM_ArchitectureBlockDiagram.png)
+
+**CMU**
+
+* CMU는 counter와 GTM의 clock을 생성하는 것을 담당합니다.
+
+* CMU는 세가지의 subunits 들로 구성되며 서로 다른 clock을 생성할 수 있습니다.
+
+* **Configurable Clock Generation (CFGU)**
+
+  * 8개의 clocks 을 출력할 수 있습니다.
+  * TIM과 TBU에 사용됩니다.
+  * 임의의 clock source를 선택할 수 있기 때문에 넓은 범위 내 기준 시간을 설정할 수 있습니다.
+
+* **Fixed Clock Generation (FXU)**
+
+  * 5개의 clocks 을 출력할 수 있습니다.
+  * 사전에 정의된 설정으로 clock을 생성합니다.
+  * TOM에 사용됩니다.
+
+* **External Clock Generation (EGU)**
+
+  * 3개의 external clocks을 출력할 수 있습니다.
+
+    ![ChronosRuler_CMU_BlockDiagramm](images\ChronosRuler_CMU_BlockDiagramm.png)
+
+**TBU**
+
+* TBU는 GTM을 위한 공용 기준 시간(base timer) 을 생성합니다.
+* 3개의 base timer가 있습니다.
+* TBU channel 0 time base register (TBU_CH0_BASE)는 27 bits이며 경우에 따라 상위 24 bit 또는 하위 24 bit을 선택적으로 사용가능합니다.
+* TBU channel 1, 2 time base register (TBU_CH#_BASE)는 24 bits 입니다.
+* 각 base timer는 독립적으로 구동되나, global TBU channel enable을 통해 3개의 base timer를 동기화 할 수도 있습니다.
+
+    ![ChronosRuler_TBU_BlockDiagramm](images\ChronosRuler_TBU_BlockDiagram.png)
+
+**TIM**
+
+* TIM은 GTM의 입력 신호를 filtering 하거나 capturing하는 역할을 합니다.
+* 기본적으로 TIM은 입력 신호의 rising edge나 falling edge의 time stamp를 찍는 역할을 합니다. 동시에 signal level, edge 갯수, PWM 신호의 주기 등도 함께 측정 가능합니다.
+* 8개의 입력 채널이 있으며, 앞단에 TIM Filter Functionality (FLT)를 통해 rising edge, falling edge, 또는 모든 edge를 counting  할 건지 선택하게 됩니다.
+* Filtering 된 신호는 TIM_CH#에 들어가며 Timeout Detection Unit을 통해 time stamp를 찍게 됩니다.
+
+​    ![ChronosRuler_TIM_BlockDiagram](images\ChronosRuler_TIM_BlockDiagram.png)
+
+**TOM**
+
+* PWM을 생성하는 합니다.
+* 16개의 독립된 출력을 내보냅니다.
+* TGC0와 TGC1는 전체 출력을 제어합니다. PWM을 활성화시킬 지 말지, PWM 주기, DUTY cycle 등을 설정할 수 있습니다.
+
+​    ![ChronosRuler_TOM_BlockDiagramm](images\ChronosRuler_TOM_BlockDiagram.png)
 
 ## iLLD - related
 
 * ​
+
+
 
 ### Module Configuration
 
@@ -97,6 +164,7 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 
 ![ChronosRuler_GtmTomServo_Scope10m2m](images/ChronosRuler_GtmTomServo_Scope10m2m.png)
+
 
 
 ## 추가적인 설명

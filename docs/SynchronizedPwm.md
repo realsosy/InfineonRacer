@@ -29,7 +29,9 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 ## Objectives
 
-* ​
+* Bipolar PWM을 이용한 모터 제어 방법
+* BTN8982TA (Half bridge 모터드라이버) 기능 및 사용법
+* H-bridge 모터드라이버 구성 및 Synched PWM을 이용한 작동 방법
 
 
 
@@ -46,11 +48,9 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 ------
 
-
-
 ## Example Description
 
-* ​
+* GtmTom을 이용하여 PWM을 생성하고, 생성된 PWM을 이용하여 모터 드라이버를 구동시켜 봅니다. 
 
 
 
@@ -58,26 +58,44 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 ## Background 정보
 
-* DC 모터 제어를 위한 H-bridge (Reference: http://www.ntrexgo.com/archives/23816)
-  * DC 모터 토크는 전류에 비례하고 모터에 인가는 전압을 제어함으로써 전류량을 조절할 수 있습니다.
-  * 일반적으로 DC 모터 구동을 위해 4개의 스위칭 소자 (MOSFET 또는 BJT)로 구성된 H-bridge 회로를 사용합니다.
-  * 스위칭 소자는 ON/OFF 스위칭을 통해 모터에 공급되는 전력 출력을 조절하게 됩니다.
+* DC 모터 제어 방법하기 위해 인버터가 사용되는 데 인버터를 구성하는 방식으로는 Switch 소자의 구성에 따라 아래와 같이 나뉠 수 있습니다. 
+  * Half-bridge: DC모터의 한 극에 스위치 소자를 연결하고, 스위치를 on/off 함으로써 모터에 인가되는 전류를 제어하는 방식입니다. 단상 교류 전압을 발생시키는 가장 단순한 방법으로 요구되는 교류 전압의 주기 $T$에서 반주기마다 위아래 스위치를 번갈아 On/Off 하는 것입니다. 
+  * H-bridge: 2개의 Half-bridge를 모터 양 극에 연결함으로써, Half-bridge 보다 두 배 큰 교류 전압을 출력할 수 있습니다. 유효한 양 극전압을 인가하기 위해서는 양 극에 인가되는 전압의 위상차가 $180^\circ$이 되어야 합니다.
 
-​    ![SynchronizedPwm_H_Bridge](images\SynchronizedPwm_H_Bridge.png)
-
-* H-bridge 제어 방법
-
-  * 유니폴라 (Unipolar) 방법: 모터를 정회전 하고자 할 때 $A$에 PWM을 인가하고 $\bar{B}$는 ON으로 유지하는 방식입니다. $B$와 $\bar{A}$는 이때 OFF 상태입니다. 역회전 하고자 할 때는 $B$에 PWM을 인가하고 $\bar{A}$는 ON으로 유지하는 방식입니다. $A$와 $\bar{B}$는 이때 OFF 상태입니다. 만약, 정회전 시 $A$에 인가되는 PWM의 DUTY Ratio가 50%라면 모터 최고 속도의 50%로 정회전 하게 됩니다.
-
-  ![SynchronizedPwm_Unipolar](images\SynchronizedPwm_Unipolar.png)
+    ![SynchronizedPwm_Half_Bridge](images\SynchronizedPwm_Half_Bridge.png) ![SynchronizedPwm_H_Bridge](images\SynchronizedPwm_H_Bridge2.png)
 
 
-  * 바이폴라 (Bipolar) 방법: 모터를 정회전 하고자 할 때 $A$에 ON, $B$는 OFF 상태를 만들고, 다음에 $B$를 ON, $A$는 OFF 상태를 만듭니다. 즉, $B$가 $A$의 역상으로 동작하도록 합니다. $A$에 인가되는 DUTY Ratio가 50%일 때 모터가 정지합니다. $A$에 인가되는 DUTY Ratio가 75%일 때 최고 속도의 50%로 정회전 하게 됩니다.  이 방식은 저속에서 속도 제어 특성을 좋게 하지만 모터의 인덕턴스가 낮은 겨우 대기 전류가 높아 전력 낭비를 야기하며 모터 발열을 일으킬 수 있습니다.  ![SynchronizedPwm_Bipolar](images\SynchronizedPwm_Bipolar.png)
+
+* H-bridge을 위한 PWM 제어 방법
+
+  * Bipolar PWM 방법: H-bridge에서 모터 구동을 위해 동시에 1, 4번 스위치를 On, 2, 3번 스위치를 Off 해주고, 그 다음 동시에 2, 3번 스위치를 On, 1, 4번 스위치를 Off 해주는 것을 반복하는 방식입니다. 한가지 주의해야할 점은 1번과 2번 스위치는 동시에 On 되어서는 안되며, 3번과 4번 역시 동시에 On이 되어서는 안됩니다. 왜냐면, 같은 열의 스위치가 모두 On이 되면 $VCC$에서 $GND$로 큰 전류가 흐르기 때문에 소자가 발열에 의해 고장날 수 있기 때문입니다. 따라서, 스위치 제어를 할 때 1, 4번 스위치를 한 쌍 (예컨대, Pair A로 정의)으로, 2, 3번 스위치를 한 쌍 (Pair B로 정의)으로 구성하여 두 Pair 간의 전환(A -> B or B -> A)이 발생되면 짧은 시간의 Dead time을 주어 모든 스위치가 Off가 되도록 합니다. (A On, B Off -> A/B Off -> A Off, B On or A Off, B On -> A/B Off -> A On, B Off) Bipolar PWM에서는 A와 B의 PWM이 서로 반전된 형태로 입력되게 됩니다. 또한, 속도 제어는 A의 PWM Duty cycle이 50%, B의 PWM Duty cycle이 50%인 경우 모터는 정지상태를 유지하며, A의 Duty cycle 비율이 늘어나면 정방향으로 돌아가게 됩니다.
+
+     ![SynchronizedPwm_H_Bridge_OnOff](images\SynchronizedPwm_H_Bridge_OnOff.jpg)
+
+
+
 
 ## AURIX - related
 
-* ​
+* Infineon 社의 BTN8982TA로 구성한 H-bridge 모터 드라이버
+  * BTN8982TA는 Half-bridge 모터 드라이버입니다. 따라서, 2개의 BTN8982TA를 사용하면 H-bridge 모터 드라이버를 구성할 수 있습니다.
 
+  * 아래 회로도는 H-bridge를 나타냅니다. 각 BTN8982TA의 OUT이 모터의 양 극에 연결됩니다. PWM 입력은 IN에 인가되게 되며, INH를 통해 BTN8982TA의 동작 여부를 결정하게 됩니다.
+
+  *  BTN8982TA는 칩 내부적으로 두 개의 스위치가 동시 On이 될 수 없도록 하드웨어 적으로 제한되어 있기 때문에  Short가 발생할 가능성이 없습니다. 따라서, 보다 안전한 모터 제어를 할 수 있습니다.
+
+  * 따라서, H-bridge 모터 드라이버를 구동하기 위해서는 2개의 PWM 신호와 2개의 Enable 신호가 필요합니다.
+
+  * Bipolar PWM 방법으로 모터를 제어하기 위해서는 2개의 PWM 신호가 동기화가 되어 서로 반전된 입력을 갖도록 해야하기 때문에 GtmTom 모듈을 이용하여 동기화된 PWM을 만들어주는 것이 필요합니다.
+
+     ![SynchronizedPwm_H_BridgeCircuit](images\SynchronizedPwm_H_BridgeCircuit.png)
+
+  ​
+
+  * 모터 드라이버 회로에는 총 4개의 BTN8982TA 칩이 장착되어 있으며 두 쌍이 하나의 H-bridge 모터 드라이버를 구성하게 됩니다. 아래 그림에서 녹색 박스로 표시된 것이 BTN8982TA이며, 노란색 박스로 표시된 것이 H-bridge 모터 드라이버가 되겠습니다.
+
+
+​     ![SynchronizedPwm_MotorDriver](images\SynchronizedPwm_MotorDriver.png)
 
 
 

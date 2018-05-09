@@ -53,7 +53,6 @@ EXAMPLE:
 * MyIlldModule_TC23A -
 * InfineonRacer_TC23A - TestLineScan
 
-
 ------
 
 
@@ -105,11 +104,9 @@ SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO
 
 이전 사이클에서 계측된 값은 129 clock cycles이 되면 AO로 내보내는 것을 중단하게 됩니다. 현재 사이클의 계측된 값은 최소지연시간 $t_{qt}$ 이후 출력됩니다.
 
-
+![LineScanCamera_OperationalWaveForms](images/LineScanCamera_OperationalWaveForms.png)
 
 ## iLLD - related
-
-* ​
 
 ### Pin Configuration
 
@@ -130,6 +127,8 @@ SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO
 void BasicLineScan_init(void)
 {
 	// Almost similar to VadcAutoScan except folling Pin configuration
+    // AO_1, AO_2 pin으로 부터 Line scan 값을 받음
+    // 이를 위한 adc channel configuration
         adcChannelConfig[chnIx].channelId      = (IfxVadc_ChannelId)(TSL1401_AO_1);
         adcChannelConfig[chnIx].resultRegister = (IfxVadc_ChannelResult)(TSL1401_AO_1);  
 
@@ -137,6 +136,8 @@ void BasicLineScan_init(void)
         adcChannelConfig[chnIx].resultRegister = (IfxVadc_ChannelResult)(TSL1401_AO_2);  
     
     // for SI & CLK Signal **********************************************************
+    // Line scan 값을 받기 위해서는 SI, CLK signal을 내보내야 함
+    // 이를 위한 Port 초기 설정
     	IfxPort_setPinMode(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_Mode_outputPushPullGeneral);
 		IfxPort_setPinPadDriver(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_PadDriver_cmosAutomotiveSpeed1);
 		IfxPort_setPinState(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_State_low);
@@ -158,7 +159,8 @@ void BasicLineScan_run(void)
 {
 	uint32 chnIx;
 	uint32 idx;
-
+	
+    // TSL1401 Operational waveform에 의거하여 SI, CLK의 signal을 내보냄
 	IfxPort_setPinState(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_State_high);
 	IfxPort_setPinState(TSL1401_CLK.port, TSL1401_CLK.pinIndex, IfxPort_State_low);
 	waitTime(5*TimeConst_100ns);
@@ -175,7 +177,7 @@ void BasicLineScan_run(void)
 
 	for(idx = 0; idx < 128 ; ++idx)
 	{
-
+		// 200kHz로 Clk signal을 준다
 		IfxPort_setPinState(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_State_low);
     	IfxPort_setPinState(TSL1401_CLK.port, TSL1401_CLK.pinIndex, IfxPort_State_low);
     	waitTime(3*TimeConst_1us);
@@ -222,7 +224,7 @@ void BasicLineScan_run(void)
 * 전체 1싸이클, 128 point, ADC 변환을 위하여 약 850usec 의 시간이 필요하다.
   * 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있다.
 
-  ​
+  
 
 
 
@@ -267,7 +269,6 @@ void BasicLineScan_run(void)
     * 주기가 크면 광량을 수집하는 시간이 길어지므로 어두운 곳에서도 측정 가능
 
     ​
-
 
 ------
 

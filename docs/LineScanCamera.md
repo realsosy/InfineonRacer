@@ -2,14 +2,6 @@
 title: Line Scan Camera.md
 author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
 date: 2018-05-08
-
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* Line Scan Camera 이해하기
-* Timing 설계
-* 구현하기
-EXAMPLE: 
-	MyIlldModule_TC23A - 
-	InfineonRacer_TC23A - TestLineScan
 ---
 
 # Line Scan Camera (Optional)
@@ -77,15 +69,16 @@ EXAMPLE:
 
 
 
-$SI (Serial Port)$: Data output의 시작 시점을 정하게 됩니다.
+<img src="https://latex.codecogs.com/gif.latex?SI(SerialPort)" />: Data output의 시작 시점을 정하게 됩니다.
 
-$CLK (Clock)$: 센서가 동작할 수 있도록 Clock을 입력하게 되며, clock과 동기화 하여 charge transfer, pixel output, 그리고 reset을 제어하게 됩니다.
 
-$AO (Analog Output)$: 센싱된 결과가 출력되는 포트 입니다.
+<img src="https://latex.codecogs.com/gif.latex?CLK(Clock)" />: 센서가 동작할 수 있도록 Clock을 입력하게 되며, clock과 동기화 하여 charge transfer, pixel output, 그리고 reset을 제어하게 됩니다.
 
-$V_{DD}$: 입력 전압입니다.
+<img src="https://latex.codecogs.com/gif.latex?AO (Analog Output)" />: 센싱된 결과가 출력되는 포트 입니다.
 
-$GND$: 접지를 나타냅니다.
+<img src="https://latex.codecogs.com/gif.latex?V_{DD}" />: 입력 전압입니다.
+
+<img src="https://latex.codecogs.com/gif.latex?GND" />: 접지를 나타냅니다.
 
 
 
@@ -101,7 +94,7 @@ Clock 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 �
 
 SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO에 내보내게 됩니다. 동시에 18 clock cycles 동안 모든 pixel들의 integrators를 초기화 합니다. 19 clock cycles부터 모든 pixel 값을 integration 하게됩니다.
 
-이전 사이클에서 계측된 값은 129 clock cycles이 되면 AO로 내보내는 것을 중단하게 됩니다. 현재 사이클의 계측된 값은 최소지연시간 $t_{qt}$ 이후 출력됩니다.
+이전 사이클에서 계측된 값은 129 clock cycles이 되면 AO로 내보내는 것을 중단하게 됩니다. 현재 사이클의 계측된 값은 최소지연시간 <img src="https://latex.codecogs.com/gif.latex?t_{qt}" />이후 출력됩니다.
 
 ![LineScanCamera_OperationalWaveForms](images/LineScanCamera_OperationalWaveForms.png)
 
@@ -223,7 +216,6 @@ void BasicLineScan_run(void)
 * 전체 1싸이클, 128 point, ADC 변환을 위하여 약 850usec 의 시간이 필요하다.
   * 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있다.
 
-  
 
 
 

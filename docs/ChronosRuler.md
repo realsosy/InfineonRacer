@@ -2,22 +2,6 @@
 title: Chronos ruler.md
 author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
 date: 2018-05-08
-
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* iLLD 활용하기
-* 예제 Beeper, Servo
-EXAMPLE: 
-	MyIlldModule_TC23A - GtmTomTimer, GtmTomServo
-	InfineonRacer_TC23A - TestGtm
-	
-이 절에서는 총 3개의 예제가 구성될 수 있습니다.
-TomTimer: 1msec 주기 인터럽트를 발생시켜 보는, 것은 Stm이랑 중복되는 성격은 있지만 연습을 위해서 한번 해보는 것도 좋을 듯, InfineonRacer 에서는 활용하지 않습니다. 
-TomServo: 서보 활용을 위한 예제로 기본 
-TestGtm: Beeper 예제를 추가한 것으로 
-
-TomServo 를 이 절의 중심 예제로 사용
-Beeper 예제는 Exercise로 만들어 주면 어떨까 싶고 (답은 TestGtm 프로젝트에 들어 있네요.)
-TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분이 결정하세요)
 ---
 
 # Chronos ruler

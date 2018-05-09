@@ -42,15 +42,12 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 **[Example Code]**
 
 * MyIlldModule_TC23A - GtmTomPwmHl
-* InfineonRacer_TC23A - 
 
 ------
 
 ## Example Description
 
 * GtmTom을 이용하여 PWM을 생성하고, 생성된 PWM을 이용하여 모터 드라이버를 구동시켜 봅니다. 
-
-
 
 
 
@@ -99,7 +96,7 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 ## iLLD - related
 
 * Demo code description
-  * 4개의 switching 소자의 PWM을 개별적으로 제어할 수 있음
+  * 4개의 switching 소자의 PWM을 개별적으로 제어할 수 있습니다.
 
 
 ### Module Configuration

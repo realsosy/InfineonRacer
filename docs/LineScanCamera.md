@@ -50,7 +50,6 @@ EXAMPLE:
 
 **[Example Code]**
 
-* MyIlldModule_TC23A -
 * InfineonRacer_TC23A - TestLineScan
 
 ------

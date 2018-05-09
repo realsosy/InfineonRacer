@@ -51,7 +51,6 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 **[Example Code]**
 
 * MyIlldModule_TC23A - GtmTomTimer, GtmTomServo
-* InfineonRacer_TC23A - TestGtm
 
 ------
 
@@ -59,7 +58,7 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 ## Example Description
 
-* ​
+* 1ms 마다 timer interrupt를 발생시키고, Servo motor를 0도로 맞추도록 PWM을 발생시킬 수 있습니다.
 
 
 
@@ -132,9 +131,6 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 ​    ![ChronosRuler_TOM_BlockDiagramm](images\ChronosRuler_TOM_BlockDiagram.png)
 
 ## iLLD - related
-
-* Demo code description
-  * Servo motor의 각도를 0도로 맞춘다.
 
 ### Module Configuration
 

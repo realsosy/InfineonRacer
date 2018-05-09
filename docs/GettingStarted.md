@@ -183,6 +183,19 @@ date: 2018-04-10
 
  ![GettingStarted_19UDE](images/GettingStarted_19UDE.png)
 
+* 다음과 같은 창이 뜨면 **확인** 클릭 후 **New** 클릭
+
+ ![GettingStarted_SelTarget](images/GettingStarted_SelTarget.png)
+
+* *Use a default target configuration* 체크 후 하단의 폴더트리에서 **TriCore** >> **Infineon** >> **TC237 Application Kit** >> **Application Kit with TC237** 선택 후 **마침** 클릭
+
+ ![GettingStarted_CreateConfig](images/GettingStarted_CreateConfig.png)
+
+* _*.cfg_ 파일 저장 후 **확인** 클릭
+
+* 상단의 **File** >> **Load Program** 클릭 후 빌드한 Elf 파일 선택 (*2_Out/Tricore_Gnuc/Gnuc_Files/InfineonRacer_TC23A_tc.elf* )
+
+ ![GettingStarted_Elf](images/GettingStarted_Elf.png)
 
 * Elf 파일 경로 확인 후 **OK** 클릭
 (경로가 빌드 후 생성된 *2_Out/Tricore_Gnuc/Gnuc_Files/InfineonRacer_TC23A_tc.elf* 파일로 설정되어 있는지 확인)
@@ -303,8 +316,6 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * 특정 명령어셋의 사용법(syntax)을 확인하기 위해서는 *"(명령어) ?""* 를 입력 후 enter를 입력한다.
-
-     ```
 
      ```
     Shell>bpon ?

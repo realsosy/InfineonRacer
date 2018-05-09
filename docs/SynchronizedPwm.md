@@ -46,7 +46,6 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 * InfineonRacer_TC23A - 
 
 
-
 ------
 
 ## Example Description
@@ -63,14 +62,14 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
   * Half-bridge: DC모터의 한 극에 스위치 소자를 연결하고, 스위치를 on/off 함으로써 모터에 인가되는 전류를 제어하는 방식입니다. 단상 교류 전압을 발생시키는 가장 단순한 방법으로 요구되는 교류 전압의 주기 $T$에서 반주기마다 위아래 스위치를 번갈아 On/Off 하는 것입니다. 
   * H-bridge: 2개의 Half-bridge를 모터 양 극에 연결함으로써, Half-bridge 보다 두 배 큰 교류 전압을 출력할 수 있습니다. 유효한 양 극전압을 인가하기 위해서는 양 극에 인가되는 전압의 위상차가 $180^\circ$이 되어야 합니다.
 
-    ![SynchronizedPwm_Half_Bridge](images\SynchronizedPwm_Half_Bridge.png) ![SynchronizedPwm_H_Bridge](images\SynchronizedPwm_H_Bridge2.png)
+    ![SynchronizedPwm_Half_Bridge](images/SynchronizedPwm_Half_Bridge.png) ![SynchronizedPwm_H_Bridge](images/SynchronizedPwm_H_Bridge2.png)
 
 
 * H-bridge을 위한 PWM 제어 방법
 
   * Bipolar PWM 방법: H-bridge에서 모터 구동을 위해 동시에 1, 4번 스위치를 On, 2, 3번 스위치를 Off 해주고, 그 다음 동시에 2, 3번 스위치를 On, 1, 4번 스위치를 Off 해주는 것을 반복하는 방식입니다. 한가지 주의해야할 점은 1번과 2번 스위치는 동시에 On 되어서는 안되며, 3번과 4번 역시 동시에 On이 되어서는 안됩니다. 왜냐면, 같은 열의 스위치가 모두 On이 되면 $VCC$에서 $GND$로 큰 전류가 흐르기 때문에 소자가 발열에 의해 고장날 수 있기 때문입니다. 따라서, 스위치 제어를 할 때 1, 4번 스위치를 한 쌍 (예컨대, Pair A로 정의)으로, 2, 3번 스위치를 한 쌍 (Pair B로 정의)으로 구성하여 두 Pair 간의 전환(A -> B or B -> A)이 발생되면 짧은 시간의 Dead time을 주어 모든 스위치가 Off가 되도록 합니다. (A On, B Off -> A/B Off -> A Off, B On or A Off, B On -> A/B Off -> A On, B Off) Bipolar PWM에서는 A와 B의 PWM이 서로 반전된 형태로 입력되게 됩니다. 또한, 속도 제어는 A의 PWM Duty cycle이 50%, B의 PWM Duty cycle이 50%인 경우 모터는 정지상태를 유지하며, A의 Duty cycle 비율이 늘어나면 정방향으로 돌아가게 됩니다.
 
-     ![SynchronizedPwm_H_Bridge_OnOff](images\SynchronizedPwm_H_Bridge_OnOff.jpg)
+     ![SynchronizedPwm_H_Bridge_OnOff](images/SynchronizedPwm_H_Bridge_OnOff.jpg)
 
 
 
@@ -88,14 +87,14 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
   * Bipolar PWM 방법으로 모터를 제어하기 위해서는 2개의 PWM 신호가 동기화가 되어 서로 반전된 입력을 갖도록 해야하기 때문에 GtmTom 모듈을 이용하여 동기화된 PWM을 만들어주는 것이 필요합니다.
 
-     ![SynchronizedPwm_H_BridgeCircuit](images\SynchronizedPwm_H_BridgeCircuit.png)
+     ![SynchronizedPwm_H_BridgeCircuit](images/SynchronizedPwm_H_BridgeCircuit.png)
 
   ​
 
   * 모터 드라이버 회로에는 총 4개의 BTN8982TA 칩이 장착되어 있으며 두 쌍이 하나의 H-bridge 모터 드라이버를 구성하게 됩니다. 아래 그림에서 녹색 박스로 표시된 것이 BTN8982TA이며, 노란색 박스로 표시된 것이 H-bridge 모터 드라이버가 되겠습니다.
 
 
-​     ![SynchronizedPwm_MotorDriver](images\SynchronizedPwm_MotorDriver.png)
+​     ![SynchronizedPwm_MotorDriver](images/SynchronizedPwm_MotorDriver.png)
 
 
 

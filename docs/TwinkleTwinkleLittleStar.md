@@ -174,7 +174,7 @@ void STM_Int0Handler(void)
 }
 ```
 
-* Handler 함수는 실행되자마자 다음 inerrupt를 준비한다.	 
+* Handler 함수는 실행되자마자 다음 interrupt를 준비한다.	 
 	1. Interrupt flag를 reset하고, `IfxStm_clearCompareFlag`
 	2. Compare register의 값을 주기만큼 더해주며,  `IfxStm_increaseCompare`
 	3. Interrupt를 다시 활성화한다. `IfxCpu_enableInterrupts`
@@ -271,8 +271,8 @@ void initTime(void)
 * 인터럽트 발생 주기를 1msec 로 변경해 봅시다.
 * LED107은 5Hz로 점멸시킵니다.  LED108은 0.5Hz로 점멸시킵니다.
 * 프로그래밍 가이드
-  * ISR에서 직접 LED를 점멸하지 않습니다.  대신 `g_Stm.counter`를 1씩 증가 시킵니다.
-  * `IfxStmDemo_run(void)` 함수에서 `g_Stm.counter` 값을 살펴보면서 100 이 될 때마다, 그리고 1000 이 될 때마다 LED107 Toggle 함수와 LED108 Toggle 함수를 호출하도록 합니다.
+  * ISR(`STM_Int0Handler(void)`)에서 직접 LED를 점멸하는 대신  `g_Stm.counter`를 1씩 증가 시킵니다.
+  * `IfxStmDemo_run(void)` 함수에서 `g_Stm.counter` 값을 살펴보면서 100 이 될 때마다 LED107 Toggle 함수를 호출하고, 1000 이 될 때마다  LED108 Toggle 함수를 호출하도록 합니다.
 * **[중요]**
   * 위와 같은 방식으로 프로그래밍 하는 것이 스케쥴러의 기본 아이디어 입니다.  
   * 여기서 가장 기본이 되는 주기적 증가 카운터, 이 예에서는 `g_Stm.counter` 를 Tick 이라 부르며, 시계의 초침과 같은 역할을 합니다.

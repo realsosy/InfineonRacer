@@ -360,19 +360,19 @@ int core0_main(void)
 * InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
 * Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
 
-![ADCLinescanPort](images/ADCInputPortSet.png)
+![MyOwnCheapOscilloscope_ADCInputPortSet](images/MyOwnCheapOscilloscope_ADCInputPortSet.png)
 
-![ADCLinescanPort](images/ADCLinescanPort.jpg)
+![MyOwnCheapOscilloscope_ADCLinescanPort](images/MyOwnCheapOscilloscope_ADCLinescanPort.jpg)
 
 * Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
 * 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
-![ADCmls](images/ADCmls.jpg)
+![MyOwnCheapOscilloscope_ADCmls](images/MyOwnCheapOscilloscope_ADCmls.jpg)
 
 * SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
 * 아래 예시는 SerialPort에서 500ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
-![ADCmlsSerialport](images/ADCmlsSerialport.jpg)
+![MyOwnCheapOscilloscope_ADCmlsSerialport](images/MyOwnCheapOscilloscope_ADCmlsSerialport.jpg)
 
 ------
 

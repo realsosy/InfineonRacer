@@ -8,7 +8,7 @@ date: 2018-05-04
 
 ## 시작하는 질문
 
-* 제어 공학에서 시뮬레이션을 하고 분석하는 것을 열심히 배웠는데.... 이 때 만든 알고리즘을 인피니언 레이서에도 활용하려면 어떻게 해야 할까?  
+* 제어 공학에서 시뮬레이션을 하고 분석하는 것을 열심히 배웠는데.... 이 때 만든 알고리즘을 인피니언레이서에도 활용하려면 어떻게 해야 할까?  
 
 학교에서 **마이크로컨트롤러 수업을 들으면 하드웨어적인 입출력에 대한 처리**에 대해서 주로 배우게 됩니다.  그리고 제어공학에서는 전달함수, 상태방정식 등 이론적인 내용을 바탕으로 **제어알고리즘을 해석적으로, 시뮬레이션을 활용해서 설계하는 방법**을 배우게 됩니다.  실제 제어시스템을 만들려면, 아니 지금 여러분이 만들고 있는 인피니언레이서에도 이 지식이 모두 결합되어야 합니다.  이때 위와 같은 질문을 하게 됩니다.  
 
@@ -107,7 +107,7 @@ MathWorks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     * set_up_project: Project를 시작할때 동작시키며, project_paths, pid_param_type등 프로젝트 동작에 관련된 script들을 실행시켜 프로젝트를 동작시킬 준비를 완료함
 
 * harness.slx - control algorithm과 plant를 연결시켜 주는 모델
-    * 별도의 모델 파일인 ```controller.slx```와 ```plant.slx```을 model reference block을 사용하여 참조.
+    * 별도의 모델 파일인 ```controller.slx```와 ```plant.slx```을 model reference block을 사용하여 참조
     * Control algorithm to plant model
         * Motor enable
         * Motor voltage
@@ -115,11 +115,11 @@ MathWorks 사에서는 이와 같은 개발 방법을 도와주기 위하여 일
     * Plant model to control algorithm
         * Vehicle speed
         * Lane Margin 0, 1
-    * Control algorithm과 plant model이 다른 주기로 simulation 되기 때문에 두 모델 사이에 rate transition block을 삽입.
+    * Control algorithm과 plant model이 다른 주기로 simulation 되기 때문에 두 모델 사이에 rate transition block을 삽입
         * Control algorithm period: 20 ms
         * Plant model: 1 ms
-        * 실제 Plant의 거동을 잘 표현하기 위해서는 가능한한 sample time이 짧아야 하므로 일반적으로 Plant 모델의 sample time은 control algorithm의 sample time보다 작다.
-        * 각 알고리즘의 실행주기는 Workspace에 T_IR_Control=0.02, T_IR_Plant=0.001로 선언되어있다
+    * 실제 Plant의 거동을 잘 표현하기 위해서는 가능한한 sample time이 짧아야 하므로 일반적으로 Plant 모델의 sample time은 control algorithm의 sample time보다 작다
+    * 각 알고리즘의 실행주기는 Workspace에 T_IR_Control=0.02, T_IR_Plant=0.001로 선언되어있다
 
        ![Simulink_04_HarnessModel](images/Simulink_04_HarnessModel.png)
 
@@ -181,7 +181,7 @@ function generate_controller_code()
   % (생성된 코드가 저장될 project path)
   
   % ------ 이하 생략
-```  
+```
 
 * controller의 input과 output을 실제 project내의 signal과 matching을 시켜줘야 한다.
     * controller는 *input*으로 **vehicle speed**를 받아서 제어결과 **motor voltage**를 *output*으로 내보낸다

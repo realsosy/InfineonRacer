@@ -53,7 +53,6 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 * MyIlldModule_TC23A - GtmTomTimer, GtmTomServo
 * InfineonRacer_TC23A - TestGtm
 
-
 ------
 
 
@@ -134,22 +133,76 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 ## iLLD - related
 
-* ​
-
-
-
 ### Module Configuration
 
 ```c
+void GtmTomTimer_initTimer(void)
+{
+    {   /* GTM TOM configuration */
+        IfxGtm_Tom_Timer_Config timerConfig;
+        IfxGtm_Tom_Timer_initConfig(&timerConfig, &MODULE_GTM);
+        timerConfig.base.frequency       = 100;		// Set PWM period
+        timerConfig.base.isrPriority     = ISR_PRIORITY(INTERRUPT_TIMER_1MS);
+        timerConfig.base.isrProvider     = ISR_PROVIDER(INTERRUPT_TIMER_1MS);
+        timerConfig.base.minResolution   = (1.0 / timerConfig.base.frequency) / 1000;
+        timerConfig.base.trigger.enabled = FALSE;
+        timerConfig.tom                  = IfxGtm_Tom_1;	// Set TOM1 for TOM object
+        timerConfig.timerChannel         = IfxGtm_Tom_Ch_7;	// Set channel 7
+        timerConfig.clock                = IfxGtm_Tom_Ch_ClkSrc_cmuFxclk2;
 
+        // Set trigger output port, p33.10
+        timerConfig.triggerOut                      = &IfxGtm_TOM1_7_TOUT32_P33_10_OUT;
+        timerConfig.base.trigger.outputEnabled      = TRUE;
+        timerConfig.base.trigger.enabled            = TRUE;
+        timerConfig.base.trigger.triggerPoint       = 150000/16/16; /* 1.5msec source: Fxclk1 100MHz/16 */
+        timerConfig.base.trigger.risingEdgeAtPeriod = TRUE; /* Interrupt at rising edge */
+
+        IfxGtm_Tom_Timer_init(&g_GtmTomTimer.drivers.timerOneMs, &timerConfig);
+
+        IfxGtm_Tom_Timer_run(&g_GtmTomTimer.drivers.timerOneMs);
+    }
+}
+
+void GtmTomServo_init(void)
+{
+    /* disable interrupts */
+    boolean  interruptState = IfxCpu_disableInterrupts();
+
+    /** - GTM clocks */
+    Ifx_GTM *gtm = &MODULE_GTM;
+    g_GtmTomTimer.info.gtmFreq = IfxGtm_Cmu_getModuleFrequency(gtm);
+    IfxGtm_enable(gtm);
+
+    /* Set the global clock frequencies */
+    IfxGtm_Cmu_setGclkFrequency(gtm, g_GtmTomTimer.info.gtmFreq);
+    g_GtmTomTimer.info.gtmGclkFreq = IfxGtm_Cmu_getGclkFrequency(gtm);
+
+    /** - Initialise the GTM part */
+    GtmTomTimer_initTimer();
+
+    printf("Gtm Tom Timer is initialised\n");
+
+    /* enable interrupts again */
+    IfxCpu_restoreInterrupts(interruptState);
+
+    IfxGtm_Cmu_enableClocks(gtm, IFXGTM_CMU_CLKEN_FXCLK | IFXGTM_CMU_CLKEN_CLK0);
+}
 ```
 
 
 
 ### Interrupt Configuration
 
-```c
+* 1ms 마다 인터룹트를 발생시킨다.
 
+```c
+void ISR_Timer_1ms(void)
+{
+    IfxCpu_enableInterrupts();
+
+    IfxGtm_Tom_Timer_acknowledgeTimerIrq(&g_GtmTomTimer.drivers.timerOneMs);
+    g_GtmTomTimer.isrCounter.slotOneMs++;
+}
 ```
 
 
@@ -157,7 +210,17 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 ### Module Behavior
 
 ```c
+float32 onTime = 1.5; /* 0.5: -90, 1.5: 0, 2.5: +90 */
 
+void GtmTomServo_run(void)
+{
+	Ifx_TimerValue triggerPoint= (onTime * 100000) /16/16;
+	IfxGtm_Tom_Timer_disableUpdate(&g_GtmTomTimer.drivers.timerOneMs);
+    
+    // Set PWM duty
+	IfxGtm_Tom_Timer_setTrigger(&g_GtmTomTimer.drivers.timerOneMs, triggerPoint);
+	IfxGtm_Tom_Timer_applyUpdate(&g_GtmTomTimer.drivers.timerOneMs);
+}
 ```
 
 

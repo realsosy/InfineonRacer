@@ -13,26 +13,26 @@ date: 2018-04-10
 
 ## References
 * 개발환경 관련
-  * [HighTec Free TriCore™ Entry Tool Chain](https://free-entry-toolchain.hightec-edv.com/index.php)
-  * [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
-  * [TeraTerm](https://ttssh2.osdn.jp/)
+    * [HighTec Free TriCore™ Entry Tool Chain](https://free-entry-toolchain.hightec-edv.com/index.php)
+    * [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software)
+    * [TeraTerm](https://ttssh2.osdn.jp/)
 
 * Build 관련
-  - php 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
+    * php 관련 - [Stackoverflow](https://stackoverflow.com/questions/21397073/msvcr110-dll-is-missing-from-computer-error-while-installing-php)
 
 ## Example Description
 
 * 개발환경 구축
-  * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
-  * 인피니언에서 제공하는 *BIFACES* build environment 설치
-  * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설치
+    * 개발환경 구축을 위해 Tricore tool chain(compiler)와 UDE(Universal Debugger Engine)가 포함되어 있는 *HighTec*  설치
+    * 인피니언에서 제공하는 *BIFACES* build environment 설치
+    * Serial 통신 및 Shell 환경 구축을 위한 SerialPlot, TeraTerm 설치
 
 * *BIFACES* 를 통하여 소스코드 빌드
-  * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
+    * 다운 받고, 빌드하고, 버닝하고 TFT, Shell 로 동작 확인
 
 * 예제 동작 확인
-  * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
-  * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, Line scan camera 예제 동작
+    * *Application Kit TC2X7 V1.0* 보드(이하 *AppKit*)를 이용한 LED, Beeper, TFT 예제 동작
+    * *DC Motor Control Kit* 보드(이하 *MotorKit*)를 이용한 Motor, Encoder, Line scan camera 예제 동작
 
 ---
 ## 개발환경 설치
@@ -40,13 +40,13 @@ date: 2018-04-10
 ### HighTec Installation
 
 * Dependency: [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) **(32bit)**
-  - Windows 32bit 64bit 운영체제 모두 32bit 버전으로 다운받아야 함 (최신 버전으로 받으면 됨)
+    * Windows 32bit 64bit 운영체제 모두 32bit 버전으로 다운받아야 함 (최신 버전으로 받으면 됨)
 
  ![GettingStarted_Java](images/GettingStarted_Java.png)
 
 
 * [Tricore tool chain 홈페이지](http://free-entry-toolchain.hightec-rt.com/index.php)에서 개인 정보 입력 후 Generate License File & Download 버튼 클릭
-  * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요
+    * 이때 입력한 개인정보는 HighTec 다운로드 완료 후 License 인증 시 필요
 
  ![GettingStarted_01Hightec](images/GettingStarted_01Hightec.png)
 
@@ -55,26 +55,27 @@ date: 2018-04-10
 * 압축 해제된 파일 중 *setup.exe* 를 실행 후 설치 진행
 
  ![GettingStarted_02HighTecCompiler](images/GettingStarted_02HighTecCompiler.png)
-   (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
+ 
+ (HighTec 설치 진행 중 **UDEVisualPlatfrom** 과 **CDM Driver Package HighTec** 가 설치됨)
 
 * 설치 완료 후 **Eclipse.exe** *(C:\HIGHTEC\ide\eclipse-v1.6.1)* , **UDEVisualPlatfrom.exe** *(C:\Program Files (x86)\pls\UDE Starterkit 4.8)* 실행 확인
 
-  * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
+    * **Eclipse** 실행화면 (Workspace는 defualt 값 사용)
 
  ![GettingStarted_HighTec](images/GettingStarted_HighTec.png)
 
 ### BIFACES Installation
 
 * BIFACES [Download](https://drive.google.com/open?id=1tYg7DDeB-HNf8ZCV7toeD5UtMwiLin4A)
-  * 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
+    * 위 링크를 통해 다운 받은 압축파일 *(BIFACES_V1_0_0_Win32.zip)* 압축 해제
 
-  * BIFACES_V1_0_0.exe 실행
+    * BIFACES_V1_0_0.exe 실행
 
-  * *Select Components* 에서 *Full installation for Win32* 선택 후 설치 진행
+    * *Select Components* 에서 *Full installation for Win32* 선택 후 설치 진행
 
  ![GettingStarted_03BIFACES](images/GettingStarted_03BIFACES.png)
 
-  * 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
+* 설치 완료 후 **StartBifaces.bat** *(C:\Tools\BifacesTools)*  파일을 실행
     * **.bat** file 실행 화면 (Workspace는 defualt 값 사용)
 
  ![GettingStarted_BiWelcome](images/GettingStarted_BiWelcome.png)
@@ -82,11 +83,11 @@ date: 2018-04-10
 ### SerialPlot Installation
 
 * [SerialPlot](https://hackaday.io/project/5334-serialplot-realtime-plotting-software) 공식 홈페이지에 접속하여 다운로드 및 설치 진행하거나 아래 링크를 이용 (자신의 PC 운영체제에 맞게 설치)
-  - 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
-  - 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
+    * 64bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win64.exe
+    * 32bit setup: https://bitbucket.org/hyOzd/serialplot/downloads/serialplot-0.9.0-win32.exe
 
 * 설치 완료 후 **serialplot.exe** *C:\Program Files\serialplot\bin* 프로그램을 실행 확인
-  - **SerialPlot** 실행 화면
+    * **SerialPlot** 실행 화면
 
  ![GettingStarted_SerialPlot](images/GettingStarted_SerialPlot.png)
 
@@ -99,7 +100,7 @@ date: 2018-04-10
  ![GettingStarted_16Teraterm](images/GettingStarted_16TeraTerm.png)
 
 * 설치 완료 후 **ttermpro.exe** *(C:\Program Files (x86)\teraterm)* 실행 확인
-  * **ttermpro.exe** 실행 화면
+    * **ttermpro.exe** 실행 화면
 
  ![GettingStarted_17Teraterm](images/GettingStarted_17TeraTerm.png)    
 
@@ -126,7 +127,7 @@ date: 2018-04-10
  ![GettingStarted_05Workspace](images/GettingStarted_05Workspace.png)
 
 * 다운로드 받은  *InfineonRacer* 프로젝트 Import
-    * **File** >> **Import** 클릭
+    * **File** >> **Import** 클릭
 
  ![GettingStarted_06Import](images/GettingStarted_06Import.png)
 
@@ -139,7 +140,7 @@ date: 2018-04-10
  ![GettingStarted_08Select](images/GettingStarted_08Select.png)
 
 * *Projects* 탭에서 **InfineonRacer_TC23A** 체크박스 선택 후 **Finish** 클릭
-  * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
+    * 다른 프로젝트는 *InfineonRacer* 에서 다루는 각각의 [모듈기능](https://github.com/realsosy/InfineonRacer#dive-into-aurix-world-using-infineonracer) 으로 나누어져 있음
 
  ![GettingStarted_09Project](images/GettingStarted_09Project.png)  
 
@@ -150,21 +151,21 @@ date: 2018-04-10
 ### Build
 
 * Build 전 Complier 설정
-    *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 편집 가능한 Edit창이 나옴
-    Tricore toolchain의 경로 및 버전이 맞게 설정되어 있는지 확인
+    * *Project explorer*  창에서 **InfineonRacer_TC23A** >> **1_ToolEnv** >> **0_Build** >> **1_Config** >> **Config_Tricore_Gnuc** 안에 있는 **Config_Gnuc.mk** 파일을 더블클릭 하면 편집 가능한 Edit창이 나옴
+    * Tricore toolchain의 경로 및 버전이 맞게 설정되어 있는지 확인
     ```
     B_GNUC_TRICORE_PATH:= C:\HIGHTEC\toolchains\tricore\v4.9.1.0-infineon-1.1
     ```
 
 * *Project explorer* 를 통한 build
-  * *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
+    * *Project Explorer* 창에서 Build 할 프로젝트를 우클릭 한 뒤 **Build Project** 클릭
 
  ![GettingStarted_11Build](images/GettingStarted_11Build.png)
 
-  * Build 후 결과
-    - *0_Build* 폴더에 **9_Make** 폴더 생성
-    - **2_Out** 폴더 생성
-    - *2_Out/Tricore_Gnuc/Gnuc_Files* 에 **.elf** 파일과 **.hex** 파일 그리고 **.map** 파일 생성
+* Build 후 결과
+    * *0_Build* 폴더에 **9_Make** 폴더 생성
+    * **2_Out** 폴더 생성
+    * *2_Out/Tricore_Gnuc/Gnuc_Files* 에 **.elf** 파일과 **.hex** 파일 그리고 **.map** 파일 생성
 
  ![GettingStarted_12Build](images/GettingStarted_12Build.png)
 
@@ -177,7 +178,6 @@ date: 2018-04-10
 * UDEVisualPlatfrom 을 실행하여 **File** >> **Open Workspace...** 클릭
 
  ![GettingStarted_18UDE](images/GettingStarted_18UDE.png)
-
 
 * *BIFACES Workspase/InfineonRacer_TC23A/tool/AppKit_TC23x.wsx* 파일 열기
 
@@ -220,7 +220,7 @@ date: 2018-04-10
  ![GettingStarted_24Start](images/GettingStarted_24Start.png)
 
 * 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
-  * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
+    - TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
   
  ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
 
@@ -229,17 +229,16 @@ date: 2018-04-10
  ![GettingStarted_26Dis](images/GettingStarted_26Dis.png)
 
 * *AppKit* COM port 활성화(첫 연결시 필요)
-  * 장치관리자 실행
+    * 장치관리자 실행
+    * **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
 
-  * **범용 직렬 버스 컨트롤러** >> **Infineon DAS JDS COM** 우클릭 한 뒤 **속성(R)** 클릭
+![GettingStarted_27Com](images/GettingStarted_27Com.png)
 
- ![GettingStarted_27Com](images/GettingStarted_27Com.png)
-
-  * *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
+    * *고급* 탭에서 **VCP 드라이버 설치** 체크 후 **확인** 클릭
 
  ![GettingStarted_28Enable](images/GettingStarted_28Enable.png)
 
-  * *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인 (재연결시 드라이버가 자동으로 설치됨)
+    * *AppKit* 와 Host PC의 USB 연결을 분리했다가 재연결 한 뒤 *장치관리자* 에서 등록되는 COM port의 번호 확인 (재연결시 드라이버가 자동으로 설치됨)
 
  ![GettingStarted_29Com](images/GettingStarted_29Com.png)
 
@@ -348,7 +347,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
  ![GettingStarted_34On](images/GettingStarted_34On.jpg)
 
 * *bpf* 명령어를 통해 beeper 소리의 높이(frequency)를 조절할 수 있다.
-    *  froat_value: 100.0 ~ 10000.0
+    * froat_value: 100.0 ~ 10000.0
 
     ```
     Shell>bpf ?
@@ -366,7 +365,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * *bpv* 명령어를 통해 beeper 소리의 크기(voltage)를 조절할 수 있다.
-    *  frac_value: 0.00 ~ 0.99
+    * frac_value: 0.00 ~ 0.99
 
     ```
     Shell>bpv ?
@@ -481,7 +480,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
     ```
 
 * SerialPlot 프로그램을 이용해 실시간 값 확인 가능
-  - *mls* 명령어를 통해 주기적으로 line scan camera의 값을 받아올 수 있음
+    * *mls* 명령어를 통해 주기적으로 line scan camera의 값을 받아올 수 있음
 
     ```
     Shell>mls ?
@@ -504,11 +503,11 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
     ```
 
-  - *SerialPlot* 을 실행하고 아래 이미지와 같이 포트 설정 후 **Open** 클릭
+* *SerialPlot* 을 실행하고 아래 이미지와 같이 포트 설정 후 **Open** 클릭
 
  ![GettingStarted_SerialPlot3](images/GettingStarted_SerialPlot3.png)
-
-  - 아래와 같이 Command 를 입력하고 Send를 입력하면 실시간으로 Line scan camera의 raw 데이터 확인 가능(LineScan0 만 사용)
+ 
+* 아래와 같이 Command 를 입력하고 Send를 입력하면 실시간으로 Line scan camera의 raw 데이터 확인 가능(LineScan0 만 사용)
 
  ![GettingStarted_SerialPlot2](images/GettingStarted_SerialPlot2.png)
 
@@ -560,18 +559,21 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
 
 * 빌드시 컴파일을 위한 Make 파일 생성이 안될 경우 빌드 에러 발생
 * **BIFACES** 가 설치된 경로에서 *C:\Tools\BifacesTools\Php* 로 이동하여 *php.exe* 실행
-  -  정상적으로 실행 되었을 때
+* 정상적으로 실행 되었을 때
+  
   ![GettingStarted_Php](images/GettingStarted_Php.png)
 
-  - *php.exe* 파일이 실행은 되지만 아래 사진과 같이 에러가 발생
+* *php.exe* 파일이 실행은 되지만 아래 사진과 같이 에러가 발생
+ 
   ![GettingStarted_PhpMsvc](images/GettingStarted_PhpMsvc.png)
 
-    - [msvcr110.dll 파일을 다운로드](https://drive.google.com/open?id=1PNwUwMD-6SpE53mg-y7Iv8WzPXUfSWsH)
-    - 다운 받은 파일을 *C:\Windows\SysWOW64* 폴더(운영체제 Windows 64bit 기준)에 저장
-    - 다시 php.exe 파일을 실행하여 실행이 되는지 확인 (정상적으로 실행이 되면 검은 도스창이 뜬다) 후 다시 빌드 실행
+    * [msvcr110.dll 파일을 다운로드](https://drive.google.com/open?id=1PNwUwMD-6SpE53mg-y7Iv8WzPXUfSWsH)
+    * 다운 받은 파일을 *C:\Windows\SysWOW64* 폴더(운영체제 Windows 64bit 기준)에 저장
+    * 다시 php.exe 파일을 실행하여 실행이 되는지 확인 (정상적으로 실행이 되면 검은 도스창이 뜬다) 후 다시 빌드 실행
 
-  - *php.exe* 파일이 실행되지 않을 경우
+* *php.exe* 파일이 실행되지 않을 경우
+  
   ![GettingStarted_PhpExee](images/GettingStarted_PhpExee.png)
 
-    - 설치된 백신 프로그램(ex. 알약)을 종료시키고 **BIFACES** 를 다시 설치
-    - 다시 *php.exe* 파일을 실행하여 실행이 되는지 확인 후 다시 빌드 실행
+    * 설치된 백신 프로그램(ex. 알약)을 종료시키고 **BIFACES** 를 다시 설치
+    * 다시 *php.exe* 파일을 실행하여 실행이 되는지 확인 후 다시 빌드 실행

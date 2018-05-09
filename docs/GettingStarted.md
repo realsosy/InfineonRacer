@@ -211,9 +211,7 @@ date: 2018-04-10
 
  ![GettingStarted_22Program](images/GettingStarted_22Program.png)
 
-* *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과
-
-*Execute Memtool Command* 창을 닫음
+* *Execute Memtool Command* 창에서 *Results: success* 와 같이 뜨면 *AppKit* 에 프로그래밍이 완료됨, **Exit** 를 클릭하여 *UDE - FLASH/OTP Memory Programming Tool* 창과 *Execute Memtool Command* 창을 닫음
 
  ![GettingStarted_23Execute](images/GettingStarted_23Execute.png)
 
@@ -221,11 +219,10 @@ date: 2018-04-10
 
  ![GettingStarted_24Start](images/GettingStarted_24Start.png)
 
-    * 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
-
+* 프로그램을 실행했을 때 *AppKit* 의 TFT 화면
+  * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
+  
  ![GettingStarted_25TFT](images/GettingStarted_25TFT.jpg)
-
-    * TFT 화면의 *Beep OFF* 터치를 하면 *Beep ON* 으로 바뀌며 Beeper 가 동작하는지 확인
 
 * **File** >> **Disconnect Target System..** 클릭하여 Host PC와 *AppKit* 와의 연결을 해제
 

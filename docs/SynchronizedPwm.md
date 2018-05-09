@@ -10,7 +10,6 @@ date: 2018-05-08
 * 예제 - DC 모터 양방향 구동
 EXAMPLE: 
 	MyIlldModule_TC23A - GtmTomPwmHl
-	InfineonRacer_TC23A - TestGtm
 ---
 
 # Synchronized PWM
@@ -42,9 +41,8 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 **[Example Code]**
 
-* MyIlldModule_TC23A -
+* MyIlldModule_TC23A - GtmTomPwmHl
 * InfineonRacer_TC23A - 
-
 
 ------
 

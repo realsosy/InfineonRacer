@@ -133,32 +133,41 @@ TomTimer 는 참고를 위한 정보로 활용 (이 절을 정리하시는 분�
 
 ## iLLD - related
 
+* Demo code description
+  * Servo motor의 각도를 0도로 맞춘다.
+
 ### Module Configuration
 
 ```c
 void GtmTomTimer_initTimer(void)
 {
-    {   /* GTM TOM configuration */
+    {   // Create Gtm Timer Output Module (TOM) configuration for timer
         IfxGtm_Tom_Timer_Config timerConfig;
+        
+        // TOM timer configuration 초기화
         IfxGtm_Tom_Timer_initConfig(&timerConfig, &MODULE_GTM);
+        
+        // timer configuration에 대한 세부 설정 셋팅 
         timerConfig.base.frequency       = 100;		// Set PWM period
         timerConfig.base.isrPriority     = ISR_PRIORITY(INTERRUPT_TIMER_1MS);
         timerConfig.base.isrProvider     = ISR_PROVIDER(INTERRUPT_TIMER_1MS);
         timerConfig.base.minResolution   = (1.0 / timerConfig.base.frequency) / 1000;
         timerConfig.base.trigger.enabled = FALSE;
         timerConfig.tom                  = IfxGtm_Tom_1;	// Set TOM1 for TOM object
-        timerConfig.timerChannel         = IfxGtm_Tom_Ch_7;	// Set channel 7
+        timerConfig.timerChannel         = IfxGtm_Tom_Ch_7;	// Set Channel 7
         timerConfig.clock                = IfxGtm_Tom_Ch_ClkSrc_cmuFxclk2;
 
-        // Set trigger output port, p33.10
+        // Set output port, p33.10
         timerConfig.triggerOut                      = &IfxGtm_TOM1_7_TOUT32_P33_10_OUT;
         timerConfig.base.trigger.outputEnabled      = TRUE;
         timerConfig.base.trigger.enabled            = TRUE;
         timerConfig.base.trigger.triggerPoint       = 150000/16/16; /* 1.5msec source: Fxclk1 100MHz/16 */
-        timerConfig.base.trigger.risingEdgeAtPeriod = TRUE; /* Interrupt at rising edge */
+        timerConfig.base.trigger.risingEdgeAtPeriod = TRUE; // Rising edge에서 interrupt 발생
 
+        // 변경된 설정을 적용하기 위해 다시 초기화
         IfxGtm_Tom_Timer_init(&g_GtmTomTimer.drivers.timerOneMs, &timerConfig);
 
+        // Start timer
         IfxGtm_Tom_Timer_run(&g_GtmTomTimer.drivers.timerOneMs);
     }
 }
@@ -168,16 +177,16 @@ void GtmTomServo_init(void)
     /* disable interrupts */
     boolean  interruptState = IfxCpu_disableInterrupts();
 
-    /** - GTM clocks */
+    // GTM clock frequency 설정
     Ifx_GTM *gtm = &MODULE_GTM;
     g_GtmTomTimer.info.gtmFreq = IfxGtm_Cmu_getModuleFrequency(gtm);
     IfxGtm_enable(gtm);
 
-    /* Set the global clock frequencies */
+    // Global clock frequency 설정
     IfxGtm_Cmu_setGclkFrequency(gtm, g_GtmTomTimer.info.gtmFreq);
     g_GtmTomTimer.info.gtmGclkFreq = IfxGtm_Cmu_getGclkFrequency(gtm);
 
-    /** - Initialise the GTM part */
+    // Gtm timer initialization
     GtmTomTimer_initTimer();
 
     printf("Gtm Tom Timer is initialised\n");

@@ -66,7 +66,7 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 * H-bridge 제어 방법
 
-  * 유니폴라 (Unipolar) 방법: 모터를 정회전 하고자 할 때 $A$에 PWM을 인가하고 $\bar{B}$는 ON으로 유지하는 방식입니다. $B$와 $\bar{A}$는 이때 OFF 상태입니다. 역회전 하고자 할 때는 $B$에 PWM을 인가하고 $\bar{A}$는 ON으로 유지하는 방식입니다. $A$와 $\bar{B}$는 이때 OFF 상태입니다. 만약, 정회전 시 $A$에 인가되는 PWM의 DUTY Ratio가 50%라면 모터 최고 속도의 50%로 정회전 하게 됩니다.
+  * 유니폴라 (Unipolar) 방법: 모터를 정회전 하고자 할 때 $A​$에 PWM을 인가하고 $\bar{B}​$는 ON으로 유지하는 방식입니다. $B​$와 $\bar{A}​$는 이때 OFF 상태입니다. 역회전 하고자 할 때는 $B​$에 PWM을 인가하고 $\bar{A}​$는 ON으로 유지하는 방식입니다. $A​$와 $\bar{B}​$는 이때 OFF 상태입니다. 만약, 정회전 시 $A​$에 인가되는 PWM의 DUTY Ratio가 50%라면 모터 최고 속도의 50%로 정회전 하게 됩니다.
 
   ![SynchronizedPwm_Unipolar](images\SynchronizedPwm_Unipolar.png)
 
@@ -82,9 +82,8 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 ## iLLD - related
 
-* ​
-
-
+* Demo code description
+  * 4개의 switching 소자의 PWM을 개별적으로 제어할 수 있음
 
 
 ### Module Configuration
@@ -93,9 +92,12 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 void GtmTomPwmHl_initTimer(void)
 {
     {   /* GTM TOM configuration */
+        // Create Timer Output Module(TOM) config for timer
         IfxGtm_Tom_Timer_Config timerConfig;
+        // Create Timer Output Module(TOM) config for H-bridge
         IfxGtm_Tom_PwmHl_Config pwmHlConfig;
 
+		// Set TOM config for timer
         IfxGtm_Tom_Timer_initConfig(&timerConfig, &MODULE_GTM);
         timerConfig.base.frequency                  = 10000;
         timerConfig.base.isrPriority                = ISR_PRIORITY(INTERRUPT_TIMER);
@@ -116,11 +118,14 @@ void GtmTomPwmHl_initTimer(void)
 
         IfxGtm_Tom_PwmHl_initConfig(&pwmHlConfig);
 
+        // H-bridge 4개의 소자에 들어갈 output pin 할당 
         IfxGtm_Tom_ToutMapP ccx[2], coutx[2];
         ccx[0]   = &IfxGtm_TOM0_4_TOUT10_P00_1_OUT;
         coutx[0] = &IfxGtm_TOM0_5_TOUT11_P00_2_OUT;
         ccx[1]   = &IfxGtm_TOM0_6_TOUT14_P00_5_OUT;
         coutx[1] = &IfxGtm_TOM0_7_TOUT15_P00_6_OUT;
+        
+        // Set TOM config for H-bridge
         pwmHlConfig.timer                 = &g_GtmTomPwmHl.drivers.timer;
         pwmHlConfig.tom                   = timerConfig.tom;
         pwmHlConfig.base.deadtime         = 2e-6;

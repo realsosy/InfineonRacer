@@ -58,7 +58,22 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
 ## Background 정보
 
+> * SPI 통신 (Serial Peripheral Interface)
+>
+>   * SPI 통신은 동기화된 시리얼 통신 방법입니다.
+>   * 주로, 근거리 통신에 사용됩니다.
+>   * 1980년대 모토롤라에 의해 개발되었습니다.
+>   * 특징으로는 Master-Slave 구조의 양방향 구조이며, 하나의 Master와 다수 개의 Slave가 존재하게 됩니다.
+>   * SPI는 four-wire 시리얼 버스라고도 불리는 데, 그 이유는 통신에 총 4개의 선을 사용하기 때문입니다. (SCLK: Serial Clock, MOSI: Master Output Slave Input, MISO: Master Input Slave Output, Slave Select)
+>
+>   ![TftAsModernMmi](images/TftAsModernMmi_SPI.jpg)
+>
+>   * 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
+>
+>   ![TftAsModernMmi_SPI_Register](images/TftAsModernMmi_SPI_Register.png)
+>
 > * 어떤 파일들이 추가되어야 하는지
+>
 > * 라이브러리의 기능
 
 * TFT Driver
@@ -82,7 +97,6 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
   * Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
 
-  
 
 ## AURIX - related
 

@@ -157,7 +157,7 @@ void tft_app_init (uint8 RtcRunning)
     controlmenu.cpusecondsdelta = 0.1f;
     tft_ready = TRUE;
     
-    // LCD Background 밝기 초기화, 초기 diplay 설ㅈ
+    // LCD Background 밝기 초기화, 초기 diplay 설정
     background_light_init();
     graph_drawInfineonLogo();
     display_io_init();

@@ -127,7 +127,7 @@ EXAMPLE:
 
     ![WhereAreYou_CountDirection](images/WhereAreYou_CountDirection.png)
 
-    ​
+    
 
     ​						2개의 입력 edge를 모두 count에 반영하였을 경우
 
@@ -164,10 +164,14 @@ void Gpt12Demo_init(void)
     /* Initialize global clocks */
     /* FIXME Global prescaller should not be set by the driver as they are global resources */
     IfxGpt12_enableModule(&MODULE_GPT120);
+    // Gpt1 block clock 설정
     IfxGpt12_setGpt1BlockPrescaler(&MODULE_GPT120, IfxGpt12_Gpt1BlockPrescaler_8);
+    // Gpt2 block clock 설정
     IfxGpt12_setGpt2BlockPrescaler(&MODULE_GPT120, IfxGpt12_Gpt2BlockPrescaler_4);
 
+    // Encoder로 들어오는 pulse를 세기 위한 Gpt configuration 생성
     IfxGpt12_IncrEnc_Config config;
+    // Gpt Configuration 초기화
     IfxGpt12_IncrEnc_initConfig(&config, &MODULE_GPT120);
 #if 1
     {
@@ -253,6 +257,7 @@ void Gpt12Demo_init(void)
 ### Module Behavior
 
 ```c
+// 엔코더 인터페이스 테스트를 위하여 인위적으로 pulse를 만들어준다
 void Gpt12Demo_step(void)
 {
     if (g_Gpt12.control.run)
@@ -277,8 +282,7 @@ void Gpt12Demo_step(void)
         g_Gpt12.control.rawPosition = rawPosition;
 
 #if 1
-
-        /* Handle zero pin */
+		// Encoder 중에서도 Z상이 있는 게 있고 없는 게 있으므로 선택적으로 Z상을 만든다.
         if (g_Gpt12.control.direction == IfxStdIf_Pos_Dir_forward)
         {
             if (rawPosition == 0)
@@ -303,7 +307,7 @@ void Gpt12Demo_step(void)
         }
 
 #endif
-
+		// 4분할로 쪼개서 A상 B상의 Pulse를 만들어냄
         switch (g_Gpt12.control.step)
         {
         case 0:
@@ -365,6 +369,7 @@ void Gpt12Demo_run(void)
         if (isDeadLine(refreshDeadLine))
         {
             refreshDeadLine = addTTime(refreshDeadLine, tickRefresh);
+            // Gpt12 사용하여 엔코더 신호 인터페이스 확인
             IfxGpt12_IncrEnc_update(&g_Gpt12.incrEnc);
 
             g_Gpt12.status.speed       = IfxGpt12_IncrEnc_getSpeed(&g_Gpt12.incrEnc);

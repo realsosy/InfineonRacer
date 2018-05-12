@@ -17,16 +17,16 @@ date: 2018-01-30
 
 * InfineonRacer SW Platform은 다음의 그림과 같은 3개의 계층으로 구성되어 있다.
   	- iLLD 와 CDrv: 최하단 계층으로 AURIX의 저수준 입출력 기능을 담당하는 드라이버 계층
-	- SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
+  	- SnsAct 와 TftApp: 센서와 액츄에이터의 추상화 모델 제공과 편의 서비스 제공
         + BasicGtmTom: DC Motor, Servo, Beeper
-        + BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화 
+        + BasicPort: On-board LED 와 Digital Input, DC Motor Driver 활성화
         + BasicLineScan: LineScan Camera(TSL1401)
-        + BasicVadcBgScan: Analog Input 
+        + BasicVadcBgScan: Analog Input
         + BasicGpt12Enc: Encoder
         + BasicStm: Static Cyclic Scheduler
         + ShellInterface: 직렬통신과 사용자 Shell 환경 제공
         + TftApp: TFT의 MMI (Man-Machine Interface) 제공
-    - Algorithm: 센서정보로 인지하고 동작을 결정하는 제어 
+    - Algorithm: 센서정보로 인지하고 동작을 결정하는 제어
         + SnsAct 계층에서 추상화된 정보를 활용(BasicModule API 참고)
         + 수동 코드와 자동 코드 (Mathwork의 Embedded Real-Time Target) 선택적 활용 가능 (Algorithm: Hand-Code vs. ERT 참고)
 
@@ -48,11 +48,10 @@ date: 2018-01-30
 
 
 * 사용자가 간단하게 사용할 수 있는 스케쥴러를 제공 (Scheduler 참고)
-	- 해당 모듈의 동작 주기와 순서 조정 가능
+	  - 해당 모듈의 동작 주기와 순서 조정 가능
 
 * 하나의 프로젝트에서 모듈 시험 코드와 최종 릴리즈 코드를 동시에 개발하며 관리할 수 있도록 구성 (선택적으로 소스코드 빌드하기 참고)
 
-  ​
 
 ## 선택적으로 소스코드 빌드하기
 
@@ -71,32 +70,32 @@ InfineonRacer의 경우를 예로 설명하면
 
 * 시험마다 변경되는 부분
 
-  일반적으로 모듈을 하나 개발할 경우 모듈의 .c/.h 파일이 사용되고, 이것을 Scheduler에 등록하여 실행하게 된다.  그러므로 Scheduler의 실행과 관련되는 AppTaskFu.c/.h 파일과 Main.c/h 파일만 시험마다 변경할 필요가 있게된다.
+일반적으로 모듈을 하나 개발할 경우 모듈의 .c/.h 파일이 사용되고, 이것을 Scheduler에 등록하여 실행하게 된다.  그러므로 Scheduler의 실행과 관련되는 AppTaskFu.c/.h 파일과 Main.c/h 파일만 시험마다 변경할 필요가 있게된다.
 
 * 대체되는 부분을 디렉토리 단위로 병렬적으로 구성
 
-  BasicModule 의 시험과 관련되는 파일들을 /AppSw/Tricore/Main 디렉토리 밑에 시험의 이름과 관련되는 이름으로, 예를 들어 TestStm, TestGtm 등, 디렉토리로 만들고 병렬적으로 구성한다.  각 디렉토리 밑에는 이전단계에서 추출한 AppTaskFu.c/.h 과 Main.c/.h 파일이 각각 들어있게 된다.
+BasicModule 의 시험과 관련되는 파일들을 /AppSw/Tricore/Main 디렉토리 밑에 시험의 이름과 관련되는 이름으로, 예를 들어 TestStm, TestGtm 등, 디렉토리로 만들고 병렬적으로 구성한다.  각 디렉토리 밑에는 이전단계에서 추출한 AppTaskFu.c/.h 과 Main.c/.h 파일이 각각 들어있게 된다.
 
 * Config.xml 에서 selection 항목 수정
 
-  /Main 디렉토리 밑에 병렬적으로 디렉토리가 존재하므로 이 디렉토리를 `rootPahts`로 지정해 주고, 그 밑의 특정 디렉토리 이름을 `branches` 로 지정해 주면 된다.  아래 예에서는 Release 디렉토리 밑에 있는 파일들만 선택되고 Main 디렉토리 밑에 있는 다른 디렉토리의 파일들은 무시된다.
+/Main 디렉토리 밑에 병렬적으로 디렉토리가 존재하므로 이 디렉토리를 `rootPahts`로 지정해 주고, 그 밑의 특정 디렉토리 이름을 `branches` 로 지정해 주면 된다.  아래 예에서는 Release 디렉토리 밑에 있는 파일들만 선택되고 Main 디렉토리 밑에 있는 다른 디렉토리의 파일들은 무시된다.
 
 * 빌드 후 실행
 
-  위와 같은 경우에서는 Release 디렉토리 밑에 있는 파일들과 /Main 디렉토리 이외에 있는 다른 모든 소스코드들이 결합되어 실행파일, `InfineonRacer_TC23A_tc.elf` 파일을 만들게 된다.  최종 실행파일의 위치와 이름이 변경되지 않았으므로 디버거의 설정도 변경할 필요 없이 동일하게 사용할 수 있는 장점을 갖게 된다.
+위와 같은 경우에서는 Release 디렉토리 밑에 있는 파일들과 /Main 디렉토리 이외에 있는 다른 모든 소스코드들이 결합되어 실행파일, `InfineonRacer_TC23A_tc.elf` 파일을 만들게 된다.  최종 실행파일의 위치와 이름이 변경되지 않았으므로 디버거의 설정도 변경할 필요 없이 동일하게 사용할 수 있는 장점을 갖게 된다.
 
 
 ![InfineonRacerUserGuide_SelectionBranches](images/InfineonRacerUserGuide_SelectionBranches.png)
 
 ## Basic Module Structure & API
 
-* 8bit, 16bit 급 마이크로컨트롤러를 활용하기 위해서는 
+* 8bit, 16bit 급 마이크로컨트롤러를 활용하기 위해서는
     - 데이터북을 보고 각 서브시스템 특징을 이해하고
     - 메모리 공간상의 레지스터 맵에 직접 프로그래밍 하였다.
 * AURIX와 같은 32bit 급 마이크로컨트롤러는 전통적인 방법으로 개발하기는 어렵다.
     - 데이터북을 모두 읽고 일을 하기에는 너무 분량이 많고
     - 서브시스템이 막강하여 다양한 기능을 수행할 수 있으므로 다양한 사용예들이 존재하고
-    - 레지스터의 개수가 너무 많다 
+    - 레지스터의 개수가 너무 많다
 
 * BasicModule의 역할: iLLD를 활용하여 센서 및 액츄에이터를 추상화 하자.
     - 개발자의 수고를 덜어주기 위하여 잘 다듬어져 있는 iLLD를 제공하고 있다.
@@ -139,7 +138,7 @@ InfineonRacer의 경우를 예로 설명하면
 ## Scheduler
 
 * InfineonRacer 는 다음과 같은 Static Cyclic Scheduler를 가지고 있다.
-* Release 의 예를 살펴보면 다음과 같이 
+* Release 의 예를 살펴보면 다음과 같이
     - 초기화 `appTaskfu_init(void)`
     - `appTaskfu_1ms(void)`,  `appTaskfu_10ms(void)`,  `appTaskfu_100ms(void)`,  `appTaskfu_1000ms(void)` , `appTaskfu_idle(void)`  테스크를 가지고 있다.
     - 그리고 1msec 의 Stm Interrupt 함수 내부에서 실행되는 `appIsrCb_1ms(void)` 가 있다.
@@ -283,7 +282,7 @@ void appTaskfu_10ms(void)
 
 
 * ERT Autocode Generation Example
-    - InfineonRacer/src/matlab/SimulCodeGen.prj 
+    - InfineonRacer/src/matlab/SimulCodeGen.prj
     - harness.slx 를 열면 다음과 같이 간단한 구조의 제어기와 차량 모델을 확인할 수 있습니다.
     - 상단의 generate_controller_code 를 실행하면 /AppSw/Tricore/Algorithm/ert 디렉토리 밑에 Infineon Racer Controller 모델 부분의 코드가 자동으로 생성
 
@@ -291,7 +290,7 @@ void appTaskfu_10ms(void)
 
 
 
-## Configuration 
+## Configuration
 
 * SnsAct 계층의 Basic Module에 관한 설정 정보는 /AppSw/Tricore/Cfg_Illd 디렉토리 밑에있는 다음 3개의 파일로 한다.
 
@@ -340,7 +339,7 @@ void appTaskfu_10ms(void)
 
 * `conio_cfg.h` 파일
 
-  * TFT 관련된 정적 설정 정보
+    * TFT 관련된 정적 설정 정보
 
 
 ### Interrupt Configuration
@@ -407,10 +406,10 @@ void appTaskfu_10ms(void)
 #### Notes
 
 * AN15 번은 Group 1, Channel 3
-  * AN12 번 부터는 Vadc Group 1 번에 할당되어 있음
-  * 15 - 13 => 3번 Channel 로 관리됨
+    * AN12 번 부터는 Vadc Group 1 번에 할당되어 있음
+    * 15 - 13 => 3번 Channel 로 관리됨
 
-### 
+###
 
 ### IO: BasicLineScan
 
@@ -425,17 +424,17 @@ void appTaskfu_10ms(void)
 #### Notes
 
 * SI, CLK는 두 Line Scan Camera 공통으로 사용
-  * P14.6, P14.7
-  * Port 출력과 waitTime 함수로 신호 발생
+    * P14.6, P14.7
+    * Port 출력과 waitTime 함수로 신호 발생
 * AO 출력은 각각 AN9, AN10 채널로 입력
-  * VadcAutoScan 모드로 2채널 동작
+    * VadcAutoScan 모드로 2채널 동작
 * 128 지점의 스캔 신호(2채널)를 얻는데 걸리는 시간 : 약 850usec
-  * 129 clock * 6usec/clock
-  * clock 의 주기를 더 단축할 수 있지만 감도가 떨어짐
-  * 조명 조건에 따라서 clock 주기를 조정할 수 있음
+    * 129 clock * 6usec/clock
+    * clock 의 주기를 더 단축할 수 있지만 감도가 떨어짐
+    * 조명 조건에 따라서 clock 주기를 조정할 수 있음
 * 개발의 편의를 위하여 다양한 모니터링 방법 제공
-  * 디버깅 단계: Array View 이용
-  * 실차 튜닝 단계: Shell 명령어(**mls**: monitoring line scan)와 SerialPlot 이용
+    * 디버깅 단계: Array View 이용
+    * 실차 튜닝 단계: Shell 명령어(**mls**: monitoring line scan)와 SerialPlot 이용
 
 
 
@@ -444,8 +443,8 @@ void appTaskfu_10ms(void)
 #### Functions
 
 * DC Motor PWM 신호: 2 개
-* Servo 
-* Beeper: 정상 혹은 이상 동작등의 상황을 사용자가 확인할 수 있도록 
+* Servo
+* Beeper: 정상 혹은 이상 동작등의 상황을 사용자가 확인할 수 있도록
 
 #### Files
 
@@ -456,23 +455,23 @@ void appTaskfu_10ms(void)
 **[DC Motor PWM]**
 
 * Frequency: 10KHz
-  * DC 모터의 시정수와 드라이버 IC의 스위칭 속도에 따라 조정 가능
+    * DC 모터의 시정수와 드라이버 IC의 스위칭 속도에 따라 조정 가능
 
 **[Servo]**
 
-* Period: 10msec 
-  * Servo 의 특성에 따라 조정 가능
+* Period: 10msec
+    * Servo 의 특성에 따라 조정 가능
 * On-time: 0.5~2.5 msec
-  * 0.5: -90 Degree
-  * 2.5: +20 Degree
+    * 0.5: -90 Degree
+    * 2.5: +20 Degree
 
 **[Beeper]**
 
 * Frequency, Volume 조정 가능
-  * Default Frequency: 2048 Hz
-  * Default Volume: 10%
+    * Default Frequency: 2048 Hz
+    * Default Volume: 10%
 
-### 
+###
 
 ### IO: BasicGpt12Enc
 

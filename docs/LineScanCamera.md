@@ -1,6 +1,6 @@
 ---
 title: Line Scan Camera.md
-author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)
 date: 2018-05-08
 ---
 
@@ -32,7 +32,7 @@ date: 2018-05-08
 
 ## Objectives
 
-* TSL1401CL의 인터페이스 방식을 이해하고 
+* TSL1401CL의 인터페이스 방식을 이해하고
 * 저수준 드라이버 프로그램을 설계하고 구현한다.
 
 ## References
@@ -126,7 +126,7 @@ void BasicLineScan_init(void)
 
         adcChannelConfig[chnIx].channelId      = (IfxVadc_ChannelId)(TSL1401_AO_2);
         adcChannelConfig[chnIx].resultRegister = (IfxVadc_ChannelResult)(TSL1401_AO_2);  
-    
+
     // for SI & CLK Signal **********************************************************
     // Line scan 값을 받기 위해서는 SI, CLK signal을 내보내야 함
     // 이를 위한 Port 초기 설정
@@ -151,7 +151,7 @@ void BasicLineScan_run(void)
 {
 	uint32 chnIx;
 	uint32 idx;
-	
+
     // TSL1401 Operational waveform에 의거하여 SI, CLK의 signal을 내보냄
 	IfxPort_setPinState(TSL1401_SI.port, TSL1401_SI.pinIndex, IfxPort_State_high);
 	IfxPort_setPinState(TSL1401_CLK.port, TSL1401_CLK.pinIndex, IfxPort_State_low);
@@ -210,11 +210,11 @@ void BasicLineScan_run(void)
 
 
 * Digital 출력 신호를 시간 지연을 사용해서 그린 것이다.
-  * 타이머 2채널을 사용해서 두개를 동기화 하여 이와 같은 동작을 시킬 수도 있다.
-  * 이해를 위하여 직접적으로 신호를 발생시키는 방식으로 데모를 구성하였다.
-  * 명령어의 실행시간 등을 고려하여 약간의 실험적 튜닝도 필요하다.
+  	* 타이머 2채널을 사용해서 두개를 동기화 하여 이와 같은 동작을 시킬 수도 있다.
+  	* 이해를 위하여 직접적으로 신호를 발생시키는 방식으로 데모를 구성하였다.
+  	* 명령어의 실행시간 등을 고려하여 약간의 실험적 튜닝도 필요하다.
 * 전체 1싸이클, 128 point, ADC 변환을 위하여 약 850usec 의 시간이 필요하다.
-  * 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있다.
+  	* 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있다.
 
 
 
@@ -247,15 +247,15 @@ void BasicLineScan_run(void)
 
 * 광학적인 특징
 
-  * 라인스캔카메라는 광학 장치이고 전면부에 렌즈 장착
-  * 렌즈의 초점 거리에 따라 측정되는 신호 특성의 차이가 크다.
-  * 초점 거리를 실험적으로 튜닝해야 한다.
+  	* 라인스캔카메라는 광학 장치이고 전면부에 렌즈 장착
+  	* 렌즈의 초점 거리에 따라 측정되는 신호 특성의 차이가 크다.
+  	* 초점 거리를 실험적으로 튜닝해야 한다.
 
 * 클럭 주기별 감광 특성 차이
 
-  * 당연히 주변광에 따라서 측정 전압의 차이가 크다.
+  	* 당연히 주변광에 따라서 측정 전압의 차이가 크다.
 
-  * 같은 광학 조건이라도 라인스캔카메라에 공급되는 클락 신호의 주기에 따라 차이가 크다.
+  	* 같은 광학 조건이라도 라인스캔카메라에 공급되는 클락 신호의 주기에 따라 차이가 크다.
 
     * 주기가 크면 광량을 수집하는 시간이 길어지므로 어두운 곳에서도 측정 가능
 
@@ -266,4 +266,3 @@ void BasicLineScan_run(void)
 
 
 ## 마치며...
-

@@ -6,7 +6,7 @@ date: 2018-01-30
 * 필요성은 말할 것도 없고
 * 활용하는 방법 - Case by case
 * Library 활용 방법과 UI 구성 방법에 집중
-EXAMPLE: 
+EXAMPLE:
 	MyIlldModule_TC23A - Tft
 	InfineonRacer_TC23A - TftApp
 
@@ -78,24 +78,26 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
 * TFT Driver
 
-  * Conio TFT driver 
-  * 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
+  	* Conio TFT driver
+  	* 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
 
 * TFT 구동 방식
 
-  * iLLD 에서는 Cunio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
+  	* iLLD 에서는 Cunio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
 
 * I/O
 
-  * TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다. 그러므로, QSPI를 사용하기 위한 PIN 설정이 필요합니다.
+  	* TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다. 그러므로, QSPI를 사용하기 위한 PIN 설정이 필요합니다.
 
-  ![TftAsModernMmi_TFT_In](images/TftAsModernMmi_TFT_In.png)
+  	![TftAsModernMmi_TFT_In](images/TftAsModernMmi_TFT_In.png)
 
-  * Touch 정보 역시 SPI 통신을 이용하여 받습니다.
+  	* Touch 정보 역시 SPI 통신을 이용하여 받습니다.
 
-  ![TftAsModernMmi_TouchIn](images/TftAsModernMmi_TouchIn.png)
+  	![TftAsModernMmi_TouchIn](images/TftAsModernMmi_TouchIn.png)
 
-  * Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
+  	* Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.
+
+		![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
 
 
 ## AURIX - related
@@ -110,7 +112,7 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 int core0_main(void)
 {
 	// 기타 기능 Configuration 생략
-    
+
     // TFT를 사용하기 위한 Port 설정
     // CS to touch
     IfxPort_setPinModeInput(TOUCH_USE_CHIPSELECT.pin.port, TOUCH_USE_CHIPSELECT.pin.pinIndex, IfxPort_Mode_inputPullUp);
@@ -156,7 +158,7 @@ void tft_app_init (uint8 RtcRunning)
 
     controlmenu.cpusecondsdelta = 0.1f;
     tft_ready = TRUE;
-    
+
     // LCD Background 밝기 초기화, 초기 diplay 설정
     background_light_init();
     graph_drawInfineonLogo();

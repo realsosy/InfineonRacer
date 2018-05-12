@@ -3,9 +3,9 @@ title: My own cheap oscilloscope.md
 author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)  
 date: 2018-05-04
 
-EXAMPLE: 
+EXAMPLE:
 	MyIlldModule_TC23A - VadcAutoScan
-	InfineonRacer_TC23A - 
+	InfineonRacer_TC23A -
 ---
 
 # My own cheap oscilloscope
@@ -91,7 +91,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     * Rate-Monotonic: 그러나 일반적으로 주기적으로 일어나는 사건들 사이에서는 빨리 처리해야 하는 일이 중요한 일이 됩니다
     * 좀 더 자세한 사항은 Real-Time System, 혹은 Real-Time OS 관련 교재를 참고하시기 바랍니다.
 
-* VADC를 사용하여 여러 채널의 정보를 주기적으로 읽어 들여야 하는 경우에도 
+* VADC를 사용하여 여러 채널의 정보를 주기적으로 읽어 들여야 하는 경우에도
 
     * 동시에 변환을 요청하는 경우가 발생하고
     * 중재자(Arbiter)는 설계자가 부여한 우선순위에 따라 순차적으로 변환하게 됩니다.
@@ -133,7 +133,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
     * Queued source: 입력 채널을 임의 순서로 변환하는 방식으로, 입력 채널 수 또는 순서는 자유롭게 변경 가능합니다.  채널 설정에 따라 매우 짧은 변환도 가능합니다. 스캔 순서는 queue buffer로 설정합니다.
 
-    * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다. 
+    * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다.
 
     ​
 
@@ -150,26 +150,21 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     * 사용자는 각각의 request source의 우선순위를 정할 수 있습니다.
     * 아래 그림은 4개의 arbitration slot을 갖는 arbitration round를 나타냅니다.
 
-    ![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images/MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
-
+		![MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots](images/MyOwnCheapOscilloscope_ArbitrationRoundWith4ArbitrationSlots.png)
 
 * Conversion start mode
     * Arbitration winner는 현재 converter의 상태에 따라 어떻게 처리될 지 결정됩니다.
-        * 만약, converter가 유휴 상태인 경우는 arbitration winner의 변환을 즉시 처리합니다.
-
-        * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위와 같을 경우 변환이 끝날 때까지 대기하고, 변환이 완료되면 arbitration winner의 변환을 처리합니다.
-
-        * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위보다 낮을 경우, 사용자 설정에 따라 다르게 처리됩니다.
-
-        * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
-        * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
+       * 만약, converter가 유휴 상태인 경우는 arbitration winner의 변환을 즉시 처리합니다.
+       * 만약, converter에 변환 중인 request source의 우선 순위가 arbitration winner의 우선 순위보다 낮을 경우, 사용자 설정에 따라 다르게 처리됩니다.
+       * Wait-for-start mode: 현 낮은 우선순위 ADC 완료 직후 높은 우선순위 ADC 수행
+       * Cancel-inject-repeat mode: 현 낮은 우선순위 ADC를 중단하고, 높은 우선순위 ADC를 먼저 수행
 
     ![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
 
 **Analog input channel configuration**
 
-* Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다. 
+* Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다.
 
     * Channel parameters: sample time과 result data width 설정 (8/10/12 bits)
     * Reference selection: alternate reference voltage 설정 가능
@@ -386,4 +381,4 @@ ADC의 성능을 이야기 하면서 숫자에 집착하여 채널이 많고, �
 
 이곳 에서 다루지 않은 내용으로는 하드웨어 타이머를 사용하여 특정 타이밍에  수~수십 usec 주기마다 AD 변환을 수행하는 기법이 있다.  모터 구동에서 전류 샘플링과 같이 PWM신호와 동기화 되어 매 주기마다 연산을 수행해야 하는 경우에 사용된다.  아울러 고속으로 특정 채널의 값을 연속적으로  ADC가 변환해 놓고 일정 주기 마다 이 변환값들을 일괄적으로 처리하는 기법 등이 있다.  이런 모든 경우에 VADC는 효과적으로 사용할 수 있는 쓸만한(?), 그러나 조금은 까탈스러운, ADC 이다.
 
-###### 
+######

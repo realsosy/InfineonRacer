@@ -84,15 +84,15 @@ date: 2018-05-03
 
 ### Communication process
 * Data를 수신할 때
-	1. 입력 데이터가 들어옴 (ARX)
-	2. Robust한 통신을 위한 필터링 (Filter, Oversampling, Decimate)
-	3. FIFO기반 unpackaging (RxFIFO)
-	4. handshake 요청 (ARTS)
+    1. 입력 데이터가 들어옴 (ARX)
+    2. Robust한 통신을 위한 필터링 (Filter, Oversampling, Decimate)
+    3. FIFO기반 unpackaging (RxFIFO)
+    4. handshake 요청 (ARTS)
 
 - Data를 송신할 때
-	1. 송신하려는 데이터가 들어옴 (ATX)
-	2. FIFO기반 packaging (TxFIFO)
-	3. handshake 응답 (ACTS)
+    1. 송신하려는 데이터가 들어옴 (ATX)
+    2. FIFO기반 packaging (TxFIFO)
+    3. handshake 응답 (ACTS)
 
 * Handshake
   	- Data를 송수신할때 통신이 가능한지 상태를 주고받아 원활한 통신을 가능하게 한다.

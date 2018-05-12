@@ -1,6 +1,6 @@
 ---
 title: Chronos ruler.md
-author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com) 
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)
 date: 2018-05-08
 ---
 
@@ -71,21 +71,21 @@ date: 2018-05-08
 
 * **Configurable Clock Generation (CFGU)**
 
-  * 8개의 clocks 을 출력할 수 있습니다.
-  * TIM과 TBU에 사용됩니다.
-  * 임의의 clock source를 선택할 수 있기 때문에 넓은 범위 내 기준 시간을 설정할 수 있습니다.
+    * 8개의 clocks 을 출력할 수 있습니다.
+    * TIM과 TBU에 사용됩니다.
+    * 임의의 clock source를 선택할 수 있기 때문에 넓은 범위 내 기준 시간을 설정할 수 있습니다.
 
 * **Fixed Clock Generation (FXU)**
 
-  * 5개의 clocks 을 출력할 수 있습니다.
-  * 사전에 정의된 설정으로 clock을 생성합니다.
-  * TOM에 사용됩니다.
+    * 5개의 clocks 을 출력할 수 있습니다.
+    * 사전에 정의된 설정으로 clock을 생성합니다.
+    * TOM에 사용됩니다.
 
 * **External Clock Generation (EGU)**
 
-  * 3개의 external clocks을 출력할 수 있습니다.
+    * 3개의 external clocks을 출력할 수 있습니다.
 
-    ![ChronosRuler_CMU_BlockDiagramm](images/ChronosRuler_CMU_BlockDiagramm.png)
+      ![ChronosRuler_CMU_BlockDiagramm](images/ChronosRuler_CMU_BlockDiagramm.png)
 
 **TBU**
 
@@ -123,11 +123,11 @@ void GtmTomTimer_initTimer(void)
 {
     {   // Create Gtm Timer Output Module (TOM) configuration for timer
         IfxGtm_Tom_Timer_Config timerConfig;
-        
+
         // TOM timer configuration 초기화
         IfxGtm_Tom_Timer_initConfig(&timerConfig, &MODULE_GTM);
-        
-        // timer configuration에 대한 세부 설정 셋팅 
+
+        // timer configuration에 대한 세부 설정 셋팅
         timerConfig.base.frequency       = 100;		// Set PWM period
         timerConfig.base.isrPriority     = ISR_PRIORITY(INTERRUPT_TIMER_1MS);
         timerConfig.base.isrProvider     = ISR_PROVIDER(INTERRUPT_TIMER_1MS);
@@ -205,7 +205,7 @@ void GtmTomServo_run(void)
 {
 	Ifx_TimerValue triggerPoint= (onTime * 100000) /16/16;
 	IfxGtm_Tom_Timer_disableUpdate(&g_GtmTomTimer.drivers.timerOneMs);
-    
+
     // Set PWM duty
 	IfxGtm_Tom_Timer_setTrigger(&g_GtmTomTimer.drivers.timerOneMs, triggerPoint);
 	IfxGtm_Tom_Timer_applyUpdate(&g_GtmTomTimer.drivers.timerOneMs);
@@ -229,12 +229,4 @@ void GtmTomServo_run(void)
 
 이처럼 시간과 관련된 신호를 발생해여 정보를 입출력하는 방법은 마이크로컨트롤러에서 가장 일반적으로 사용하는 입출력 방법입니다.   특히 전력전자 분야에서는 PWM 이라 불리는 방법을 적극적으로 활용하고 있습니다 (PWM의 구체적인 활용 및 내용은 [Synchronized PWM](/SynchronizedPwm.md) 절에서 다루겠습니다.)  출력 신호 뿐만 아니라 특정 이벤트의 발생 여부 등을 감지하기 위해서도 시간과 관련되 디지탈 신호를 일반적으로 사용하고 있습니다.  그 전형적인 활용예가 [Where are you?](WhereAreYou.md) 절의 엔코더 신호의 인터페이스와 활용입니다.
 
-**시간과 관련된 디지탈 신호** 를 잘 다룰 수 있게 되면, **마이크로컨트롤러의 지배자** 가 될 수 있습니다. 
-
-
-
-
-
-
-
-
+**시간과 관련된 디지탈 신호** 를 잘 다룰 수 있게 되면, **마이크로컨트롤러의 지배자** 가 될 수 있습니다.

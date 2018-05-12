@@ -1,7 +1,7 @@
 ---
 
 title: Twinkle twinkle little star.md
-author: Wootaik Lee (wootaik@gmail.com), Hyunki Shin(tlsgusrl66@gmail.com)  
+author: Wootaik Lee (wootaik@gmail.com), Hyunki Shin(HyunkiShin66@gmail.com)  
 date: 2018-05-03
 
 ---

@@ -26,7 +26,7 @@ date: 2018-01-30
 
 **[Example Code]**
 
-* _MyiLLDFramework_TC23A 
+* _MyiLLDFramework_TC23A
 * MyStm_TC23A
 * MyPort_TC23A
 
@@ -68,9 +68,9 @@ date: 2018-01-30
     ![WhatIsIlld_IlldStart](images/WhatIsIlld_IlldStart.png)
 
 * 도움말의 목차를 보니 어마어마 하다.  이것은 어떻게 읽어야 하는 것이지?
-	* 매뉴얼과 마찬가지로 구조적 읽기를 해야 한다.
-	* iLLD를 기준으로 iLLD 자체에 대한 설명을 하는 부분을 우선적으로 읽고
-	* 모듈, 즉 AURIX의 서브시스템과 그 외에 부가적으로 제공하는 함수들을 필요에 따라 찾아보면 된다.
+	 * 매뉴얼과 마찬가지로 구조적 읽기를 해야 한다.
+	  * iLLD를 기준으로 iLLD 자체에 대한 설명을 하는 부분을 우선적으로 읽고
+  	* 모듈, 즉 AURIX의 서브시스템과 그 외에 부가적으로 제공하는 함수들을 필요에 따라 찾아보면 된다.
 
 
 
@@ -112,7 +112,7 @@ date: 2018-01-30
 
 // in StmDemo.c
     App_Stm g_Stm;
-    // 
+    //
     IfxStm_initCompareConfig(&g_Stm.stmConfig);
     //
     IfxStm_initCompare(g_Stm.stmSfr, &g_Stm.stmConfig);
@@ -134,20 +134,20 @@ date: 2018-01-30
     * _Impl:
     * _PinMap:
     * _Lib:
-    * Port: 
+    * Port:
 
 
 **[EXERCISE]** iLLD에서 제공하는 모듈들의 종류와 용도를  **[Modules]** 에서 설명하고 있습니다.  이것을 참고해서 다음의 질문에 답해 보세요.
 
 * Module 은 크게 다음의 두가지로 분류될 수 있습니다.  각각의 차이는 무엇일까요?
-  * iLLD
-  * Service software
+    * iLLD
+    * Service software
 * iLLD/General functionalities/Data handling/Circular buffer 와 FIFO 가 있습니다.  각각의 용도는 무엇일까요?
-  * Circular buffer
-  * FIFO
+    * Circular buffer
+    * FIFO
 * iLLD/Service software/System Engineering/ Board Support package/Board support package/initTime 과 wait 을 선택하고 그 설명을 확인해 보세요.
-  * initTime()
-  * wait()
+    * initTime()
+    * wait()
 * iLLD/Service software/System Engineering/Math/Look-ups/Look-ups float32/ 을 선택하고 어떤 기능을 하는 모듈인가 설명해 보세요.
 * iLLD/Service software/System Engineering/Math/Math 32bit floating point/Low-pass Filter/ 를 선택하고 어떤 기능을 하는 모듈인가 설명해 보세요.
 
@@ -156,18 +156,18 @@ date: 2018-01-30
 
 ### iLLD Demo code를 참고하는 방법
 
-* iLLD Demo는 설치했는데 어떻게 사용하는 것이지? 
+* iLLD Demo는 설치했는데 어떻게 사용하는 것이지?
     * 아래 그림과 같이 iLLD의 모듈명과 일치하는 Demo 밑에 0_Src 라는 폴더와 Doc 이라는 폴더를 각각 가지고 있다.
       ![WhatIsIlld_StmDemoFolder](images/WhatIsIlld_StmDemoFolder.png)
     * 0_Src/AppSw 를 해당하는 BaseFramework 의 폴더에 복사하면 빌드할 수 있다.
     * /Doc 폴더 밑에는 예제에 대한 간단한 설명이 기술되어 있다.  이 폴더를 복사해서 DoxyGen 을 실행하면 해당 내용을 포함하는 문서를 생성할 수도 있다.
 * Demo 프로젝트의 특징
-  * AURIX의 다양한 Variant 들을 고려하여 하드웨어적인 의존성을 최소화 하여 구성되어 있다.  Multi-core 칩에서도 실행해 볼 수 있다.
-  * 모듈간의 의존성을 최소화 하여 해당 모듈만 독립적으로 실행해 볼 수 있다.
-  * iLLD의 설정은 Cfg_Illd 폴더에서,
-  * iLLD의 전형적인 활용 예는 Demo_Illd 폴더에서
-  * 함수의 실행은 Main 폴더의 main 함수에서
-  * 기본 iLLD Module 이 아닌 것은 iLLD Library 폴더에서 복사해 와야 한다.
+    * AURIX의 다양한 Variant 들을 고려하여 하드웨어적인 의존성을 최소화 하여 구성되어 있다.  Multi-core 칩에서도 실행해 볼 수 있다.
+    * 모듈간의 의존성을 최소화 하여 해당 모듈만 독립적으로 실행해 볼 수 있다.
+    * iLLD의 설정은 Cfg_Illd 폴더에서,
+    * iLLD의 전형적인 활용 예는 Demo_Illd 폴더에서
+    * 함수의 실행은 Main 폴더의 main 함수에서
+    * 기본 iLLD Module 이 아닌 것은 iLLD Library 폴더에서 복사해 와야 한다.
 
 
 
@@ -182,34 +182,34 @@ date: 2018-01-30
 **[첫단계]** \_MyiLLDFramework\_TC23A 만들기 <= \_MyBaseFramework\_TC23A + iLLD sources
 
 * iLLD를 사용할 수 있는 Framework 만들기
-  * BaseFramework에는 최소한의 iLLD 구성 요소만 들어 있음
-  * 필요한 모듈만 /0_Src/BaseSw 로 복사해서 선택적으로 사용해야한다.
-  * 매 프로젝트마다 필요한 파일을 찾아서 복사하기 매우 번거로우므로 iLLD 소스를 모두 복사해서 사용
-  * 항후 iLLD관련 프로젝트를 만들 때 이프로젝트를 복사해서 사용한다.
+    * BaseFramework에는 최소한의 iLLD 구성 요소만 들어 있음
+    * 필요한 모듈만 /0_Src/BaseSw 로 복사해서 선택적으로 사용해야한다.
+    * 매 프로젝트마다 필요한 파일을 찾아서 복사하기 매우 번거로우므로 iLLD 소스를 모두 복사해서 사용
+    * 항후 iLLD관련 프로젝트를 만들 때 이프로젝트를 복사해서 사용한다.
 * [Action] \_MyBaseFramework\_TC23A 를 복사해서 \_MyiLLDFramework\_TC23A 프로젝트 생성
-  * iLLD_1_0_1_4_0/Src/BaseSw 를 통째로 _MyiLLDFramework_TC23A/0_Src/BaseSw 로 복사
-  * 모든 iLLD 모듈을 사용할 수 있게 된다.
+    * iLLD_1_0_1_4_0/Src/BaseSw 를 통째로 _MyiLLDFramework_TC23A/0_Src/BaseSw 로 복사
+    * 모든 iLLD 모듈을 사용할 수 있게 된다.
 * [Check] 프로젝트를 빌드하고 실행해 본다.
 
 **[둘째단계]** MyStm\_TC23A 만들기
 
 * StmDemo 예제를 복사, 혹은 import, 해서 실행해 본다.
 * [Action] _MyiLLDFramwork_TC23A 복사해서 MyStm_TC23A 프로젝트를 만든다.
-  * /iLLD_Demos_1_0_1_4_0_TC23A/demos/Aurix1G/StmDemo/0_Src/AppSw 밑의 파일들을 모두 복사해서 MyStm_TC23A/0_Src/AppSw 로 붙여 넣는다.
-  * /iLLD_Demos_1_0_1_4_0_TC23A/demos/Aurix1G/StmDemo/Doc/ 밑의 텍스트 파일을 열어본다.  프로그램 동작에 관한 간단한 설명이 나와 있다.  이 코드는 어떤 
+    * /iLLD_Demos_1_0_1_4_0_TC23A/demos/Aurix1G/StmDemo/0_Src/AppSw 밑의 파일들을 모두 복사해서 MyStm_TC23A/0_Src/AppSw 로 붙여 넣는다.
+    * /iLLD_Demos_1_0_1_4_0_TC23A/demos/Aurix1G/StmDemo/Doc/ 밑의 텍스트 파일을 열어본다.  프로그램 동작에 관한 간단한 설명이 나와 있다.  이 코드는 어떤
 * [Check] 프로젝트를 빌드하고 실행해 본다.  실행은 되고 브레이크 포인트도 동작하지만 LED가 점멸되지는 않는다.
 
 **[세째단계]** Customization
 
 * 사용하는 Board와 CPU에 맞게 코드를 Customization 한다.
 * [Action1] mainPage.dox 파일을 열고 다음의 내용을 확인해 보세요
-  * 이 프로그램의 동작은?
-  * 사용하는 LED는 어느 핀에 연결되어 있어야 하는가?
-  * 이 코드는 어떤 보드에서 확인이 된 것인가?
+    * 이 프로그램의 동작은?
+    * 사용하는 LED는 어느 핀에 연결되어 있어야 하는가?
+    * 이 코드는 어떤 보드에서 확인이 된 것인가?
 * [Action2] AppKit TC2X7 보드의 메뉴얼과 도면을 참고해서 다음의 내용을 확인해 보세요.
-  * LED107 은 어떤 포트에 연결되어 있는가?
+    * LED107 은 어떤 포트에 연결되어 있는가?
 * [Action3] /Demo_Illd/StmDemo.c 파일을 열고 다음의 사항을 수정해 보세요.
-  * AppKit TC2X7 의 LED107 포트를 점멸할 수 있도록 해당 내용을 찾아 수정해 보세요.
+    * AppKit TC2X7 의 LED107 포트를 점멸할 수 있도록 해당 내용을 찾아 수정해 보세요.
 * [Check] 프로젝트를 빌드하고 실행해 본다.  LED107이 2초 주기로 점멸한다.
 * [Exercise] 2초 주기 => 0.2초 주기로 변경해 보세요.
 
@@ -257,9 +257,9 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 ### Example Description
 
 * AppKit TC2X7 Board의 구체적인 하드웨어 핀과 설정 정보를 추상화하여
-  * LED108, 109, 110 을 점멸할 수 있는 함수와 
-  * Port0.0, Port0.1 의 정보를 읽어들일 수 있는 함수를 만들자
-  * 구조체를 만들어서 이 값을 관리할 수 있도록 하자.
+    * LED108, 109, 110 을 점멸할 수 있는 함수와
+    * Port0.0, Port0.1 의 정보를 읽어들일 수 있는 함수를 만들자
+    * 구조체를 만들어서 이 값을 관리할 수 있도록 하자.
 
 
 ### Hardware
@@ -270,7 +270,7 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
     * User's Manual Chap14 GPIO(Ports) pp 976 - 982
 * Port는 여러 Slice로 구성되고 각 Slice는 다음과 같은 구조를 가지고 있다.
     * 한마디로 .... 복잡하다.
-    * 이 그림의 네모 상자들이 모두 레지스터 들이다. 
+    * 이 그림의 네모 상자들이 모두 레지스터 들이다.
     * 이 레지스터에 값을 결정해 주어야 사용할 수 있고, 이 레지스터를 통하여 입출력 할 수 있다.
 * Port의 기능에 대한 설명은 User's Manual을 **꼭** 참고하십시요.  이곳에서는 생략하도록 하겠습니다.
 
@@ -292,7 +292,7 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 [Exercise] How to use the Port I/O 영역을 읽어보고 다음의 질문에 답하세요.
 
 * Port iLLD를 사용하기 위해서는 어떤 헤더 파일을 include 해야 하나요?
-* P13.0 을 출력으로 설정하기 위해서는 어떻게 Pin Mode를 설정해야 하나요? 
+* P13.0 을 출력으로 설정하기 위해서는 어떻게 Pin Mode를 설정해야 하나요?
 * P13.0 을 High 상태로 출력하려면 어떤 함수를 어떻게 해야 하나요?
 * P00.0 을 입력으로 설정하기 위해서는 어떻게 Pin Mode를 설정해야 하나요?
 * P00.0 의 입력을 읽어들이려면 어떤 함수를 어떻게 사용해야 하나요?
@@ -304,9 +304,9 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 [Exercise]
 
 * `IfxPort_setPinMode()` 함수의 정의를 찾아보세요.  그리고 파라메터의 종류와 의미들에 대하여 찾아보세요.
-* `IfxPort_Mode` 는 무엇인가요?  이것에 대한 정보를 찾아보세요. 
-  * LED를 켜고 끄는 용도로 사용하려면 어떤 값으로 설정해야 하나요?
-  * 디지탈 입력을 읽어들이는 용도로 사용하려면 어떤 값으로 설정해야 하나요?
+* `IfxPort_Mode` 는 무엇인가요?  이것에 대한 정보를 찾아보세요.
+    * LED를 켜고 끄는 용도로 사용하려면 어떤 값으로 설정해야 하나요?
+    * 디지탈 입력을 읽어들이는 용도로 사용하려면 어떤 값으로 설정해야 하나요?
 
 
 
@@ -336,26 +336,26 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 **[첫번째] 자료구조와 API 설계**
 
 * 알고리즘 보다 **어떻게 사용할 것인가?**가 오백배 더 중요하다.
-  * 프로그래밍을 처음 학습할 때는 알고리즘에 집중해서 기능 구현에 치중하게 됩니다.
-  * 이렇게 만들어진 기능은 작성한 사람을 위한 것이지, 정작 이 기능을 사용하는 사람의 편의성은 전혀 고려되지 않은 경우가 많습니다.
-  * 어떻게 만들 것인가 보다 어떻게 사용할 것인가를 먼저 고민해서 함수, 모듈, 객체를 설계해야 다른 사람이 사용할 수 있습니다.
-  * 다른 사람을 위해서가 아니라, 바로 내가 이것을 사용할 첫번째 사용자 입니다.
+    * 프로그래밍을 처음 학습할 때는 알고리즘에 집중해서 기능 구현에 치중하게 됩니다.
+    * 이렇게 만들어진 기능은 작성한 사람을 위한 것이지, 정작 이 기능을 사용하는 사람의 편의성은 전혀 고려되지 않은 경우가 많습니다.
+    * 어떻게 만들 것인가 보다 어떻게 사용할 것인가를 먼저 고민해서 함수, 모듈, 객체를 설계해야 다른 사람이 사용할 수 있습니다.
+    * 다른 사람을 위해서가 아니라, 바로 내가 이것을 사용할 첫번째 사용자 입니다.
 
 * **객체는 자료와 Method의 조합**
-  * 객체지향적으로 프로그래밍을 하면 재사용성, 은닉성 등등 좋은 점이 많습니다.
-  * C++ 만으로 이것이 가능한 것은 아닙니다.
-  * C 언어로 객체지향적으로 모듈을 만들 수 있습니다.
-  * Class member 대신 구조체로, Class function 대신 연관된 함수들로, 그리고 이것들을 좋은 명명법을 사용해서 이름을 붙이면 모듈화된 객체를 만들어 사용할 수 있습니다.
+    * 객체지향적으로 프로그래밍을 하면 재사용성, 은닉성 등등 좋은 점이 많습니다.
+    * C++ 만으로 이것이 가능한 것은 아닙니다.
+    * C 언어로 객체지향적으로 모듈을 만들 수 있습니다.
+    * Class member 대신 구조체로, Class function 대신 연관된 함수들로, 그리고 이것들을 좋은 명명법을 사용해서 이름을 붙이면 모듈화된 객체를 만들어 사용할 수 있습니다.
 
   ![WhatIsIlld_PortClassDiagram](images/WhatIsIlld_PortClassDiagram.png)
 
   ​
 
 * **Header 파일은 사용자가 참고해야 하는 정보들의 집합**
-  * 다음의 코드와 같이 
-  * `IR_Port` 구조체를 만들고
-  * `IR_getXXX()`, `IR_set()` 스타일로 함수들을 설계합니다.
-  * 이러한 정보들로 Header를구성합니다.
+    * 다음의 코드와 같이
+    * `IR_Port` 구조체를 만들고
+    * `IR_getXXX()`, `IR_set()` 스타일로 함수들을 설계합니다.
+    * 이러한 정보들로 Header를구성합니다.
 
 ```c
 // in header file
@@ -466,17 +466,17 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 
 * [참고] 주기적 실행 함수, `Module_run()` 함수를 구성하는 이유
 
-  * `IR_setLed108()` 함수에서 LED108의 상태 변수를 변경하고
+    * `IR_setLed108()` 함수에서 LED108의 상태 변수를 변경하고
 
-  * `BasicPort_run()` 함수에서 상태 변수 값으로 해당 포트에 출력을 합니다.
+    * `BasicPort_run()` 함수에서 상태 변수 값으로 해당 포트에 출력을 합니다.
 
-  * 이 두가지 일을 하나의 함수로 묶어서 처리해도 됩니다. 
+    * 이 두가지 일을 하나의 함수로 묶어서 처리해도 됩니다.
 
-  * 그러나, 이와같이 Event 방식으로 정보를 처리하고 Periodic 하게 실제 입출력을 처리하는 이유는 실제 제어시스템들은 이벤트 방식으로 처리하는 것보다 주기적인 방식으로 처리하는 것이 안정되기 때문입니다.
+    * 그러나, 이와같이 Event 방식으로 정보를 처리하고 Periodic 하게 실제 입출력을 처리하는 이유는 실제 제어시스템들은 이벤트 방식으로 처리하는 것보다 주기적인 방식으로 처리하는 것이 안정되기 때문입니다.
 
-  *  Scheduler 부분에서 구체적인 구현 방식에 대해서는 설명할 것입니다만, 디지탈제어의 기본 전제 조건은 균일한 샘플링 주기 입니다.
+    *  Scheduler 부분에서 구체적인 구현 방식에 대해서는 설명할 것입니다만, 디지탈제어의 기본 전제 조건은 균일한 샘플링 주기 입니다.
 
-  * 시스템의 보호나 예외상황의 처리와 같은 사건들은 스케쥴러를 통하지 않고 바로 처리하도록 구성할 수도 있습니다.
+    * 시스템의 보호나 예외상황의 처리와 같은 사건들은 스케쥴러를 통하지 않고 바로 처리하도록 구성할 수도 있습니다.
 
     ​
 
@@ -484,9 +484,9 @@ static void setOutputPin(Ifx_P *port, uint8 pin, boolean state)
 
 * 구성된 Module 에 대한 사용자 입장에서의 평가 와 기능 시험
 * Test Bench 를 구성
-  * main 함수를 사용해서 초기화 함수 호출, 주기 함수 호출
-  * 디버거를 사용해서 중요한 변수값 모니터링 및 변경하며 모듈의 동작 여부 확인
-  * 필요한 경우 추가적인 테스트 코드 구성
+    * main 함수를 사용해서 초기화 함수 호출, 주기 함수 호출
+    * 디버거를 사용해서 중요한 변수값 모니터링 및 변경하며 모듈의 동작 여부 확인
+    * 필요한 경우 추가적인 테스트 코드 구성
 
 ```
    /* Initialization section */
@@ -518,6 +518,3 @@ boolean IR_getLed108(){
 
 #define IR_getLed108() IR_Port.led108
 ```
-
-
-

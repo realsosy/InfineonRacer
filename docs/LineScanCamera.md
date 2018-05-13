@@ -266,3 +266,23 @@ void BasicLineScan_run(void)
 
 
 ## 마치며...
+
+
+
+
+
+### In InfineonRacer; ADC 값 확인 <= 철훈아 이 부분은 Oscilloscope에서 옮겨온 부분
+
+* InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
+* Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
+
+![MyOwnCheapOscilloscope_ADCInputPortSet](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCInputPortSet.png)
+
+![MyOwnCheapOscilloscope_ADCLinescanPort](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCLinescanPort.jpg)
+
+* Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
+* 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
+
+![MyOwnCheapOscilloscope_ADCmls](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCmls.jpg)
+
+* SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.

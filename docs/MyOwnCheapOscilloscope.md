@@ -4,7 +4,7 @@ author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.c
 date: 2018-05-04
 
 EXAMPLE:
-	MyIlldModule_TC23A - VadcAutoScan
+	MyIlldModule_TC23A - VadcAutoScan, VadcAsc
 	InfineonRacer_TC23A -
 ---
 
@@ -49,7 +49,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 **[Example Code]**
 
-* MyIlldModule_TC23A - VadcAutoScan
+* MyIlldModule_TC23A - VadcAutoScan, VadcAsc
 * InfineonRacer_TC23A - X
 
 ------
@@ -350,24 +350,129 @@ int core0_main(void)
 
 ## 추가적인 설명
 
-### In InfineonRacer; ADC 값 확인
+* **MyIlldModule_TC23A - VadcAsc**
 
-* InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
-* Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
+### Oscilloscope로 사용하기
 
-![MyOwnCheapOscilloscope_ADCInputPortSet](images/MyOwnCheapOscilloscope_ADCInputPortSet.png)
+* **주기적 샘플링 방법2** 를 사용하여 데이터를 획득하고
+* 사용하는 주기를 변경하여 Plot 하고 Data를 저장하면 
+* Oscilloscope 처럼 사용할 수 있다.
 
-![MyOwnCheapOscilloscope_ADCLinescanPort](images/MyOwnCheapOscilloscope_ADCLinescanPort.jpg)
+물론 사용하는 주기 자체를 샘플링 주기로 변경하여 활용아는 것이 더욱 고속으로 Data를 얻고 세밀한 조정이 가능하지만, 자료획득시스템을 만드는 것이 목적이 아니라 제어에 사용되는 신호를 분석하기 위한 목적으로 사용하는 경우가 더 일반적이므로 샘플링 방법2 를 사용하여 Oscilloscope 기능을 구현해 보도록 하고자 한다.
 
-* Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
-* 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
 
-![MyOwnCheapOscilloscope_ADCmls](images/MyOwnCheapOscilloscope_ADCmls.jpg)
 
-* SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
-* 아래 예시는 SerialPort에서 500ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
+### Vadc 외에 필요한 것
 
-![MyOwnCheapOscilloscope_ADCmlsSerialport](images/MyOwnCheapOscilloscope_ADCmlsSerialport.jpg)
+* Graphic display: SerialPlot
+* Serial 통신: AsclinAsc Example
+* 주기적 동작: Stm Example 
+
+Oscilloscope 처럼 파형을 출력하기 위해서는 Graphic 출력 화면이 필요하다.  이 경우 PC Monitor를 사용하면 저렴하게 구성할 수도 있을 뿐더러 Open Source로 진행되고 있는 여러 프로젝트들 중에 선택하여 사용할 수도 있다.   PC에 직렬 통신으로 전송되어 오는 Data를 다양하게 출력할 수 있는 프로그램으로 SerialPlot 이라는 것이 있다.  이 프로그램을 사용하려면 직렬 통신으로 Data를 전송할 수 있어야 한다.  Hello World 의 AsclinAsc 프로젝트에서 직렬통신으로 Data를 전송하고 수신하는 방법을 소개하였다.  이 기능들을 합치면 Oscilloscope 를 만들 수 있다.
+
+
+
+### Module Configuration
+
+* AsclinAscDemo
+    - 직렬통신에 필요한 초기화 설정기능 활용
+* VadcAutoScanDemo
+    - 4채널 변환 설정 초기화 설정기능과 각 채널의 변환값 읽어오기 기능 활용
+    - 결과를 지역변수가 아니라 전역변수로 읽어올 수 있도록 수정
+```c
+// in VadcAutoScanDemo.h 
+typedef struct
+{
+    IfxVadc_Adc vadc; /* VADC handle */
+    IfxVadc_Adc_Group adcGroup;
+    uint16 adcValue[4];  // 결과값을 넣어 놓을 변수
+} App_VadcAutoScan;
+```
+
+```c
+// in VadcAutoScanDemo.c
+void VadcAutoScanDemo_run(void)
+{
+    uint32                    chnIx;
+	/* check results */
+	for (chnIx = 0; chnIx < 4; ++chnIx)
+	{
+		/* wait for valid result */
+		Ifx_VADC_RES conversionResult;
+		do
+		{
+			conversionResult = IfxVadc_Adc_getResult(&adcChannel[chnIx]);
+		} while (!conversionResult.B.VF);
+		g_VadcAutoScan.adcValue[chnIx] = conversionResult.B.RESULT;  // 변환 결과값 저장
+	}
+}
+
+```
+
+### Module Behavior
+
+* 예로 2채널의 값을 전송: `adcValue[0]`, `adcValue[1]`
+* 일정주기 마다 loop 반복: `wait()` 함수 이용
+
+```c
+int core0_main(void)
+{
+    /* Demo init */
+    AsclinAscDemo_init();
+    VadcAutoScanDemo_init();
+    initTime(); // Initialize time constants
+
+    g_AsclinAsc.count = 4;
+    /* background endless loop */
+    while (TRUE)
+    {
+    	VadcAutoScanDemo_run();
+
+        /* Copy adcValue[] to txData[] &  Transmit data */
+        g_AsclinAsc.txData[0] = (uint8) ((g_VadcAutoScan.adcValue[0] & 0xFF00) >> 8);
+        g_AsclinAsc.txData[1] = (uint8) (g_VadcAutoScan.adcValue[0] & 0x00FF);
+        g_AsclinAsc.txData[2] = (uint8) ((g_VadcAutoScan.adcValue[1] & 0xFF00) >> 8);
+        g_AsclinAsc.txData[3] = (uint8) (g_VadcAutoScan.adcValue[1] & 0x00FF);
+    	IfxAsclin_Asc_write(&g_AsclinAsc.drivers.asc0, g_AsclinAsc.txData, &g_AsclinAsc.count, TIME_INFINITE);
+
+        wait(TimeConst_1ms);
+    }
+    return 0;
+}
+
+```
+
+
+
+### SerialPlot 설정
+
+* 위와 같이 전송 데이터를 설정하면 2byte의 데이터 2개가 전송되어 오게 된다.
+* 각 데이터는 자료형이 `uint16`이고 각 자료는 Big Endian 으로 되어 있다.  (즉 lower byte 가  큰 address에 할당되는 방식)  이 설정을 맞춰 주어야 올바른 데이터 해석이 가능하다.
+
+
+
+![MyOwnCheapOscilloscope_WaveformSerialPlotDataFormat](images/MyOwnCheapOscilloscope_WaveformSerialPlotDataFormat.png)
+
+
+
+### 파형측정 실험
+
+* Function Generator를 사용하여 아래의 그림과 같이 2채널의 주기적 신호를 발생시키고 각각 Adc Channel 0 과 1 번에 연결하였다.
+    * Function Generator Channel 1 => Adc Channel 0 에 연결
+    * Function Generator Channel 2 => Adc Channel 1 에 연결
+* SerialPlot를 사용하면 직렬 통신으로 전송되어 오는 데이터를 다음의 그림과 같이 출력하여 볼 수 있다. 
+    * 필요하다면 Sanpshot으로 파형을 저장할 수도 있고
+    * Data 자체를 파일로 Record 할 수도 있다. 
+
+    
+
+![MyOwnCheapOscilloscope_WaveformGen](images/MyOwnCheapOscilloscope_WaveformGen.png)
+
+
+
+![MyOwnCheapOscilloscope_WaveformSerialPlot](images/MyOwnCheapOscilloscope_WaveformSerialPlot.png)
+
+
 
 ------
 
@@ -381,4 +486,4 @@ ADC의 성능을 이야기 하면서 숫자에 집착하여 채널이 많고, �
 
 이곳 에서 다루지 않은 내용으로는 하드웨어 타이머를 사용하여 특정 타이밍에  수~수십 usec 주기마다 AD 변환을 수행하는 기법이 있다.  모터 구동에서 전류 샘플링과 같이 PWM신호와 동기화 되어 매 주기마다 연산을 수행해야 하는 경우에 사용된다.  아울러 고속으로 특정 채널의 값을 연속적으로  ADC가 변환해 놓고 일정 주기 마다 이 변환값들을 일괄적으로 처리하는 기법 등이 있다.  이런 모든 경우에 VADC는 효과적으로 사용할 수 있는 쓸만한(?), 그러나 조금은 까탈스러운, ADC 이다.
 
-######
+

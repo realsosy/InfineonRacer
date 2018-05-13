@@ -448,6 +448,7 @@ int core0_main(void)
 
 * 위와 같이 전송 데이터를 설정하면 2byte의 데이터 2개가 전송되어 오게 된다.
 * 각 데이터는 자료형이 `uint16`이고 각 자료는 Big Endian 으로 되어 있다.  (즉 lower byte 가  큰 address에 할당되는 방식)  이 설정을 맞춰 주어야 올바른 데이터 해석이 가능하다.
+* open MyIlldModule_TC23A/tool/SerialPlot.init
 
 
 

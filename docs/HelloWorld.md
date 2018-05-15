@@ -1,9 +1,7 @@
 ---
-
 title: Hello world.md
-author: Wootaik Lee (wootaik@gmail.com), Kyunghan Min (kyunghah.min@gmail.com), Hyunki Shin (HyunkiShin66@gmail.com)
+author: Wootaik Lee (wootaik@gmail.com) / Kyunghan Min (kyunghah.min@gmail.com) / Hyunki Shin (HyunkiShin66@gmail.com)
 date: 2018-05-03
-
 ---
 
 # Hello world

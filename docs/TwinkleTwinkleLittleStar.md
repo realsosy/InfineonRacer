@@ -1,13 +1,10 @@
 ---
-
 title: Twinkle twinkle little star.md
-author: Wootaik Lee (wootaik@gmail.com), Hyunki Shin(HyunkiShin66@gmail.com)  
+author: Wootaik Lee (wootaik@gmail.com) / Kyunghan Min (kyunghah.min@gmail.com) / Hyunki Shin(HyunkiShin66@gmail.com)  
 date: 2018-05-03
-
 ---
 
-Twinkle twinkle little star
-===========================
+# Twinkle twinkle little star
 
 ## 시작하는 이야기
 

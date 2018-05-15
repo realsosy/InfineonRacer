@@ -464,7 +464,7 @@ TFT와 마찬가지로 명령어를 통해 *InfineonRacer* 에서 제공하는 P
  ![GettingStarted_TFTServo](images/GettingStarted_TFTServo.png)
 
 
-###Line scan camera
+### Line scan camera
 
 * Line scan camera는 2개의 채널을 제공하며 각각 *ls0* , *ls1* 명령어를 통해서 값 확인이 가능
 

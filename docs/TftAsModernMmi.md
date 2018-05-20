@@ -72,35 +72,36 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 >
 >   ![TftAsModernMmi_SPI_Register](images/TftAsModernMmi_SPI_Register.png)
 >
-> * 어떤 파일들이 추가되어야 하는지
->
-> * 라이브러리의 기능
 
 * TFT Driver
 
-  	* Conio TFT driver
-  	* 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
+   * Conio TFT driver
+   	* 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
 
 * TFT 구동 방식
 
-  	* iLLD 에서는 Cunio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
+   * iLLD 에서는 Cunio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
 
-* I/O
+* TFT를 사용하기 위해 필요한 header
 
-  	* TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다. 그러므로, QSPI를 사용하기 위한 PIN 설정이 필요합니다.
+   * <Tft/conio_tft.h>
+   * <Tft/touch.h>
 
-  	![TftAsModernMmi_TFT_In](images/TftAsModernMmi_TFT_In.png)
+* I/O 설정
 
-  	* Touch 정보 역시 SPI 통신을 이용하여 받습니다.
+   * TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다. 그러므로, QSPI를 사용하기 위한 PIN 설정이 필요합니다.
 
-  	![TftAsModernMmi_TouchIn](images/TftAsModernMmi_TouchIn.png)
+     ![TftAsModernMmi_TFT_In](images/TftAsModernMmi_TFT_In.png)
 
-  	* Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.
+   * Touch 정보는 SPI 통신을 이용하여 받습니다.
 
-		![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
+     ![TftAsModernMmi_TouchIn](images/TftAsModernMmi_TouchIn.png)
+
+   * Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.
+
+     ![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
 
 
-## AURIX - related
 
 ## iLLD - related
 
@@ -124,18 +125,7 @@ int core0_main(void)
     // PWM Port Out 설정이 필요
     IfxPort_setPinModeOutput(BACKGROUND_LIGHT.pin.port, BACKGROUND_LIGHT.pin.pinIndex, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_alt1);
 
-    /* Enable the global interrupts of this CPU */
-    IfxCpu_enableInterrupts();
-
-    // Static Scheduler Initialization
-    BasicStm_init();
-
-    // Static Scheduler Run
-    while (TRUE)
-    {
-        BasicStm_run();
-    }
-    return 0;
+  // 생략
 }
 
 void tft_app_init (uint8 RtcRunning)
@@ -187,253 +177,110 @@ void cpu_service0Irq(void)
 ### Module Behavior
 
 ```c
-// 여러가지 Text display 하는 함수
-void display_io_run(void)
+// TFT interface 소개
+
+// TFT Input interface
+Touch screen 좌표
+- touch_driver.xdisp, touch_driver.ydisp
+
+// TFT Output interface
+기능
+- Text를 display에 출력
+예시
+	conio_ascii_printfxy (DISPLAY_IO1, 0,  4, (uint8 *)" Motor0En : %4d     Motor1En : %4d", 	IR_getMotor0En(), IR_getMotor1En());
+Input
+- Displaymode(Bar인지 text인지 graph인지...)
+- Text가 입력 될 좌표 x, y
+- 실제 출력할 string
+- Conversion specifier에 치환 될 인자
+
+기능
+- Bar를 display에 출력
+예시
+	bar_display (i, (struct DISPLAYENTRY *) &pstdlist[i]);
+Input
+- display 하고자 하는 reference의 index
+- display 하고자 하는 reference
+
+// Display 하고자 하는 것의 정보
+typedef struct DISPLAYENTRY
 {
-    // DISPLAY_IO1: Standard text output mode
-    // 기능: Motor enable, volume, servo motor angle에 대한 정보를 text로 Display에 출력
-	conio_ascii_printfxy (DISPLAY_IO1, 0,  4, (uint8 *)" Motor0En : %4d     Motor1En : %4d", IR_getMotor0En(), IR_getMotor1En());
-	conio_ascii_printfxy (DISPLAY_IO1, 0,  5, (uint8 *)" Motor0Vol: %4.2f     Motor1En: %4.2f", IR_getMotor0Vol(), IR_getMotor1Vol());
-	conio_ascii_printfxy (DISPLAY_IO1, 0,  6, (uint8 *)" SrvAngle : %4.2f", IR_getSrvAngle());
+    uint8 color_display;        //upper most 4 bits are background colore, lower 4 bits text color
+    //if the cursor is not inside the are this color information will be taken to display the text
+    uint8 color_select;         //if the cursor is inside the area, the text will be shown in this color
+    sint8 xmin;                 //provides the information where the menu entry is starting
+    sint8 xmax;                 //and ending
+    sint8 y;                    //height information, only one line height is used as menu entry
+    void (*select) (sint32 ind, struct DISPLAYENTRY * pdisplayentry);   //this function will be called in case of select, if NULL nothing will happen
+    void (*display) (sint32 ind, struct DISPLAYENTRY * pdisplayentry);  //this function will be called to display the text
+     sint32 (*input) (sint32 ind, struct DISPLAYENTRY * pdisplayentry); //this function will be called if an text input is required, the keyboard window will be opened
+    uint8 text[TERMINAL_MAXX];  //the text
+    uint8 symbol;               //the symbol number
+} TDISPLAYENTRY, *pTDISPLAYENTRY;
 
-    // 생략
-}
-
-// x,y 좌표에 text 출력하는 함수
-void conio_ascii_printfxy (TDISPLAYMODE displaymode, sint32 x, sint32 y, const uint8 * format, ...)
+기능
+- 그림을 display에 출력
+예시
+void graph_drawInfineonLogo(void)
 {
-    // Input
-    // - Displaymode(Bar인지 text인지 graph인지...)
-    // - Text가 입력 될 좌표 x, y
-    // - 실제 출력할 string
-    // - Conversion specifier에 치환 될 인자
-    sint32 result, len;
-    uint8 buffer[80];
-    va_list ap;
-    va_start (ap, format);
-    result = vsprintf ((char *)buffer, (char *)format, ap);
-    va_end (ap);
-    if (result < 0)
-        return;
-    len = strlen ((char *)buffer);
-    if (len > TERMINAL_MAXX)
-        len = TERMINAL_MAXX;               //cut it down
-    conio_ascii_gotoxy (displaymode, x, y);
-    conio_ascii_cputs (displaymode, &buffer[0]);
-}
+    uint32 i, j, idx, width, height;
+    uint8 color, count;
 
-// TFT interrupt service가 주기적으로 실행될 때 불러오는 함수
-// Touch에 대한 정보를 받아온다
-void touch_periodic (void)
-{
-    touch_driver.bounce_cnt += 1;
-    if (touch_driver.bounce_cnt < touch_driver.bounce_limit)
-        return;
-    touch_driver.bounce_cnt = 0;
-    //the touch is selected
-    touch_driver.touchmode = 0;
-#ifdef TFT_OVER_DAS
-    if (touch_dasinfo.event == 0)
-#endif
+    uint32 x, y;
+
+    width = 200;
+    height = 87;
+    x = (320 - width) / 2;
+    y = (240 - height) / 2;
+
+    idx = 0;
+    color = -1;
+    count = 0;
+
+    // set blue frame
+    for(i = 0; i < TFT_YSIZE - FONT_YSIZE; i++)
     {
-        if (IfxPort_getPinState(TOUCH_USE_INT.port, TOUCH_USE_INT.pinIndex) == FALSE)
+        for(j = 0; j < TFT_XSIZE; j++)
         {
-            touch_driver.xmax = XMAX_TOUCH;
-            touch_driver.xmin = XMIN_TOUCH;
-            touch_driver.ymax = YMIN_TOUCH;
-            touch_driver.ymin = YMAX_TOUCH;
-            g_Qspi_Touch.qspiBuffer.spiTxBuffer[0] = 0x90;
-            g_Qspi_Touch.qspiBuffer.spiTxBuffer[1] = 0x00;
-            g_Qspi_Touch.qspiBuffer.spiTxBuffer[2] = 0xD0;
-            g_Qspi_Touch.qspiBuffer.spiTxBuffer[3] = 0x00;
-            g_Qspi_Touch.qspiBuffer.spiTxBuffer[4] = 0x00;
-
-            while (IfxQspi_SpiMaster_getStatus(&g_Qspi_Touch.drivers.spiMasterChannel) == SpiIf_Status_busy) {};
-
-            IfxQspi_SpiMaster_exchange(&g_Qspi_Touch.drivers.spiMasterChannel, &g_Qspi_Touch.qspiBuffer.spiTxBuffer[0],
-                &g_Qspi_Touch.qspiBuffer.spiRxBuffer[0], TOUCH_BUFFER_SIZE);
-
-            // data가 유효해질 때까지 기다림
-            while (IfxQspi_SpiMaster_getStatus(&g_Qspi_Touch.drivers.spiMasterChannel) == SpiIf_Status_busy) {};
-            touch_driver.prev_time = touch_driver.time;
-            touch_driver.time = (__mfcr (0xFC04) & 0x7FFFFFFF) >> 8;
-            // 이전 값은 prev에 저장
-            touch_driver.prev_x = touch_driver.x;
-            // SPI 통신으로 받은 Touch 좌표가 저장됨
-            touch_driver.x = ((g_Qspi_Touch.qspiBuffer.spiRxBuffer[1]<<8) | (g_Qspi_Touch.qspiBuffer.spiRxBuffer[2])) >> 3;
-            // 이전 값은 prev에 저장
-            touch_driver.prev_y = touch_driver.y;
-            // SPI 통신으로 받은 Touch 좌표가 저장됨
-            touch_driver.y = ((g_Qspi_Touch.qspiBuffer.spiRxBuffer[3]<<8) | (g_Qspi_Touch.qspiBuffer.spiRxBuffer[4])) >> 3;
-
-            touch_driver.prev_status = touch_driver.status;
-            touch_driver.status = TOUCH_DOWN;
-        }
-        else
-        {
-            touch_driver.prev_time = touch_driver.time;
-            touch_driver.prev_y = touch_driver.y;
-            touch_driver.y = -1;
-            touch_driver.prev_x = touch_driver.x;
-            touch_driver.x = -1;
-            touch_driver.prev_status = touch_driver.status;
-            touch_driver.status = TOUCH_UP;
+            conio_graphics_set(DISPLAY_GRAPH, j, i, RED);
         }
     }
- #ifdef TFT_OVER_DAS
-    else
+    // set red frame
+    for(i = 5; i < TFT_YSIZE - FONT_YSIZE - 5; i++)
     {
-        if (touch_dasinfo.button == 1)
+        for(j = 5; j < TFT_XSIZE - 5; j++)
         {
-            touch_driver.xmax = XMAX_DAS;
-            touch_driver.xmin = XMIN_DAS;
-            touch_driver.ymax = YMIN_DAS;
-            touch_driver.ymin = YMAX_DAS;
-            touch_driver.prev_time = touch_driver.time;
-            touch_driver.time = (__mfcr (0xFC04) & 0x7FFFFFFF) >> 8;
-            touch_driver.prev_x = touch_driver.x;
-            touch_driver.x = touch_dasinfo.x;
-            touch_driver.prev_y = touch_driver.y;
-            touch_driver.y = touch_dasinfo.y;
-            touch_driver.prev_status = touch_driver.status;
-            touch_driver.status = TOUCH_DOWN;
+            conio_graphics_set(DISPLAY_GRAPH, j, i, BLUE);
         }
-        else
-#endif
+    }
+    // set white background
+    for(i = 10; i < TFT_YSIZE - FONT_YSIZE - 10; i++)
+    {
+        for(j = 10; j < TFT_XSIZE - 10; j++)
         {
-            touch_driver.prev_time = touch_driver.time;
-            touch_driver.prev_y = touch_driver.y;
-            touch_driver.y = -1;
-            touch_driver.prev_x = touch_driver.x;
-            touch_driver.x = -1;
-            touch_driver.prev_status = touch_driver.status;
-            touch_driver.status = TOUCH_UP;
+            conio_graphics_set(DISPLAY_GRAPH, j, i, WHITE);
         }
-#ifdef TFT_OVER_DAS
     }
-#endif
-
-    if ((touch_driver.status == TOUCH_DOWN) && (touch_driver.prev_status == TOUCH_UP))
+    // paint the logo
+    for(i = 0; i < height; i++)
     {
-        // touch screen에서 떼고 있다가 누름
-        touch_event.time = touch_driver.time;
-        touch_event.x = touch_driver.x;
-        touch_event.y = touch_driver.y;
-        touch_driver.prev_x_down = touch_driver.x;
-        touch_driver.prev_y_down = touch_driver.y;
-        touch_driver.prev_time_down = touch_driver.time;
-        touch_event.dx = -1;
-        touch_event.dy = -1;
-        touch_event.dtime = -1;
-        touch_driver.cnt = 0;
-        touch_event.status = TOUCH_DOWN;
-        touch_driver.touchmode |= (1 << touch_event.status);
-        touch_calcdisp ();
-
-        return;
-    }
-    if ((touch_driver.status == TOUCH_DOWN) && (touch_driver.prev_status == TOUCH_DOWN))
-    {
-        // touch screen을 계속 누르고 있음
-        touch_event.time = touch_driver.time;
-        touch_event.dtime = touch_driver.time - touch_driver.prev_time;
-        touch_event.x = touch_driver.x;
-        touch_event.y = touch_driver.y;
-        touch_event.dx = touch_driver.x - touch_driver.prev_x;
-        touch_event.dy = touch_driver.y - touch_driver.prev_y;
-        touch_driver.cnt += 1;
-        if (touch_driver.cnt < 100)
-            touch_event.status = TOUCH_MOVE;
-        else
+        for(j = 0; j < width; j++)
         {
-            if (touch_driver.cnt > 1000)
-                touch_event.status = TOUCH_DOWN10S;
-            else
-                touch_event.status = TOUCH_DOWN3S;
+            if(count == 0)
+            {
+                count = infineon_logo[idx++];
+                color = infineon_logo[idx++];
+            }
+            if(color != 255)
+            {
+                conio_graphics_set(DISPLAY_GRAPH, x + j, y + height - i, color);
+            }
+            count--;
         }
-        touch_driver.touchmode |= (1 << touch_event.status);
-        touch_driver.status = TOUCH_MOVE;
-        touch_calcdisp ();
-
-        return;
-    }
-    if ((touch_driver.status == TOUCH_DOWN) && (touch_driver.prev_status == TOUCH_MOVE))
-    {
-        // touch screen을 계속 누르고 있음
-        touch_event.time = touch_driver.time;
-        touch_event.dtime = touch_driver.time - touch_driver.prev_time;
-        touch_event.x = touch_driver.x;
-        touch_event.y = touch_driver.y;
-        touch_event.dx = touch_driver.x - touch_driver.prev_x;
-        touch_event.dy = touch_driver.y - touch_driver.prev_y;
-        touch_driver.cnt += 1;
-        if (touch_driver.cnt < 100)
-            touch_event.status = TOUCH_MOVE;
-        else
-        {
-            if (touch_driver.cnt > 1000)
-                touch_event.status = TOUCH_DOWN10S;
-            else
-                touch_event.status = TOUCH_DOWN3S;
-        }
-        touch_driver.touchmode |= (1 << touch_event.status);
-        touch_driver.status = TOUCH_MOVE;
-        touch_calcdisp ();
-
-        return;
-    }
-    if ((touch_driver.status == TOUCH_UP) && (touch_driver.prev_status == TOUCH_MOVE))
-    {
-        // touch screen을 계속 누르고 있다가 뗌
-        touch_event.time = touch_driver.time;
-        touch_event.dtime = touch_driver.prev_time - touch_driver.prev_time_down;
-        touch_event.x = touch_driver.prev_x;
-        touch_event.y = touch_driver.prev_y;
-        touch_event.dx = touch_driver.prev_x - touch_driver.prev_x_down;
-        touch_event.dy = touch_driver.prev_y - touch_driver.prev_y_down;
-        touch_event.status = TOUCH_UP;
-        touch_driver.touchmode |= (1 << touch_event.status);
-        touch_driver.status = TOUCH_UP;
-        touch_calcdisp ();
-
-        return;
-    }
-    if ((touch_driver.status == TOUCH_UP) && (touch_driver.prev_status == TOUCH_DOWN))
-    {
-        // touch screen을 누르고 뗌
-        touch_event.time = touch_driver.time;
-        touch_event.dtime = touch_driver.prev_time - touch_driver.prev_time_down;
-        touch_event.x = touch_driver.prev_x;
-        touch_event.y = touch_driver.prev_y;
-        touch_event.dx = touch_driver.prev_x - touch_driver.prev_x_down;
-        touch_event.dy = touch_driver.prev_y - touch_driver.prev_y_down;
-        touch_event.status = TOUCH_UP;
-        touch_driver.touchmode |= (1 << touch_event.status);
-        touch_driver.status = TOUCH_UP;
-        touch_calcdisp ();
-
-        return;
     }
 }
-
-// Touch 좌표를 display 기준 좌표계로 변환
-inline void touch_calcdisp (void)
-{
-    touch_event.xdisp =
-        ((float) touch_event.x - touch_driver.xmin) / (touch_driver.xmax - touch_driver.xmin) * (float) TERMINAL_MAXX;
-    if (touch_event.xdisp < 0)
-        touch_event.xdisp = 0;
-    if (touch_event.xdisp >= TERMINAL_MAXX)
-        touch_event.xdisp = TERMINAL_MAXX - 1;
-    touch_event.ydisp =
-        ((float) touch_event.y - touch_driver.ymin) / (touch_driver.ymax - touch_driver.ymin) * (float) TERMINAL_MAXY;
-    if (touch_event.ydisp < 0)
-        touch_event.ydisp = 0;
-    if (touch_event.ydisp >= TERMINAL_MAXY)
-        touch_event.ydisp = TERMINAL_MAXY - 1;
-    touch_driver.xdisp = touch_event.xdisp;
-    touch_driver.ydisp = touch_event.ydisp;
-}
+Input
+- infineon_logo[1962]
 ```
 
 

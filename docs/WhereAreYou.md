@@ -42,7 +42,6 @@ EXAMPLE:
 **[Example Code]**
 
 * MyIlldModule_TC23A - GPT12
-* InfineonRacer_TC23A - TestGpt12
 
 ------
 
@@ -50,7 +49,8 @@ EXAMPLE:
 
 ## Example Description
 
-* ​
+* Desired frequency 를 가진 Pulse 를 출력한다.
+* 입력으로 들어오는 pulse를 counting 하여 속도를 계산할 수 있다.
 
 ## Background 정보
 
@@ -122,13 +122,13 @@ EXAMPLE:
 
 
     ​						2개의 입력 edge를 모두 count에 반영하였을 경우
-
+    
     ![WhereAreYou_2Inputs](images/WhereAreYou_2Inputs.png)
-
+    
     ​
-
+    
     ​						1개의 입력 edge만 count에 반영하였을 경우
-
+    
     ![WhereAreYou_1Input](images/WhereAreYou_1Input.png)
 
   * GPT2
@@ -141,8 +141,6 @@ EXAMPLE:
     ​
 
 ## iLLD - related
-
-* ​
 
 ### Module Configuration
 
@@ -238,14 +236,6 @@ void Gpt12Demo_init(void)
 
 
 
-### Interrupt Configuration
-
-```c
-
-```
-
-
-
 ### Module Behavior
 
 ```c
@@ -323,7 +313,6 @@ void Gpt12Demo_step(void)
 }
 
 
-
 void Gpt12Demo_run(void)
 {
     printf("Gpt12_run() called \n");
@@ -362,8 +351,10 @@ void Gpt12Demo_run(void)
         {
             refreshDeadLine = addTTime(refreshDeadLine, tickRefresh);
             // Gpt12 사용하여 엔코더 신호 인터페이스 확인
+            // Update 된 신호는 g_Gpt12.incrEnc에 저장
             IfxGpt12_IncrEnc_update(&g_Gpt12.incrEnc);
 
+            // update된 엔코더 신호를 이용해 speed, position, direction 정보를 구하는 함수
             g_Gpt12.status.speed       = IfxGpt12_IncrEnc_getSpeed(&g_Gpt12.incrEnc);
             g_Gpt12.status.rawPosition = IfxGpt12_IncrEnc_getRawPosition(&g_Gpt12.incrEnc);
             g_Gpt12.status.direction   = IfxGpt12_IncrEnc_getDirection(&g_Gpt12.incrEnc);
@@ -376,8 +367,6 @@ void Gpt12Demo_run(void)
 
 
 ## 추가적인 설명
-
-
 
 > 엔코더 인터페이스를 테스트 하려면 엔코더 신호가 필요
 >

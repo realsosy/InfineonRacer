@@ -242,7 +242,7 @@ void BasicLineScan_run(void)
 * 이제 AO 값을 ADC를 이용하여 계측을 해 보겠습니다. Shell 에서 **mls** 를 이용하여 **Analog channel 9, 10**의 값을 주기적으로 읽어 올 수 있습니다. 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것입니다.
   * 본 실험에서는 AO를 **Analog channel 9**에 연결시켜 주었습니다.
 
-![MyOwnCheapOscilloscope_ADCmls](C:/Users/chulh/git/InfineonRacer/docs/images/MyOwnCheapOscilloscope_ADCmls.jpg)
+![MyOwnCheapOscilloscope_ADCmls](images/MyOwnCheapOscilloscope_ADCmls.jpg)
 
 
 

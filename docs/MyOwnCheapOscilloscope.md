@@ -462,10 +462,9 @@ int core0_main(void)
     * Function Generator Channel 1 => Adc Channel 0 에 연결
     * Function Generator Channel 2 => Adc Channel 1 에 연결
 * SerialPlot를 사용하면 직렬 통신으로 전송되어 오는 데이터를 다음의 그림과 같이 출력하여 볼 수 있다. 
-    * 필요하다면 Sanpshot으로 파형을 저장할 수도 있고
+    * 필요하다면 Snapshot으로 파형을 저장할 수도 있고
     * Data 자체를 파일로 Record 할 수도 있다. 
 
-    
 
 ![MyOwnCheapOscilloscope_WaveformGen](images/MyOwnCheapOscilloscope_WaveformGen.png)
 

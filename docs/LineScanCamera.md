@@ -69,22 +69,20 @@ date: 2018-05-08
 
 
 
-<img src="https://latex.codecogs.com/gif.latex?SI(SerialPort)" />: Data output의 시작 시점을 정하게 됩니다.
+SI (Serial Port): Data output의 시작 시점을 정하게 됩니다.
 
 
-<img src="https://latex.codecogs.com/gif.latex?CLK(Clock)" />: 센서가 동작할 수 있도록 Clock을 입력하게 되며, clock과 동기화 하여 charge transfer, pixel output, 그리고 reset을 제어하게 됩니다.
+CLK (Clock): 센서가 동작할 수 있도록 Clock을 입력하게 되며, clock과 동기화 하여 charge transfer, pixel output, 그리고 reset을 제어하게 됩니다.
 
-<img src="https://latex.codecogs.com/gif.latex?AO (Analog Output)" />: 센싱된 결과가 출력되는 포트 입니다.
+AO (Analog Output): 센싱된 결과가 출력되는 포트 입니다.
 
 <img src="https://latex.codecogs.com/gif.latex?V_{DD}" />: 입력 전압입니다.
 
-<img src="https://latex.codecogs.com/gif.latex?GND" />: 접지를 나타냅니다.
+GND: 접지를 나타냅니다.
 
 
 
-Clock 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 입력되는 순간 부터 128 포인트의 측정결과를 AO 출력으로 내보낸다.
-
-
+Clock 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 입력되는 순간 부터 128 포인트의 측정결과를 AO 출력으로 내보냅니다.
 
 ![LineScanCamera_MaxRating](images/LineScanCamera_MaxRating.png)
 
@@ -92,24 +90,34 @@ Clock 주파수는 5kHz ~ 8000kHz의 범위를 가질 수 있고, SI 펄스가 �
 
 ![LineScanCamera_DataSheetTimingWaveforms](images/LineScanCamera_DataSheetTimingWaveforms.png)
 
-SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO에 내보내게 됩니다. 동시에 18 clock cycles 동안 모든 pixel들의 integrators를 초기화 합니다. 19 clock cycles부터 모든 pixel 값을 integration 하게됩니다.
+SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO에 내보내게 됩니다. 동시에 18 clock cycles 동안 모든 pixel들의 integrators를 초기화 합니다. 19 clock cycles부터 모든 pixel 값을 integration 하게 됩니다.
 
 이전 사이클에서 계측된 값은 129 clock cycles이 되면 AO로 내보내는 것을 중단하게 됩니다. 현재 사이클의 계측된 값은 최소지연시간 <img src="https://latex.codecogs.com/gif.latex?t_{qt}" />이후 출력됩니다.
 
 ![LineScanCamera_OperationalWaveForms](images/LineScanCamera_OperationalWaveForms.png)
 
+
+
+
+
 ## iLLD - related
 
 ### Pin Configuration
 
+* InfineonRacer 플랫폼 내 Configuration.h 파일을 보면  Line scan camera의 출력을 계측하는 analog channel이 9, 10 으로 설정되어 있습니다. 따라서, 2개의 Line scan camera를 사용할 수 있습니다. 또한, SI와 CLK 입력을 생성하기 위한 I/O가 각각 아래와 같이 설정되어 있습니다. SI와 CLK는 보통 주기적 신호로 내보내지기 때문에 타이머 모듈로 출력을 내보낼 수도 있습니다. 본 예제에서는 I/O와 time delay로 clock 신호를 만들어 주었습니다.
 ```c
 // in Configuration.h
-
 #define TSL1401_SI					IfxPort_P14_6
 #define TSL1401_CLK					IfxPort_P14_7
 #define TSL1401_AO_1				9
 #define TSL1401_AO_2				10
 ```
+
+* 그리고, TC237 보드의 schematics 에서 analog channel 9, 10은 아래 pin에 mapping 되어 있습니다. 따라서, Line scan camera의 AO 출력을 아래 pin 중 한 곳에 연결시켜주어야 합니다. 
+
+![MyOwnCheapOscilloscope_ADCLinescanPort](images/LineScanCamera_ADCLinescanPort.jpg)
+
+* 주의할 점은 보드에서 ADC 값을 확인하기 전에  AO를 실제 오실로스코프로 확인하여 정상적인 전압 파형이 나오는 지 확인합니다. 만약, 전압 파형이 정상적으로 나오지 않는다면, line scan camera의 전원이 제대로 공급되는 지 확인하거나 배선에 문제가 없는 다시 한번 확인합니다. 최종적으로 전압 파형이 정상적으로 나오는 것을 확인 한 후 해당 pin에 연결합니다.
 
 
 
@@ -209,34 +217,36 @@ void BasicLineScan_run(void)
 
 
 
-* Digital 출력 신호를 시간 지연을 사용해서 그린 것이다.
-  	* 타이머 2채널을 사용해서 두개를 동기화 하여 이와 같은 동작을 시킬 수도 있다.
-  	* 이해를 위하여 직접적으로 신호를 발생시키는 방식으로 데모를 구성하였다.
-  	* 명령어의 실행시간 등을 고려하여 약간의 실험적 튜닝도 필요하다.
-* 전체 1싸이클, 128 point, ADC 변환을 위하여 약 850usec 의 시간이 필요하다.
-  	* 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있다.
+* Digital 출력 신호를 시간 지연을 사용해서 그린 것입니다.
+  	* 타이머 2채널을 사용해서 두개를 동기화 하여 이와 같은 동작을 시킬 수도 있습니다.
+  	* 이해를 위하여 직접적으로 신호를 발생시키는 방식으로 데모를 구성하였습니다.
+  	* 명령어의 실행시간 등을 고려하여 약간의 실험적 튜닝도 필요합니다.
+* 전체 1싸이클, 128 point, ADC 변환을 위하여 약 850usec 의 시간이 필요합니다.
+  	* 2채널을 병렬적으로 실행시켰으므로 850usec의 시간 (1msec 보다 짧은 시간)에 카메라의 정보를 모두 변환할 수 있습니다.
 
 
 
 
 ## 실험 결과
 
-* 카메라 전면에 시험용 피사체로 좌측은 검은색, 우측은 흰색의 종이를 두고 실험한 결과
+* Line scan camera의 동작을 확인하기 위해 좌측은 검은색, 우측은 흰색의 종이를 두고 계측 실험을 하였습니다. 검은색 영역은 빛을 흡수하기 때문에 반사되어 오는 빛이 적거나 거의 없을 것이고, 반면 흰색 영역은 빛반사가 잘 일어나기 때문에 되돌아 오는 빛이 많을 것입니다.
 
 
 
-* 오실로스코프 측정 파형
+* 오실로스코프로 측정한 AO 출력은 아래 그림과 같습니다. 예상대로 센서 우측 영역에서 높은 전압이 발생되는 것을 확인할 수 있습니다.
 
 ![LineScanCamera_ScopeAo](images/LineScanCamera_ScopeAo.png)
 
 
 
-* 디버거 실행으로 확인
+* 이제 AO 값을 ADC를 이용하여 계측을 해 보겠습니다. Shell 에서 **mls** 를 이용하여 **Analog channel 9, 10**의 값을 주기적으로 읽어 올 수 있습니다. 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것입니다.
+  * 본 실험에서는 AO를 **Analog channel 9**에 연결시켜 주었습니다.
 
-![LineScanCamera_UdasArrayPlot](images/LineScanCamera_UdasArrayPlot.png)
+![MyOwnCheapOscilloscope_ADCmls](C:/Users/chulh/git/InfineonRacer/docs/images/MyOwnCheapOscilloscope_ADCmls.jpg)
 
 
-* Shell 과 SerialPlot으로 모니터링 하는 화면
+
+- ADC 계측 값은 12bits로 변환되어 레지스터에 저장됩니다. SerialPort 프로그램을 사용하면  AO의 ADC로 변환된 값을 시간 축을 갖는 그래프로 확인할 수 있습니다. 오실로스코프로 계측한 것과 LineScan0를 비교해 보면 파형이 유사하게 나타는 것을 확인 할 수 있습니다.  LineScan1은 입력이 연결되어 있지 않은 상태입니다. 
 
 ![LineScanCamera_SerialPlot](images/LineScanCamera_SerialPlot.png)
 
@@ -248,14 +258,14 @@ void BasicLineScan_run(void)
 * 광학적인 특징
 
   	* 라인스캔카메라는 광학 장치이고 전면부에 렌즈 장착
-  	* 렌즈의 초점 거리에 따라 측정되는 신호 특성의 차이가 크다.
-  	* 초점 거리를 실험적으로 튜닝해야 한다.
+  	* 렌즈의 초점 거리에 따라 측정되는 신호 특성의 차이가 큽니다.
+  	* 초점 거리를 실험적으로 튜닝해야 합니다.
 
 * 클럭 주기별 감광 특성 차이
 
-  	* 당연히 주변광에 따라서 측정 전압의 차이가 크다.
+  	* 당연히 주변광에 따라서 측정 전압의 차이가 큽니다.
 
-  	* 같은 광학 조건이라도 라인스캔카메라에 공급되는 클락 신호의 주기에 따라 차이가 크다.
+  	* 같은 광학 조건이라도 라인스캔카메라에 공급되는 클락 신호의 주기에 따라 차이가 큽니다.
 
     * 주기가 크면 광량을 수집하는 시간이 길어지므로 어두운 곳에서도 측정 가능
 
@@ -267,22 +277,8 @@ void BasicLineScan_run(void)
 
 ## 마치며...
 
-
-
-
-
-### In InfineonRacer; ADC 값 확인 <= 철훈아 이 부분은 Oscilloscope에서 옮겨온 부분
-
-* InfineonRacer에서 아날로그 전압 읽는 채널은 9, 10 으로 설정되어있다. (Configuriation.h)
-* Schematics 에서 Analog channel 9, 10은 아래 pin에 mapping 되어 있다.
-
-![MyOwnCheapOscilloscope_ADCInputPortSet](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCInputPortSet.png)
-
-![MyOwnCheapOscilloscope_ADCLinescanPort](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCLinescanPort.jpg)
-
-* Shell 에서 mls 를 이용하여 Analog channel 9, 10의 값을 주기적으로 읽어 올 수 있다.
-* 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것이다.
-
-![MyOwnCheapOscilloscope_ADCmls](../../InfineonRacer_github/docs/images/MyOwnCheapOscilloscope_ADCmls.jpg)
-
-* SerialPort를 통해서도 주기적으로 읽어올 수 있으며, 시간에 따른 ADC 변환 값을 그래프로 확인할 수 있다.
+* 이번 시간을 통해 ADC를 이용하여 line scan camera의 센싱값을 digital로 측정하는 방법을 배웠습니다. 요컨대, 올바른 센서값 계측을 위해서는 아래 사항을 사전에 고려해야 합니다.
+  * 센서 계측을 위한 동작 방법
+  * 센서 출력 값의 전압 범위 및 주기
+  * ADC 측정 해상도
+* 무엇보다 임베디드 보드로 센서값을 계측하기 전에 하드웨어적으로 문제가 없는 지를 다시한번 확인하고  오실로스코프로 최종 확인을 하는 것이 중요합니다.

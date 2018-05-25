@@ -17,7 +17,7 @@ pages:
     - My own terminal: MyOwnTerminal.md
     - Multi channel voltmeter: MultiChannelVoltmeter.md
     - My own cheap oscilloscope: MyOwnCheapOscilloscope.md
-#    - Line Scan Camera(Optional): LineScanCamera.md
+    - Line Scan Camera(Optional): LineScanCamera.md
 #    - Chronos ruler: ChronosRuler.md
 #    - Synchronized PWM: SynchronizedPwm.md
 #    - Where are you?: WhereAreYou.md

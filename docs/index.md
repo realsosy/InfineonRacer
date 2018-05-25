@@ -75,9 +75,9 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 6.  [Multiple infinite loops](./MultipleInfiniteLoops.md) Static Cyclic Scheduler
 7.  [Hello world](./HelloWorld.md)  ASC & Terminal
 8.  [My own terminal](./MyOwnTerminal.md) Shell
-9.  [Multi channel voltmeter](./MultiChannelVoltmeter.md)  Vadc Background Scan
+9.  [Multi channel voltmeter](./MultiChannelVoltmeter.md)  Vadc Background Scan
 10.  [My own cheap oscilloscope](./MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
-11.  [Line Scan Camera(작성중)](./LineScanCamera.md) TSL1401
+11.  [Line Scan Camera](./LineScanCamera.md) TSL1401
 12.  [Chronos ruler(작성중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
 13.  [Synchronized PWM(작성중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
 14.  [Where are you?(작성중)](./WhereAreYou.md) Gpt12 + Encoder

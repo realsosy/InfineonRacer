@@ -229,9 +229,11 @@ void BasicLineScan_run(void)
 
 ## 실험 결과
 
-* Line scan camera의 동작을 확인하기 위해 좌측은 검은색, 우측은 흰색의 종이를 두고 계측 실험을 하였습니다. 검은색 영역은 빛을 흡수하기 때문에 반사되어 오는 빛이 적거나 거의 없을 것이고, 반면 흰색 영역은 빛반사가 잘 일어나기 때문에 되돌아 오는 빛이 많을 것입니다.
+* Line scan camera의 동작을 확인하기 위해 **좌측은 검은색, 우측은 흰색**의 종이를 두고 계측 실험을 하였습니다. 검은색 영역은 빛을 흡수하기 때문에 반사되어 오는 빛이 적거나 거의 없을 것이고, 반면 흰색 영역은 빛반사가 잘 일어나기 때문에 되돌아 오는 빛이 많을 것입니다.
 
 
+
+### 라인스캔카메라의 출력
 
 * 오실로스코프로 측정한 AO 출력은 아래 그림과 같습니다. 예상대로 센서 우측 영역에서 높은 전압이 발생되는 것을 확인할 수 있습니다.
 
@@ -239,14 +241,34 @@ void BasicLineScan_run(void)
 
 
 
-* 이제 AO 값을 ADC를 이용하여 계측을 해 보겠습니다. Shell 에서 **mls** 를 이용하여 **Analog channel 9, 10**의 값을 주기적으로 읽어 올 수 있습니다. 아래 예시는 1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것입니다.
-  * 본 실험에서는 AO를 **Analog channel 9**에 연결시켜 주었습니다.
+### Debugger(UDE)를 사용한 측정 변수 확인
+
+* UDE는 Array의 Data를 숫자 뿐만 아니라 그래픽하게 표현할 수 있는 기능도 있습니다. Views 메뉴 밑에 Array Chart 
+* 이 Array Chart를 선택하고 아래와 같이 Array 변수인 `IR_LineScan.adcResult[][]` 의 값을 등록하여 그리도록 설정할 수 있습니다.
+* Array 변수를 등록하고 축의 범위를 설정하면 아래의 그림과 같이 LineScan 값을 확인할 수 있습니다.
+* 별도의 프로그래밍을 하지 않고 디버거의 기능만을 사용하여 변수값의 변화 양상을 확인할 수 있는 매우 유용한 기능입니다.
+
+![LineScanCamera_UdasArrayProperties](images/LineScanCamera_UdasArrayProperties.png)
+
+
+
+![LineScanCamera_UdasArrayPlot](images/LineScanCamera_UdasArrayPlot.png)
+
+### Shell 명령을 이용한 확인
+
+* Shell을 이용하여 변수값을 확인할 수 있는 기능도  구현되어 있습니다.
+
+* 디버거를 사용할 수 없는 경우 유용하게 사용할 수 있습니다.
+
+    
+
+* **[Terminal을 사용한 경우]** Shell 에서 **mls** 를 이용하여  1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것입니다.
 
 ![MyOwnCheapOscilloscope_ADCmls](images/MyOwnCheapOscilloscope_ADCmls.jpg)
 
 
 
-- ADC 계측 값은 12bits로 변환되어 레지스터에 저장됩니다. SerialPort 프로그램을 사용하면  AO의 ADC로 변환된 값을 시간 축을 갖는 그래프로 확인할 수 있습니다. 오실로스코프로 계측한 것과 LineScan0를 비교해 보면 파형이 유사하게 나타는 것을 확인 할 수 있습니다.  LineScan1은 입력이 연결되어 있지 않은 상태입니다. 
+- **[SerialPlot 프로그램을 사용한 경우]** 시리얼로 전송되는 값을 그래프로 확인할 수 있습니다. 
 
 ![LineScanCamera_SerialPlot](images/LineScanCamera_SerialPlot.png)
 
@@ -267,7 +289,7 @@ void BasicLineScan_run(void)
 
   	* 같은 광학 조건이라도 라인스캔카메라에 공급되는 클락 신호의 주기에 따라 차이가 큽니다.
 
-    * 주기가 크면 광량을 수집하는 시간이 길어지므로 어두운 곳에서도 측정 가능
+    * 주기가 크면 광량을 수집하는 시간이 길어지므로 어두운 곳에서도 측정 가능 합니다.
 
     ​
 

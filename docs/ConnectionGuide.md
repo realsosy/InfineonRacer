@@ -17,7 +17,7 @@ date: 2018-01-30
     * E30S4-1024-3-N-5 사용
 
 ## Connection Diagram
-* *DC Motor Control Kit* 과 *Application Kit TC2X7 V1.0* 의 경우 별도의 하드웨어 작업 없이 커넥터 연결
+* *DC Motor Control Kit* 와 *Application Kit TC2X7 V1.0* 의 경우 별도의 하드웨어 작업 없이 커넥터 연결
 * USB/Blutooth 모듈은 *Application Kit TC2X7 V1.0* 에 내장되어 있는 Micro-5Pin connector를 이용하여 연결
 
 ![ConnectionDiagram](images/ConnectionGuide_Diagram.png)

@@ -92,7 +92,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
 ## AURIX - related
 
-#### ADC 동작
+### ADC 동작
 
 * Conversion Modes
     * Fixed Channel Conversion (single or continuous)
@@ -113,9 +113,9 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
 
     ![MyOwnCheapOscilloscope_ConversionReqUnit](images/MyOwnCheapOscilloscope_ConversionReqUnit.png)
 
-#### Modules for ADC
+### Modules for ADC
 
-**Conversion request generation**
+#### **Conversion request generation**
 
 * Triggers: Software triggers과 External triggers로 나뉩니다.
 
@@ -128,8 +128,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     * Channel scan source: 입력 채널과 동일한 순서로 순차적으로 변환을 수행하는 방식입니다.
 
 
-
-**Request source arbitration**
+#### **Request source arbitration**
 
 * Arbiter operation
     * Arbiter는 다수의 request source로부터 동시에 ADC 요청이 왔을 때 중재자 역할을 합니다.
@@ -153,7 +152,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     ![MyOwnCheapOscilloscope_ConversionStartModes](images/MyOwnCheapOscilloscope_ConversionStartModes.png)
 
 
-**Analog input channel configuration**
+#### **Analog input channel configuration**
 
 * Analog 입력 채널을 사용하기 위해서 각 채널 별로 channel control register를 설정을 해 줄 수 있습니다.
 
@@ -163,7 +162,7 @@ Converter 가 하나의 채널만 변환해야 할 경우에는 이 문제를 �
     * Result position: 결과 값이 left-aligned 또는 right-aligned 되도록 설정
 
 
-**Conversion Timing and Result Handling**
+#### **Conversion Timing and Result Handling**
 
 * ADC 변환에 소요되는 시간은 다양한 사용자 설정에 따라 달라집니다.
     * ADC conversion clock frequency
@@ -347,7 +346,7 @@ int core0_main(void)
   * 주기적 동작: Stm Example 
 * Oscilloscope 처럼 파형을 출력하기 위해서는 Graphic 출력 화면이 필요합니다.  이 경우 PC Monitor를 사용하면 저렴하게 구성할 수도 있을 뿐더러 Open Source로 진행되고 있는 여러 프로젝트들 중에 선택하여 사용할 수도 있습니다.   PC에 직렬 통신으로 전송되어 오는 Data를 다양하게 출력할 수 있는 프로그램으로 SerialPlot 이라는 것이 있습니다.  이 프로그램을 사용하려면 직렬 통신으로 Data를 전송할 수 있어야 합니다.  Hello World 의 AsclinAsc 프로젝트에서 직렬통신으로 Data를 전송하고 수신하는 방법을 소개하였습니다.  이 기능들을 합치면 Oscilloscope 를 만들 수 있습니다.
 
-##### Module Configuration
+#### Module Configuration
 
 * AsclinAscDemo
     - 직렬통신에 필요한 초기화 설정기능 활용
@@ -384,7 +383,7 @@ void VadcAutoScanDemo_run(void)
 
 ```
 
-##### Module Behavior
+#### Module Behavior
 
 * 예로 2채널의 값을 전송: `adcValue[0]`, `adcValue[1]`
 * 일정주기 마다 loop 반복: `wait()` 함수 이용
@@ -417,7 +416,7 @@ int core0_main(void)
 
 ```
 
-##### SerialPlot 설정
+#### SerialPlot 설정
 
 * 위와 같이 전송 데이터를 설정하면 2byte의 데이터 2개가 전송되어 오게 됩니다.
 * 각 데이터는 자료형이 `uint16`이고 각 자료는 Big Endian 으로 되어 있습니다.  (즉 lower byte 가  큰 address에 할당되는 방식)  이 설정을 맞춰 주어야 올바른 데이터 해석이 가능합니다.
@@ -427,7 +426,7 @@ int core0_main(void)
 
 ![MyOwnCheapOscilloscope_WaveformSerialPlotDataFormat](images/MyOwnCheapOscilloscope_WaveformSerialPlotDataFormat.png)
 
-##### 파형측정 실험
+#### 파형측정 실험
 
 * Function Generator를 사용하여 아래의 그림과 같이 2채널의 주기적 신호를 발생시키고 각각 Adc Channel 0 과 1 번에 연결하였습니다.
     * Function Generator Channel 1 => Adc Channel 0 에 연결

@@ -243,8 +243,8 @@ void BasicLineScan_run(void)
 
 ### Debugger(UDE)를 사용한 측정 변수 확인
 
-* UDE는 Array의 Data를 숫자 뿐만 아니라 그래픽하게 표현할 수 있는 기능도 있습니다. Views 메뉴 밑에 Array Chart 
-* 이 Array Chart를 선택하고 아래와 같이 Array 변수인 `IR_LineScan.adcResult[][]` 의 값을 등록하여 그리도록 설정할 수 있습니다.
+* UDE는 Array의 Data를 숫자 뿐만 아니라 그래픽하게 표현할 수 있는 기능도 있습니다. 
+* Views 메뉴 밑에 Array Chart를 선택하고 아래와 같이 Array 변수인 `IR_LineScan.adcResult[][]` 의 값을 등록하여 그리도록 설정할 수 있습니다.
 * Array 변수를 등록하고 축의 범위를 설정하면 아래의 그림과 같이 LineScan 값을 확인할 수 있습니다.
 * 별도의 프로그래밍을 하지 않고 디버거의 기능만을 사용하여 변수값의 변화 양상을 확인할 수 있는 매우 유용한 기능입니다.
 
@@ -260,7 +260,6 @@ void BasicLineScan_run(void)
 
 * 디버거를 사용할 수 없는 경우 유용하게 사용할 수 있습니다.
 
-    
 
 * **[Terminal을 사용한 경우]** Shell 에서 **mls** 를 이용하여  1000ms 마다 9, 10의 ADC 변환 값을 읽어온 것입니다.
 

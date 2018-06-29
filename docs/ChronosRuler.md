@@ -58,7 +58,7 @@ date: 2018-05-08
 
     * GTM을 구성하는 서브 모듈로는 Clock Management Module (CMU), Time Base Unit (TBU), Timer Input Module (TIM), Timer Output Module (TOM), Dead Time Module (DTM)가 있습니다.
         * CMU와 TBU는 기준 시간을 생성하기 위한 모듈입니다.
-        * TIM은 기준 시간을 활용하여 input capture 기능을 수행하는 모듈입니다.
+        * TIM은 기준 시간을 활용하여 input capture 기능에 사용되는 모듈입니다.
         * TOM, DTM은 기준 시간을 활용하여 output compare 기능을 수행하는 모듈입니다.
 
     * 아래 그림은 GTM의 Block Diagram을 나타냅니다.
@@ -122,7 +122,8 @@ date: 2018-05-08
 
 ## iLLD - related
 
-
+* Demo code description
+  * [Overview]
 
 ### Module Configuration
 

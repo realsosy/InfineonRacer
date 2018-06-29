@@ -2,14 +2,6 @@
 title: Synchronized PWM.md
 author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)
 date: 2018-05-08
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* Synchronized PWM의 필요성
-* BT....(인피니어 DC Driver) 의 특징
-* GtmTomPwm 설명
-* iLLD 활용하기
-* 예제 - DC 모터 양방향 구동
-EXAMPLE:
-	MyIlldModule_TC23A - GtmTomPwmHl
 ---
 
 # Synchronized PWM
@@ -20,11 +12,7 @@ EXAMPLE:
 
 PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse Width (도통시간:  on-time)에 필요한 정보를 넣는 방법이지요.  Synchronized 라는 것은 무엇일까요? 왜 필요할까요?  DC 모터의 양방향 구동을 위해서는 H-bridge 라 불리는 전력소자 4개가 붙어있는 회로가 필요합니다.  이 4개의 전력소자를 적절히 켜고 끄고 함으로써, 즉 PWM 신호를 인가 함으로써, 전압를 자유자재로 조정할 수 있고 양방향 구동도 가능해 집니다.  단 이 PWM 신호들이 서로 독립적이지 않고 의존적으로 사용되어져야 합니다.   PWM 신호들 한 주기 내에서 조화롭게 만들어 져야만 H-bridge 가 성능을 낼 수 있습니다.  AURIX는 이를 위해서 Synchronized  PWM 출력기능을 가지고 있습니다.  이 예에서는 DC 모터를 위한 H-bridge의 경우에 대해서 설명하고 있습니다만, 이 내용이 확장되어 3상 모터, 즉 BLDCM(Blush-Less DC Motor)와 PMSM(Permanent Magnet Synchronous Motor)를 위한 인버터 구동신호에 활용될 수 있습니다.
 
-
-
 ------
-
-
 
 ## Objectives
 
@@ -45,19 +33,28 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
 ------
 
+
+
 ## Example Description
 
 * GtmTom을 이용하여 PWM을 생성하고, 생성된 PWM을 이용하여 모터 드라이버를 구동시켜 봅니다.
 
 
 
+
+
 ## Background 정보
 
 * DC 모터 제어 방법하기 위해 인버터가 사용되는 데 인버터를 구성하는 방식으로는 Switch 소자의 구성에 따라 아래와 같이 나뉠 수 있습니다.
-  	* Half-bridge: DC모터의 한 극에 스위치 소자를 연결하고, 스위치를 on/off 함으로써 모터에 인가되는 전류를 제어하는 방식입니다. 단상 교류 전압을 발생시키는 가장 단순한 방법으로 요구되는 교류 전압의 주기 $T$에서 반주기마다 위아래 스위치를 번갈아 On/Off 하는 것입니다.
-  	* H-bridge: 2개의 Half-bridge를 모터 양 극에 연결함으로써, Half-bridge 보다 두 배 큰 교류 전압을 출력할 수 있습니다. 유효한 양 극전압을 인가하기 위해서는 양 극에 인가되는 전압의 위상차가 $180^\circ$이 되어야 합니다.
+   * Half-bridge: DC모터의 한 극에 스위치 소자를 연결하고, 스위치를 on/off 함으로써 모터에 인가되는 전류를 제어하는 방식입니다. 단상 교류 전압을 발생시키는 가장 단순한 방법으로 요구되는 교류 전압의 주기 $T$에서 반주기마다 위아래 스위치를 번갈아 On/Off 하는 것입니다.
 
-    	![SynchronizedPwm_Half_Bridge](images/SynchronizedPwm_Half_Bridge.png) ![SynchronizedPwm_H_Bridge](images/SynchronizedPwm_H_Bridge2.png)
+   ![SynchronizedPwm_Half_Bridge](images/SynchronizedPwm_Half_Bridge.png)
+
+   * H-bridge: 2개의 Half-bridge를 모터 양 극에 연결함으로써, Half-bridge 보다 두 배 큰 교류 전압을 출력할 수 있습니다. 유효한 양 극전압을 인가하기 위해서는 양 극에 인가되는 전압의 위상차가 $180^\circ$이 되어야 합니다.
+
+      ![SynchronizedPwm_H_Bridge](images/SynchronizedPwm_H_Bridge2.png)
+
+     ​
 
 
 * H-bridge을 위한 PWM 제어 방법
@@ -80,15 +77,17 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 
   	* 따라서, H-bridge 모터 드라이버를 구동하기 위해서는 2개의 PWM 신호와 2개의 Enable 신호가 필요합니다.
 
-  	* Bipolar PWM 방법으로 모터를 제어하기 위해서는 2개의 PWM 신호가 동기화가 되어 서로 반전된 입력을 갖도록 해야하기 때문에 GtmTom 모듈을 이용하여 동기화된 PWM을 만들어주는 것이 필요합니다.
+  	* Bipolar PWM 방법으로 모터를 제어하기 위해서는 **2개의 PWM 신호가 동기화가 되어 서로 반전된 입력을 갖도록 해야**하기 때문에 GtmTom 모듈을 이용하여 동기화된 PWM (Synchronized PWM)을 만들어주는 것이 필요합니다.
 
      	![SynchronizedPwm_H_BridgeCircuit](images/SynchronizedPwm_H_BridgeCircuit.png)
 
   ​
 
-  	* 모터 드라이버 회로에는 총 4개의 BTN8982TA 칩이 장착되어 있으며 두 쌍이 하나의 H-bridge 모터 드라이버를 구성하게 됩니다. 아래 그림에서 녹색 박스로 표시된 것이 BTN8982TA이며, 노란색 박스로 표시된 것이 H-bridge 모터 드라이버가 되겠습니다.
+   * 모터 드라이버 회로에는 총 4개의 BTN8982TA 칩이 장착되어 있으며 두 쌍이 하나의 H-bridge 모터 드라이버를 구성하게 됩니다. 아래 그림에서 녹색 박스로 표시된 것이 BTN8982TA이며, 노란색 박스로 표시된 것이 H-bridge 모터 드라이버가 되겠습니다.
 
-		![SynchronizedPwm_MotorDriver](images/SynchronizedPwm_MotorDriver.png)
+      ![SynchronizedPwm_MotorDriver](images/SynchronizedPwm_MotorDriver.png)
+
+      ​
 
 
 

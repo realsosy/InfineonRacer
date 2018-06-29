@@ -1,21 +1,7 @@
 ---
-![TftAsModernMmi_Touch_INT](C:\AurixWorkspace\Git_InineonRacer\docs\images\TftAsModernMmi_Touch_INT.png)title: TFT as modern Man-Machine Interface.md
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* 필요성은 말할 것도 없고
-* 활용하는 방법 - Case by case
-* Library 활용 방법과 UI 구성 방법에 집중
-EXAMPLE:
-	MyIlldModule_TC23A - Tft
-	InfineonRacer_TC23A - TftApp
-
-AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없을 듯
-	이유는 TFT 구동과 관련된 전용 XILINX 칩을 사용하고- 그 정보는 전혀 공개되지 않고
-	이것을 사용하는 SW lib 모듈만 제공하고 있음
-	어떤 Resource - SPI 등등을 사용하고 있는지만 인식하고
-	SW Lib 활용에만 초첨을 맞추고 설명하시면 될 듯
-
+title: TFT as modern Man-Machine Interface.md
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)  
+date: 2018-06-08
 ---
 
 
@@ -30,11 +16,7 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
 보기가 좋다고 개발하는 사람들도 편해지기만 한 것은 아닙니다.  TFT LCD를 구동하기 위해서 전용 하드웨어를 개발해야 하고, 이 하드웨어를 구동하는 소프트웨어도 구성해야 합니다.  Application Kit 의 경우에는 Xilinx의 FPGA를 사용하여 드라이버를 구성하고, SPI 통신으로 AURIX와 인터페이스 하도록 구성되어 있습니다.  그러므로 AURIX 쪽에서는 하드웨어의 구성에 대한 구체적인 정보를 알 필요는 없이 SPI 통신으로 주고 받는 정보의 형태들만 이해하면 됩니다.  이것도 예제 코드로 잘 구성되어 있어서 관련 함수의 호출만 이해하면 TFT를 사용하는 것에는 문제가 없습니다.  하드웨어에 대한 구체적인 정보를 모르더라도, 소프트웨어 라이브러리만 이해 한다면 필요한 기능을 마음껏 사용할 수 있는 것! 이것이 라이브러리의 매력 입니다.  
 
-
-
 ------
-
-
 
 ## Objectives
 
@@ -56,31 +38,32 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
 * TFT 드라이버를 이용하여 Text, Bar, Menu, Graph 등을 LCD에 출력하고, Touch screen으로 정보를 입력할 수 있습니다.
 
+
+
 ## Background 정보
 
-> * SPI 통신 (Serial Peripheral Interface)
->
->   * SPI 통신은 동기화된 시리얼 통신 방법입니다.
->   * 주로, 근거리 통신에 사용됩니다.
->   * 1980년대 모토롤라에 의해 개발되었습니다.
->   * 특징으로는 Master-Slave 구조의 양방향 구조이며, 하나의 Master와 다수 개의 Slave가 존재하게 됩니다.
->   * SPI는 four-wire 시리얼 버스라고도 불리는 데, 그 이유는 통신에 총 4개의 선을 사용하기 때문입니다. (SCLK: Serial Clock, MOSI: Master Output Slave Input, MISO: Master Input Slave Output, Slave Select)
->
->   ![TftAsModernMmi](images/TftAsModernMmi_SPI.jpg)
->
->   * 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
->
->   ![TftAsModernMmi_SPI_Register](images/TftAsModernMmi_SPI_Register.png)
->
+ * SPI 통신 (Serial Peripheral Interface)
+
+   * SPI 통신은 동기화된 시리얼 통신 방법입니다.
+   * 주로, 근거리 통신에 사용됩니다.
+   * 1980년대 모토롤라에 의해 개발되었습니다.
+   * 특징으로는 Master-Slave 구조의 양방향 구조이며, 하나의 Master와 다수 개의 Slave가 존재하게 됩니다.
+   * SPI는 four-wire 시리얼 버스라고도 불리는 데, 그 이유는 통신에 총 4개의 선을 사용하기 때문입니다. (SCLK: Serial Clock, MOSI: Master Output Slave Input, MISO: Master Input Slave Output, Slave Select)
+
+   ![TftAsModernMmi](images/TftAsModernMmi_SPI.jpg)
+
+   * 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
+   ![TftAsModernMmi_SPI_Register](images/TftAsModernMmi_SPI_Register.png)
+
 
 * TFT Driver
 
    * Conio TFT driver
-   	* 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
+     * 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
 
 * TFT 구동 방식
 
-   * iLLD 에서는 Cunio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
+   * iLLD 에서는 Conio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
 
 * TFT를 사용하기 위해 필요한 header
 
@@ -103,9 +86,11 @@ AURIX와 직접적인 연관 하드웨어에 대한 설명은 굳이 필요 없�
 
 
 
+
 ## iLLD - related
 
-* Text를 display에 출력하고, 어떤 함수에서 touch 좌표를 받고, 그것을 어떻게 사용하는지 간단히 살펴봅시다.
+* Demo code description
+  * Text를 display에 출력하고, 어떤 함수에서 touch 좌표를 받고, 그것을 어떻게 사용하는지 간단히 살펴봅시다.
 
 ### Module Configuration
 
@@ -283,14 +268,10 @@ Input
 - infineon_logo[1962]
 ```
 
-
-
-## 추가적인 설명
-
-
-
 ------
 
 
 
 ## 마치며...
+
+TFT를 사용해 봄으로써 Man-Machine Interface의 중요성을 조금은 체감했으리라 생각합니다. TFT와 같은 디스플레이 장치는 모니터링하고자 하는 값을 실시간으로 사용자에게 보여줄 수도 있고, 감압 입력을 받아 임베디드 시스템에 직접 입력을 줄 수도 있습니다. 이미지 출력도 가능하기 때문에 사용자가 직관적으로 결과값을 인식하고 인터페이스를 조작하는 데 도움을 줄 수 있습니다.

@@ -1,17 +1,10 @@
 ---
 title: Where are you?
-author: Gildong Hong (gildong@hong.com)  
-date: 2018-01-30
-[기술할 내용들 - 기술하고 나면 해당 항목 지우기]
-* 회전체의 위치 측정 방법:
-* Gpt12 Encoder config
-* iLLD
-EXAMPLE:
-	MyIlldModule_TC23A - Gpt12
-	InfineonRacer_TC23A - TestGtp12
+author: Chulhoon Jang (chulhoonjang@gmail.com) / Sujin Han (sujinhan0905@gmail.com)  
+date: 2018-05-08
 ---
 
-
+# Where Are You?
 
 ## 시작하는 질문
 
@@ -21,11 +14,7 @@ EXAMPLE:
 
 여기에 한걸음 더 나아가 회전체의 속도 뿐만 아니라 회전체의 위치, 즉 각도를 알아내야 할 경우도 있습니다.  대표적으로 자동차 엔진의 크랭크 축, 또는 동기전동기의 회전축의 위치를 알아야 제어를 할 수 있습니다.  이런 목적으로 증분형 엔코더(incremental encoder)라는 것을 사용합니다.  위의 속도 측정방법과의 차이는 훨씬 더 많은 펄스 신호를 발생하도록 한다는 것입니다.  이 때 1회전당 몇개의 펄스를 발생시키는가(PPR: Pulse Per Revolution)로 엔코더의 사양을 결정하는 중요한 정보가 있습니다.
 
-
-
 ------
-
-
 
 ## Objectives
 
@@ -52,95 +41,82 @@ EXAMPLE:
 * Desired frequency 를 가진 Pulse 를 출력한다.
 * 입력으로 들어오는 pulse를 counting 하여 속도를 계산할 수 있다.
 
+
+
+
+
 ## Background 정보
 
-> * 속도 측정 방법
->   * Input capture:  입력된 신호에 edge가 발생했을 때 마다 time stamp를 찍고, 현재와 직전 time stamp 간의 차이를 통해 속도를 계측하는 방법입니다.
->   * Pulse accumulator: 일정한 시간동안 입력된 pulse 정보를 counting하고, pulse 갯수를 통해 속도를 계측하는 방법입니다.
-> * Encoder
->   * 속도 계측을 위해 사용되는 센서로 회전축에 원판을 설치하고 원판 둘레에 얇은 slip을 내어 빛이 통과하게 만들고, 원판 앞뒤로 발광/수광 소자를 장착합니다. 원판이 설치된 축이 회전하게 되면 slip에 의해 발광소자에서 발생된 빛이 순간적으로 수광소자에 도달하게 되는 데, 이때 발생되는 신호를 출력하는 것이 Encoder의 원리가 되겠습니다. 만약 축이 빠르게 회전하게 되면 수광소자에 빛이 도달하는 횟수가 증가하게 됨으로, 짧은 시간동안 많은 수의 pulse가 나오게 되며, 반대로 저속으로 회전하면 pulse 발생 주기가 느려지게 됩니다.
->
->
+* 속도 측정 방법
+  * Input capture:  입력된 신호에 edge가 발생했을 때 마다 time stamp를 찍고, 현재와 직전 time stamp 간의 차이를 통해 속도를 계측하는 방법입니다.
+  * Pulse accumulator: 일정한 시간동안 입력된 pulse 정보를 counting하고, pulse 갯수를 통해 속도를 계측하는 방법입니다.
+* Encoder
+  * 속도 계측을 위해 사용되는 센서로 회전축에 원판을 설치하고 원판 둘레에 얇은 slip을 내어 빛이 통과하게 만들고, 원판 앞뒤로 발광/수광 소자를 장착합니다. 원판이 설치된 축이 회전하게 되면 slip에 의해 발광소자에서 발생된 빛이 순간적으로 수광소자에 도달하게 되는 데, 이때 발생되는 신호를 출력하는 것이 Encoder의 원리가 되겠습니다. 만약 축이 빠르게 회전하게 되면 수광소자에 빛이 도달하는 횟수가 증가하게 됨으로, 짧은 시간동안 많은 수의 pulse가 나오게 되며, 반대로 저속으로 회전하면 pulse 발생 주기가 느려지게 됩니다.
+
+  ​
+
 
 ## AURIX - related
 
 * Overview
     * General Purpose Timer (GPT)는 시간 측정, 이벤트 카운팅, 펄스 폭 측정, 펄스 생성 등 다양항 목적에 맞게 사용될 수 있습니다. 총 5개의 16 bits Timer가 존재하는데 이 Timer들은 2개의 Timer 블럭으로 나뉘게 됩니다(GPT1, GPT2). 각 Timer는 다양한 모드 중 하나로 설정 후 독립적 사용이 가능하며, 같은 Timer 블럭 내에서는 하나의 Timer가 다른 Timer와 합쳐져서 구동되기도 합니다.
-    * GPT1
-	     * GPT1 블럭은 3개의 Timer로 구성되어 있습니다. Core timer인 T3와 두 개의 auxiliary timer T2와 T4가 있습니다. Auxiliary timer들은 설정에 따라 core timer를 위한 reload나 capture register로도 사용될 수 있습니다.
-	     * 최대 해상도는 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}/4" />이고, 이 때 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />는 GPT12 블럭의 clock을 나타냅니다.
-	     * 4개의 모드를 지원하며 모드 종류는 다음과 같습니다.
-	         * Timer Mode
-	         * Gated Timer Mode
-	         * Counter Mode
-	         * Incremental Interface Mode
-    * Capture/Reload 기능을 제공합니다.
-    * GPT2
-       * GPT2 블럭은 2개의 Timer로 구성되어 있습니다. Core timer인 T6와 auxiliary timer T5가 있습니다.
-        * 최대 해상도는 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}/2" />이입니다.
-        * 3개의 모드를 지원하며 모드 종류는 다음과 같습니다.
-           * Timer Mode
-           * Gated Timer Mode
-           * Counter Mode
-           * Capture/Reload 기능을 제공합니다.
-
 * GPT1
+    * GPT1 블럭은 3개의 Timer로 구성되어 있습니다. Core timer인 T3와 두 개의 auxiliary timer T2와 T4가 있습니다. Auxiliary timer들은 설정에 따라 core timer를 위한 reload나 capture register로도 사용될 수 있습니다.
+    * 최대 해상도는 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}/4" />이고, 이 때 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />는 GPT12 블럭의 clock을 나타냅니다.
+    * 4개의 모드를 지원하며 모드 종류는 다음과 같습니다.
+        * Timer Mode
+        * Gated Timer Mode
+        * Counter Mode
+        * Incremental Interface Mode
+    * Capture/Reload 기능을 제공합니다.
     * 기본적으로 모든 Timer는 count를 up 또는 down 시킵니다.
     * 각 Timer는 입력 핀을 가지고 있으며 Gated Timer Mode에서는 gate control로, Counter Mode에서는 count input으로 사용됩니다.
     * Timer를 Up 시킬 지, Down시킬 지는 사용자가 설정할 수 있습니다.
     * Core Timer의 overflow나 underflow 발생 여부는 Output Toggle Latch T3OTL을 통해 알아낼 수 있습니다.
     * GPT1과 관련된 Interrupt는 SR0, SR1, SR2를 통해 전달됩니다.
 
-    ![WhereAreYou_GPT1](images/WhereAreYou_GPT1.png)
-
-    ​
-
-    * Modes
-       * Timer Mode: <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />를 Prescaler를 통해 조정한 다음 출력 clock에 대해 count를 up 또는 down 합니다. T3R은 스위치로서 count를 내보낼 지 여부를 결정합니다.
-
-       ![WhereAreYou_TimerMde](images/WhereAreYou_TimerMode.png)
-       * Gated Timer Mode: 동작 방식은 Timer Mode와 동일하나, Prescaler 출력에 Gate Control이 추가된 형태 입니다. Gate Control은 외부 입력 T3IN을 받아서 clock을 내보낼 지 여부를 결정하게 됩니다. 따라서, T3IN은 반드시 설정을 해 주어야 합니다. 요컨대, T3IN과 T3R이 Enable 될 때만 count가 발생됩니다.
-
-       ![WhereAreYou_GatedTimerMode](images/WhereAreYou_GatedTimerMode.png)
-
-       * Counter Mode: Timer Mode에서 사용되었던 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />를 외부 입력 (T3IN)으로 변경한 것입니다. 그 외 다른 동작은 Timer Mode와 같습니다. T3IN의 rising과 falling edges 들 중 어떤 것을 count를 할 건지 설정이 가능합니다.
-
-       ![WhereAreYou_CounterMode](images/WhereAreYou_CounterMode.png)
-
-       * Incremental Interface Mode: T3IN과 T3EUD의 입력 순서 및 edge 변이를 따라 count를 up하거나 down 시키는 모드입니다. 두 입력의 입력 순서에 따라 방향을 감지할 수 있는 장점이 있고, 두 입력 간의 위상차를 통해 단일 입력 대비 2배 또는 4배 정도의 해상도를 얻을 수 있습니다.
-           * Up 또는 down count를 위한 조건은 두 입력 중 하나의 입력에서 edge가 발생했을 때 다른 입력의 level을 확인하여 결정하게 됩니다. 이때, 발생된 edge의 종류도 고려합니다. 아래 표를 참고하시기 바랍니다.
-           * 그리고 몇 개의 입력의 edge 정보를 사용할 건지에 따라 up / down의 횟수를 결정할 수 있습니다.
-
-    ![WhereAreYou_IncrementalInterfaceMode](images/WhereAreYou_IncrementalInterfaceMode.png)
-
-    ​
-
-    ​								Up/Down Count 발생 조건
-
-    ![WhereAreYou_CountDirection](images/WhereAreYou_CountDirection.png)
-
-
-
-    ​						2개의 입력 edge를 모두 count에 반영하였을 경우
-    
-    ![WhereAreYou_2Inputs](images/WhereAreYou_2Inputs.png)
-    
-    ​
-    
-    ​						1개의 입력 edge만 count에 반영하였을 경우
-    
-    ![WhereAreYou_1Input](images/WhereAreYou_1Input.png)
+![WhereAreYou_GPT1](images/WhereAreYou_GPT1.png)
 
   * GPT2
 
     * 기본적인 기능은 GPT1과 유사합니다.
-    * 2개의 Timer (T5, T6)를 사용합니다.
-    * 지원되는 모드는 Timer Mode, Gated Timer Mode, Counter Mode이며, 동작 방식은 위에 설명한 것과 같습니다.
-    * Core Timer는 T6이며, Auxiliary Timer는 T5입니다.
 
-    ​
+    * GPT2 블럭은 2개의 Timer로 구성되어 있습니다. Core timer인 T6와 auxiliary timer T5가 있습니다.
+
+    * 최대 해상도는 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}/2" />이입니다.
+
+    * 3개의 모드를 지원하며 모드 종류는 다음과 같습니다.
+
+      - Timer Mode
+      - Gated Timer Mode
+      - Counter Mode
+    - Capture/Reload 기능을 제공합니다.
+
+
+
+* 모드 설명
+
+    * **Timer Mode**: <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />를 Prescaler를 통해 조정한 다음 출력 clock에 대해 count를 up 또는 down 합니다. T3R은 스위치로서 count를 내보낼 지 여부를 결정합니다.
+![WhereAreYou_TimerMde](images/WhereAreYou_TimerMode.png)
+    * **Gated Timer Mode**: 동작 방식은 Timer Mode와 동일하나, Prescaler 출력에 Gate Control이 추가된 형태 입니다. Gate Control은 외부 입력 T3IN을 받아서 clock을 내보낼 지 여부를 결정하게 됩니다. 따라서, T3IN은 반드시 설정을 해 주어야 합니다. 요컨대, T3IN과 T3R이 Enable 될 때만 count가 발생됩니다.
+![WhereAreYou_GatedTimerMode](images/WhereAreYou_GatedTimerMode.png)
+    * **Counter Mode**: Timer Mode에서 사용되었던 <img src="https://latex.codecogs.com/gif.latex?f_{GPT}" />를 외부 입력 (T3IN)으로 변경한 것입니다. 그 외 다른 동작은 Timer Mode와 같습니다. T3IN의 rising과 falling edges 들 중 어떤 것을 count를 할 건지 설정이 가능합니다.
+![WhereAreYou_CounterMode](images/WhereAreYou_CounterMode.png)
+    * **Incremental Interface Mode**: T3IN과 T3EUD의 입력 순서 및 edge 변이를 따라 count를 up하거나 down 시키는 모드입니다. 두 입력의 입력 순서에 따라 방향을 감지할 수 있는 장점이 있고, 두 입력 간의 위상차를 통해 단일 입력 대비 2배 또는 4배 정도의 해상도를 얻을 수 있습니다.
+      * Up 또는 down count를 위한 조건은 두 입력 중 하나의 입력에서 edge가 발생했을 때 다른 입력의 level을 확인하여 결정하게 됩니다. 이때, 발생된 edge의 종류도 고려합니다. 아래 표를 참고하시기 바랍니다.
+      * 그리고 몇 개의 입력의 edge 정보를 사용할 건지에 따라 up / down의 횟수를 결정할 수 있습니다.
+![WhereAreYou_IncrementalInterfaceMode](images/WhereAreYou_IncrementalInterfaceMode.png)
+      * Up/Down Count 발생 조건
+![WhereAreYou_CountDirection](images/WhereAreYou_CountDirection.png)
+      * 2개의 입력 edge를 모두 count에 반영하였을 경우
+![WhereAreYou_2Inputs](images/WhereAreYou_2Inputs.png)
+      * 1개의 입력 edge만 count에 반영하였을 경우
+![WhereAreYou_1Input](images/WhereAreYou_1Input.png) 
 
 ## iLLD - related
+
+* Demo code description
+  * [Overview]
 
 ### Module Configuration
 
@@ -368,23 +344,19 @@ void Gpt12Demo_run(void)
 
 ## 추가적인 설명
 
-> 엔코더 인터페이스를 테스트 하려면 엔코더 신호가 필요
->
-> encoder emulation 기능을 사용해서 엔코더 신호를 발생 시키고
->
-> Gpt12 를 사용해서 엔코더 신호 인터페이스 기능 확인
->
-> ```
-> #define ENCODER_EMUL // 65 행 Configuration.h 파일 in InfineonRacer 프로젝트에서
-> ```
->
-> 을 정의 하면 emulation 할 수 있다.
+엔코더 인터페이스를 테스트 하려면 엔코더 신호가 필요합니다.
 
+* encoder emulation 기능을 사용해서 엔코더 신호를 발생 시키고 Gpt12를 사용해서 엔코더 신호 인터페이스 기능 확인
+  * 프로젝트에서 ENCODER_EMUL을 정의하면 emulation 할 수 있습니다.
 
+```
+#define ENCODER_EMUL // 65 행 Configuration.h 파일 in InfineonRacer  
+```
+![WhereAreYou_32PPR_10Hz_part](images/WhereAreYou_32PPR_10Hz_part.png)
+
+![WhereAreYou_32PPR_10Hz_1Period](images/WhereAreYou_32PPR_10Hz_1Period.png)
 
 ------
-
-
 
 ## 마치며...
 
@@ -396,8 +368,3 @@ void Gpt12Demo_run(void)
 
 
 
-
-
-![WhereAreYou_32PPR_10Hz_part](images/WhereAreYou_32PPR_10Hz_part.png)
-
-![WhereAreYou_32PPR_10Hz_1Period](images/WhereAreYou_32PPR_10Hz_1Period.png)

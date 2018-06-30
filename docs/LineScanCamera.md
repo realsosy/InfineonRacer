@@ -102,6 +102,9 @@ SI의 rising edge에서 이전 사이클에서 계측된 128 pixels 정보를 AO
 
 ## iLLD - related
 
+* Demo code description
+  - ADC를 이용하여 Linescan camera로 부터 받은 아날로그 센서데이터를 디지털로 변환시켜 'conversionResult'라는 변수에 저장한다.
+
 ### Pin Configuration
 
 * InfineonRacer 플랫폼 내 Configuration.h 파일을 보면  Line scan camera의 출력을 계측하는 analog channel이 9, 10 으로 설정되어 있습니다. 따라서, 2개의 Line scan camera를 사용할 수 있습니다. 또한, SI와 CLK 입력을 생성하기 위한 I/O가 각각 아래와 같이 설정되어 있습니다. SI와 CLK는 보통 주기적 신호로 내보내지기 때문에 타이머 모듈로 출력을 내보낼 수도 있습니다. 본 예제에서는 I/O와 time delay로 clock 신호를 만들어 주었습니다.

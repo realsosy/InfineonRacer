@@ -28,7 +28,7 @@ date: 2018-06-08
 
 **[Example Code]**
 
-* InfineonRacer_TC23A - TftApp
+* MyIlldModule_TC23A - Tft
 
 ------
 
@@ -60,29 +60,27 @@ date: 2018-06-08
 
    * Conio TFT driver
      * 사용자가 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
-
 * TFT 구동 방식
 
    * iLLD 에서는 Conio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
+* TFT를 사용하기 위해 필요한 기본적인 driver
 
-* TFT를 사용하기 위해 필요한 header
+   * InfineonRacer_TC23A 기준
+     * 0_Src/CDrv/Tricore/Qspi
+     * 0_Src/CDrv/Tricore/Tft
+* TFT를 활용하기 위해 필요한 application files
 
-   * <Tft/conio_tft.h>
-   * <Tft/touch.h>
+   * InfineonRacer_TC23A 기준
 
+      * 0_Src/AppSw/Tricore/TftApp
 * I/O 설정
 
    * TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다. 그러므로, QSPI를 사용하기 위한 PIN 설정이 필요합니다.
 
-     ![TftAsModernMmi_TFT_In](images/TftAsModernMmi_TFT_In.png)
-
    * Touch 정보는 SPI 통신을 이용하여 받습니다.
-
-     ![TftAsModernMmi_TouchIn](images/TftAsModernMmi_TouchIn.png)
 
    * Background light는 Gtm TOM을 이용하여 PWM으로 조절합니다.
 
-     ![TftAsModernMmi_BackgroundLight](images/TftAsModernMmi_BackgroundLight.png)
 
 
 
@@ -90,7 +88,12 @@ date: 2018-06-08
 ## iLLD - related
 
 * Demo code description
-  * Text를 display에 출력하고, 어떤 함수에서 touch 좌표를 받고, 그것을 어떻게 사용하는지 간단히 살펴봅시다.
+  * 5개의 Display 화면을 출력하고, 각 창에서 touch screen을 통해 사용자에게 입력을 받는다.
+    * Main -> Operating time, background light 표시
+    * DIS0 -> String <<DISPLAY0>>
+    * DIS1 -> String <<DISPLAY0>>, CPU load
+    * GRAPH -> Infineon logo 그림
+    * RSVD(빈화면)
 
 ### Module Configuration
 
@@ -111,6 +114,27 @@ int core0_main(void)
     IfxPort_setPinModeOutput(BACKGROUND_LIGHT.pin.port, BACKGROUND_LIGHT.pin.pinIndex, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_alt1);
 
   // 생략
+    
+    /* Init TFT-display */
+    tft_appl_init(1);	// Menu	창을 display하고 input을 받음
+
+    /* Init the backroundlight */
+    background_light_init();	// Background 의 밝기변화
+
+    graph_drawInfineonLogo();	//인피니온 로고를 그리는 함수
+
+   
+    perf_meas_init();	// CPU load measurement를 위한 초기화
+
+    display_io_init();	
+
+    /* background endless loop */
+    while (TRUE)
+    {
+    	perf_meas_idle();		// CPU load measurement를 위한 idle counter
+    }
+
+    return 0;
 }
 
 void tft_app_init (uint8 RtcRunning)
@@ -119,8 +143,8 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-    conio_driver.pmenulist = (TDISPLAYENTRY *)&menulist[0];
-    conio_driver.pstdlist = (TDISPLAYENTRY *)&stdlist[0];
+    conio_driver.pmenulist = (TDISPLAYENTRY *)&menulist[0];	// Menu에 들어갈 entry
+    conio_driver.pstdlist = (TDISPLAYENTRY *)&stdlist[0];   // Base bar에 들어갈 entry
 
     // TFT driver를 초기화한다
     tft_init ();                
@@ -162,50 +186,67 @@ void cpu_service0Irq(void)
 ### Module Behavior
 
 ```c
-// TFT interface 소개
+// menu.c
+// Description: Menu창 설정
 
-// TFT Input interface
-Touch screen 좌표
-- touch_driver.xdisp, touch_driver.ydisp
+const TDISPLAYENTRY menulist[19] = {
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 7, 31, 0, &menu_select, &menu_display, &menu_input,"TFT Demo for App Kit XC237"},
 
-// TFT Output interface
-기능
-- Text를 display에 출력
-예시
-	conio_ascii_printfxy (DISPLAY_IO1, 0,  4, (uint8 *)" Motor0En : %4d     Motor1En : %4d", 	IR_getMotor0En(), IR_getMotor1En());
-Input
-- Displaymode(Bar인지 text인지 graph인지...)
-- Text가 입력 될 좌표 x, y
-- 실제 출력할 string
-- Conversion specifier에 치환 될 인자
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 30, 39, 1, &menu_select_cpusec, &menu_display_cpusec, &menu_input,"cpusec"},
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 0, 10, 3, &menu_select_cpusecdelta, &menu_display_cpusecdelta, &menu_input_cpusecdelta,"delta: "},
 
-기능
-- Bar를 display에 출력
-예시
-	bar_display (i, (struct DISPLAYENTRY *) &pstdlist[i]);
-Input
-- display 하고자 하는 reference의 index
-- display 하고자 하는 reference
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 0, 16, 17, &menu_select_background_light, &menu_display_background_light, &menu_input_background_light, "Background Light: "},
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 30, 32, 17, &menu_select_background_lightminus, &menu_display, &menu_input, "-<<"},
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 34, 36, 17, &menu_select_background_lightplus, &menu_display, &menu_input, ">>+"},
 
-// Display 하고자 하는 것의 정보
-typedef struct DISPLAYENTRY
+{0, 0, 0, 0, 0, 0, 0, 0, " "},
+{0, 0, 0, 0, 0, 0, 0, 0, " "},
+{0, 0, 0, 0, 0, 0, 0, 0, " "},
+{0, 0, 0, 0, 0, 0, 0, 0, " "},
+{0, 0, 0, 0, 0, 0, 0, 0, " "},
+{0, 0, 0, 0, 0, 0, 0, 0, " "}  //LAST ENTRY
+};
+// DISPLAYENTRY구조체의 구조
+// {Display color, 터치되었을 때 color, entry의 x위치 시작점, entry의 x위치 끝점, entry의 y위치.
+//  터치되었을 때 동작하는 함수, 기본 display할 함수, input 함수, 출력할 test, symbol}
+
+// 아래는 Menu 창의 맨 첫 번째 줄인 "TFT Demo for App Kit XC237"을 출력하기 위한 3개의 함수
+void menu_display (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
-    uint8 color_display;        //upper most 4 bits are background colore, lower 4 bits text color
-    //if the cursor is not inside the are this color information will be taken to display the text
-    uint8 color_select;         //if the cursor is inside the area, the text will be shown in this color
-    sint8 xmin;                 //provides the information where the menu entry is starting
-    sint8 xmax;                 //and ending
-    sint8 y;                    //height information, only one line height is used as menu entry
-    void (*select) (sint32 ind, struct DISPLAYENTRY * pdisplayentry);   //this function will be called in case of select, if NULL nothing will happen
-    void (*display) (sint32 ind, struct DISPLAYENTRY * pdisplayentry);  //this function will be called to display the text
-     sint32 (*input) (sint32 ind, struct DISPLAYENTRY * pdisplayentry); //this function will be called if an text input is required, the keyboard window will be opened
-    uint8 text[TERMINAL_MAXX];  //the text
-    uint8 symbol;               //the symbol number
-} TDISPLAYENTRY, *pTDISPLAYENTRY;
+    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_display);
+    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
+    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]);
+}// 기본 display할 함수
 
-기능
-- 그림을 display에 출력
-예시
+void menu_select (sint32 ind, TDISPLAYENTRY * pdisplayentry)
+{
+    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);
+    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
+    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]);
+    if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
+    {
+        touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+        // 현 entry는 touch되었을 때 특별한 동작이 없다
+    }
+}// 터치되었을 때 동작하는 함수
+
+sint32 menu_input (sint32 ind, TDISPLAYENTRY * pdisplayentry)
+{
+    __debug ();	// input 받는 것이 없다
+    return (0);
+}// input 함수
+
+// display_io.c
+// Description: Display IO 0, 1창 설정
+void display_io_init(void)
+{
+	// Display IO 0,1 에 기본적으로 출력되는 string 설정
+    conio_ascii_printfxy (DISPLAY_IO0, 10, 0, (uint8 *)"<<DISPLAY 0>>");
+    conio_ascii_printfxy (DISPLAY_IO1, 10, 0, (uint8 *)"<<DISPLAY 1>>");
+}
+
+// DrawLogo.c
+// Description: Infineon logo를 GRAPH 창에 그려줌
 void graph_drawInfineonLogo(void)
 {
     uint32 i, j, idx, width, height;
@@ -213,8 +254,8 @@ void graph_drawInfineonLogo(void)
 
     uint32 x, y;
 
-    width = 200;
-    height = 87;
+    width = 200;		// Infineon logo width
+    height = 87;		// Infineon logo height
     x = (320 - width) / 2;
     y = (240 - height) / 2;
 
@@ -253,6 +294,7 @@ void graph_drawInfineonLogo(void)
         {
             if(count == 0)
             {
+                // Drawlogo.c 에서 미리 RGB 배열 형식으로 입력해둔 infineon logo 출력한다
                 count = infineon_logo[idx++];
                 color = infineon_logo[idx++];
             }
@@ -264,8 +306,6 @@ void graph_drawInfineonLogo(void)
         }
     }
 }
-Input
-- infineon_logo[1962]
 ```
 
 ------

@@ -43,8 +43,6 @@ date: 2018-05-08
 
 
 
-
-
 ## Background 정보
 
 * 속도 측정 방법
@@ -116,7 +114,8 @@ date: 2018-05-08
 ## iLLD - related
 
 * Demo code description
-  * [Overview]
+  * 엔코더 동작을 확인하기 위해 General Purpose Timer에서 일정 시간마다 A상, B상, Z상의 Pulse를 생성합니다.
+  * GPT를 이용하여 생성된 Pulse를 읽어 speed, direction, position을 읽습니다.
 
 ### Module Configuration
 

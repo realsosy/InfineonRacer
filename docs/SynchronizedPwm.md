@@ -94,7 +94,8 @@ PWM이라는 것에 대해서 개략적인 내용은 이해했습니다.  Pulse 
 ## iLLD - related
 
 * Demo code description
-  	* 4개의 switching 소자의 PWM을 개별적으로 제어할 수 있습니다.
+   * GTM에서 duty 주기를 변경하여 PWM을 제어합니다.
+   * 본 예제에서는 4개의 switching 소자의 PWM을 개별적으로 제어할 수 있습니다.
 
 
 ### Module Configuration

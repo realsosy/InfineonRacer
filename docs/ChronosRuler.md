@@ -123,7 +123,8 @@ date: 2018-05-08
 ## iLLD - related
 
 * Demo code description
-  * [Overview]
+  * Generic Timer module을 가지고 Period와 Duty 주기를 설정하여 원하는 주기 Pulse를 만들 수 있습니다.
+  * GTM을 이용하여 Servo motor와 DCmotor를 구동시킬 수 있습니다.
 
 ### Module Configuration
 

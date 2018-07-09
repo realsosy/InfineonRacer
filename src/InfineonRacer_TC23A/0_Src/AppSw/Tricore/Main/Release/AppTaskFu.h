@@ -9,6 +9,7 @@
 #include "Perf_Meas.h"
 #include "InfineonRacer.h"
 #include "IR_Controller.h"
+#include "PlotSine.h"
 
 IFX_EXTERN boolean task_flag_1m;
 IFX_EXTERN boolean task_flag_10m;

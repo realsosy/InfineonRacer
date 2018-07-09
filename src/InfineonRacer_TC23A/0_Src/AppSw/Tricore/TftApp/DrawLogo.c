@@ -142,7 +142,7 @@ void graph_drawInfineonLogo(void)
     {
         for(j = 0; j < TFT_XSIZE; j++)
         {
-            conio_graphics_set(DISPLAY_GRAPH, j, i, RED);
+            conio_graphics_set(DISPLAY_RSVD, j, i, RED);
         }
     }
     // set red frame
@@ -150,7 +150,7 @@ void graph_drawInfineonLogo(void)
     {
         for(j = 5; j < TFT_XSIZE - 5; j++)
         {
-            conio_graphics_set(DISPLAY_GRAPH, j, i, BLUE);
+            conio_graphics_set(DISPLAY_RSVD, j, i, BLUE);
         }
     }
     // set white background
@@ -158,9 +158,10 @@ void graph_drawInfineonLogo(void)
     {
         for(j = 10; j < TFT_XSIZE - 10; j++)
         {
-            conio_graphics_set(DISPLAY_GRAPH, j, i, WHITE);
+           conio_graphics_set(DISPLAY_RSVD, j, i, WHITE);
         }
     }
+
     // paint the logo
     for(i = 0; i < height; i++)
     {
@@ -173,7 +174,7 @@ void graph_drawInfineonLogo(void)
             }
             if(color != 255)
             {
-                conio_graphics_set(DISPLAY_GRAPH, x + j, y + height - i, color);
+                conio_graphics_set(DISPLAY_RSVD, x + j, y + height - i, color);
             }
             count--;
         }

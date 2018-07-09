@@ -1,43 +1,30 @@
-/**
- * \file GtmTomTimerDemo.c
- * \brief Demo GtmTomTimerDemo
+/*
+ * PlotSine.c
  *
- * \version iLLD_Demos_1_0_1_4_0
- * \copyright Copyright (c) 2014 Infineon Technologies AG. All rights reserved.
- *
- *
- *                                 IMPORTANT NOTICE
- *
- *
- * Infineon Technologies AG (Infineon) is supplying this file for use
- * exclusively with Infineon's microcontroller products. This file can be freely
- * distributed within development tools that are supporting such microcontroller
- * products.
- *
- * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
- * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
- * INFINEON SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL,
- * OR CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+ *  Created on: 07.07.2018
  */
 
 /******************************************************************************/
 /*----------------------------------Includes----------------------------------*/
 /******************************************************************************/
+#include "PlotSine.h"
 
-#include <stdio.h>
-#include "GtmTomTimerDemo.h"
+#include <Cpu/Std/Ifx_Types.h>
+#include <Tft/conio_tft.h>
+
+
+
+/******************************************************************************/
+/*------------------------Inline Function Prototypes--------------------------*/
+/******************************************************************************/
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
 /******************************************************************************/
 
+#define ISR_PRIORITY_PLOT_TIMER 30
 /******************************************************************************/
-/*--------------------------------Enumerations--------------------------------*/
-/******************************************************************************/
-
-/******************************************************************************/
-/*-----------------------------Data Structures--------------------------------*/
+/*------------------------Private Variables/Constants-------------------------*/
 /******************************************************************************/
 
 /******************************************************************************/
@@ -46,44 +33,66 @@
 
 App_GtmTomTimer g_GtmTomTimer; /**< \brief Demo information */
 
-/******************************************************************************/
-/*-------------------------Function Prototypes--------------------------------*/
-/******************************************************************************/
-
-/******************************************************************************/
-/*------------------------Private Variables/Constants-------------------------*/
-/******************************************************************************/
 
 /******************************************************************************/
 /*-------------------------Function Implementations---------------------------*/
 /******************************************************************************/
+void graph_drawBackground(void)
+{
+    uint32 i, j, idx, width, height;
+    uint8 color, count;
 
-/** \addtogroup IfxLld_Demo_GtmTomTimer_SrcDoc_Main_Interrupt
- * \{ */
+    uint32 x, y;
 
-/** \name Interrupts for Timer_1ms
- * \{ */
+    width = 200;
+    height = 87;
+    x = (320 - width) / 2;
+    y = (240 - height) / 2;
+
+    idx = 0;
+    color = -1;
+    count = 0;
+
+    // set white background
+    for(i = 0; i < TFT_YSIZE - FONT_YSIZE; i++)
+    {
+        for(j = 0; j < TFT_XSIZE; j++)
+        {
+            conio_graphics_set(DISPLAY_GRAPH, j, i, WHITE);
+        }
+    }
+/*
+    // paint the logo
+    for(i = 0; i < height; i++)
+    {
+        for(j = 0; j < width; j++)
+        {
+            if(count == 0)
+            {
+                count = infineon_logo[idx++];
+                color = infineon_logo[idx++];
+            }
+            if(color != 255)
+            {
+                conio_graphics_set(DISPLAY_GRAPH, x + j, y + height - i, color);
+            }
+            count--;
+        }
+    }
+    */
+
+}
+
 
 IFX_INTERRUPT(ISR_Timer_1ms, 0, ISR_PRIORITY_TIMER_1MS);
 
-/** \} */
 
-/** \} */
-
-/** \brief Handle 1ms interrupt.
- *
- * \isrProvider \ref ISR_PROVIDER_TIMER_1MS
- * \isrPriority \ref ISR_PRIORITY_TIMER_1MS
- *
- */
 void ISR_Timer_1ms(void)
 {
     IfxCpu_enableInterrupts();
 
     IfxGtm_Tom_Timer_acknowledgeTimerIrq(&g_GtmTomTimer.drivers.timerOneMs);
     g_GtmTomTimer.isrCounter.slotOneMs++;
-
-
 }
 
 
@@ -106,11 +115,6 @@ void GtmTomTimer_initTimer(void)
     }
 }
 
-
-/** \brief Demo init API
- *
- * This function is called from main during initialization phase
- */
 void GtmTomTimerDemo_init(void)
 {
     /* disable interrupts */
@@ -137,9 +141,3 @@ void GtmTomTimerDemo_init(void)
 }
 
 
-/** \brief Demo run API
- *
- * This function is called from main, background loop
- */
-void GtmTomTimerDemo_run(void)
-{}

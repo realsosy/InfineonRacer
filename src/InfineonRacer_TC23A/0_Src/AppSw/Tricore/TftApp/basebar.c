@@ -10,6 +10,7 @@
 #include <Tft/conio_tft.h>
 #include <Tft/touch.h>
 #include "conio_cfg.h"
+#include "PlotSine.h"
 
 /******************************************************************************/
 /*------------------------Inline Function Prototypes--------------------------*/
@@ -54,6 +55,7 @@ void bar_select_menu (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     conio_ascii_textattr (DISPLAY_BAR, pdisplayentry->color_select);
     conio_ascii_gotoxy (DISPLAY_BAR, pdisplayentry->xmin, 0);
     conio_ascii_cputs (DISPLAY_BAR, &pdisplayentry->text[0]);
+
     if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
     {
         conio_driver.displaymode = DISPLAY_MENU;
@@ -70,6 +72,7 @@ void bar_select_stdio0 (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     {
         conio_driver.displaymode = DISPLAY_IO0;
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+
     }
 }
 
@@ -82,6 +85,7 @@ void bar_select_stdio1 (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     {
         conio_driver.displaymode = DISPLAY_IO1;
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+
     }
 }
 

@@ -11,6 +11,8 @@
 #include "background_light.h"
 #include "Perf_Meas.h"
 #include "display_io.h"
+#include "PlotSine.h"
+
 
 
 /******************************************************************************/
@@ -92,6 +94,7 @@ extern const TDISPLAYENTRY menulist[];
 extern const TDISPLAYENTRY stdlist[];
 
 TDISPLAY_GRAPHICS0 display_graph;
+TDISPLAY_GRAPHICS0 display_rsvd;
 
 #ifdef TFT_OVER_DAS
 uint32 das_buffer[DAS_BUFFER_LEN >> 2];
@@ -105,8 +108,8 @@ TDISPLAY display_stdio0;
 TDISPLAYCOLOR displaycolor_stdio0;
 TDISPLAY display_stdio1;
 TDISPLAYCOLOR displaycolor_stdio1;
-TDISPLAY display_rsvd;
-TDISPLAYCOLOR displaycolor_rsvd;
+//TDISPLAY display_rsvd;
+//TDISPLAYCOLOR displaycolor_rsvd;
 
 #if defined(__GNUC__)
 #pragma section
@@ -135,7 +138,7 @@ const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
     { DISPLAY_IO0, {(uint8 *) & display_stdio0, (uint8 *) & displaycolor_stdio0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
     { DISPLAY_IO1, {(uint8 *) & display_stdio1, (uint8 *) & displaycolor_stdio1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
     { DISPLAY_GRAPH, {(uint8 *) & display_graph, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
-    { DISPLAY_RSVD, {(uint8 *) & display_rsvd, (uint8 *) & displaycolor_rsvd, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} }
+    { DISPLAY_RSVD, {(uint8 *) & display_rsvd,  0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
 };
 
 
@@ -168,12 +171,21 @@ void tft_app_init (uint8 RtcRunning)
 
     background_light_init();
     graph_drawInfineonLogo();
+    drawPlot_Background();
+    drawPlot_Axis();
     display_io_init();
 
+    g_curtime = 0;
+    g_yLCD_old = 120;
+    g_xLCD_old = X0_POS_LCD;
 }
 
 extern void tft_app_run(void){
 	display_io_run();
+
+	g_curtime = g_curtime + 0.2;
+	drawPlot_Function();
+
 	controlmenu.cpuseconds = controlmenu.cpuseconds + REFRESH_TFT*0.1;
 	IfxSrc_setRequest(&TFT_UPDATE_IRQ);    //trigger the tft lib
 }

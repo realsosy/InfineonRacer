@@ -46,8 +46,6 @@ void display_io_init(void)
 
     conio_ascii_printfxy (DISPLAY_IO1, 10, 0, (uint8 *)"<<DISPLAY INFO 1>>");
 
-
-
 }
 
 

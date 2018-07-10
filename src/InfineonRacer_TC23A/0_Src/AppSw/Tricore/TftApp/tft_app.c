@@ -123,7 +123,7 @@ TDISPLAY_GRAPHICS0 display_tab3;
 TDISPLAY_GRAPHICS0 display_tab4;
 
 
-volatile boolean tft_ready;
+volatile boolean tft_ready = FALSE;
 
 /******************************************************************************/
 /*------------------------Private Variables/Constants-------------------------*/
@@ -242,7 +242,7 @@ void cpu_service0Irq(void)
 {
 
 	__enable();
-	if (tft_ready == 0) return;
+	if (tft_ready == FALSE) return;
     touch_periodic ();
     conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.p_tab0_menulist, conio_driver.p_tab_config);
     conio_driver.blinky += 1;

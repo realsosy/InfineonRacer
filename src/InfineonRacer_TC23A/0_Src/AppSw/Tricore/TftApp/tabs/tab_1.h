@@ -11,11 +11,7 @@
 #include <Tft/conio_tft.h>
 #include <Ifx_Types.h>
 
-// *INDENT-OFF*
-const TDISPLAYENTRY tab1_DIS1list[0] = {
-{0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
-};
-// *INDENT-ON*
+extern TDISPLAYENTRY tab1_DIS1list[0];
 
 void tab1_init(void);
 void tab1_run(void);

@@ -14,8 +14,8 @@
 //#include "app/background_light.h"
 #include "tab_config/tab_config.h"
 #include "tabs/tab_0.h"
-//#include "tabs/tab_1.h"
-//#include "tabs/tab_2.h"
+#include "tabs/tab_1.h"
+#include "tabs/tab_2.h"
 //#include "tabs/tab_3.h"
 //#include "tabs/tab_4.h"
 
@@ -163,10 +163,10 @@ void tft_app_init (uint8 RtcRunning)
     tab0_init();
 
     // tab1_init
-    //tab1_init();
+    tab1_init();
 
     // tab2_init
-    //tab2_init();
+    tab2_init();
 
     // tab3_init
     //tab3_init();
@@ -198,10 +198,10 @@ extern void tft_app_run(void){
 	tab0_run();
 
 	// tab1_run
-	//tab1_run();
+	tab1_run();
 
 	// tab2_run
-	//tab2_run();
+	tab2_run();
 
 	// tab3_run
 	//tab3_run();

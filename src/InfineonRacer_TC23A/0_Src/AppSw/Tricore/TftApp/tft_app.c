@@ -12,8 +12,8 @@
 #include "tft_app.h"
 
 //#include "app/background_light.h"
-//#include "tab_config/tab_config.h"
-//#include "tabs/tab_0.h"
+#include "tab_config/tab_config.h"
+#include "tabs/tab_0.h"
 //#include "tabs/tab_1.h"
 //#include "tabs/tab_2.h"
 //#include "tabs/tab_3.h"
@@ -109,9 +109,6 @@ float32 g_cpuseconds = 0.0;
 extern TTOUCH_DRIVER touch_driver;
 extern TCONIO_DRIVER conio_driver;
 
-//extern const TDISPLAYENTRY tab0_menulist[];
-//extern const TDISPLAYENTRY tab_config_list[];
-
 TDISPLAYBAR display_menu_config;
 TDISPLAYBARCOLOR displaycolor_menu_config;
 TDISPLAY display_tab0;
@@ -137,11 +134,11 @@ volatile boolean tft_ready;
 const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
 {
     { DISPLAY_TAB_CONFIG, {(uint8 *) & display_menu_config, (uint8 *) & displaycolor_menu_config, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
-    { DISPLAY_TAB0, {(uint8 *) & display_tab0, 				(uint8 *) & displaycolor_tab0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_TAB1, {(uint8 *) & display_tab1, 				(uint8 *) & displaycolor_tab1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_TAB2, {(uint8 *) & display_tab2, 				(uint8 *) & displaycolor_tab2, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 										    0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
-    { DISPLAY_TAB4, {(uint8 *) & display_tab4,  										0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
+    { DISPLAY_TAB0, {(uint8 *) & display_tab0, 				(uint8 *) & displaycolor_tab0, 		  TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB1, {(uint8 *) & display_tab1, 				(uint8 *) & displaycolor_tab1, 		  TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB2, {(uint8 *) & display_tab2, 				(uint8 *) & displaycolor_tab2, 		  TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 										    0, 	      GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
+    { DISPLAY_TAB4, {(uint8 *) & display_tab4,  										0, 	      GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
 };
 
 
@@ -159,11 +156,11 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
 	// tab config
-    //conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
+    conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
 
     // tab0_init
-    //conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
-    //tab0_init();
+    conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
+    tab0_init();
 
     // tab1_init
     //tab1_init();
@@ -198,7 +195,7 @@ extern void tft_app_run(void){
 	setCpuSeconds(tmp);
 
 	// tab0_run
-	//tab0_run();
+	tab0_run();
 
 	// tab1_run
 	//tab1_run();

@@ -288,8 +288,8 @@ void keyboard (sint16 x, sint16 y)
     if (y > 17)
         y = 17;
 
-    conio_ascii_textcolor (DISPLAY_MENU, BLACK);
-    conio_ascii_textbackground (DISPLAY_MENU, CYAN);
+    conio_ascii_textcolor (DISPLAY_TAB0, BLACK);
+    conio_ascii_textbackground (DISPLAY_TAB0, CYAN);
 
     conio_ascii_gotoxy (conio_driver.displaymode, 0, 6);
     for (j = 0; j < 13; j += 1)
@@ -319,8 +319,8 @@ void keyboard (sint16 x, sint16 y)
         else
             conio_ascii_putch (conio_driver.displaymode, 0x20);
     }
-    conio_ascii_gotoxy (DISPLAY_MENU, x, y);
-    conio_ascii_textchangebackground (DISPLAY_MENU, RED);
+    conio_ascii_gotoxy (DISPLAY_TAB0, x, y);
+    conio_ascii_textchangebackground (DISPLAY_TAB0, RED);
     for (i = 0; i < MAX_DISPLAYKEYBENTRY; i += 1)
     {
         if ((x >= keyboardlist[i].xmin) && (x <= keyboardlist[i].xmax) && (y == keyboardlist[i].y))

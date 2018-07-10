@@ -17,8 +17,6 @@
 #include <Tft/conio_tft.h>
 #include "tft_app.h"
 #include "background_light.h"
-#include "Perf_Meas.h"
-#include "display_io.h"
 
 /******************************************************************************/
 /*------------------------Inline Function Prototypes--------------------------*/

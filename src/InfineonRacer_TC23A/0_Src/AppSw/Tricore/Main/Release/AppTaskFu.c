@@ -20,6 +20,7 @@ void appTaskfu_init(void){
 
     tft_app_init(1);
     perf_meas_init();
+    background_light_init();
 
 #ifdef CODE_ERT
     IR_Controller_initialize();

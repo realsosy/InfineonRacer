@@ -11,6 +11,8 @@
 #define FONT_YSIZE 12           //!< Font height
 #define FONT_XSIZE 8            //!< Font width
 
+#include <Ifx_Types.h>
+
 extern const uint8 __font_bitmap__8_12[256*FONT_YSIZE];
 
 #endif /* FONT_8_12_H_ */

@@ -6,10 +6,10 @@
 #include "Basic.h"
 #include "AsclinShellInterface.h"
 #include "tft_app.h"
-#include "Perf_Meas.h"
+#include "app/Perf_Meas.h"
+#include "app/background_light.h"
 #include "InfineonRacer.h"
 #include "IR_Controller.h"
-#include "PlotSine.h"
 
 IFX_EXTERN boolean task_flag_1m;
 IFX_EXTERN boolean task_flag_10m;

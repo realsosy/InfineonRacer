@@ -5,10 +5,10 @@
  *      Author: dienst
  */
 
-#include <Cpu/Std/Ifx_Types.h>
+#include "background_light.h"
+
 #include "Configuration.h"
 #include <Tft/touch.h>
-#include "background_light.h"
 #include <Gtm/Tom/Timer/IfxGtm_Tom_Timer.h>
 
 /******************************************************************************/
@@ -95,10 +95,11 @@ void background_light_init (void)
 {
 
 	time_out_bkgrnd = 0;
-	backgroundlightmin = 5;
-	backgroundlightmax = 100;
-	backgroundlightdelta = 5;
-	backgroundlightsize = 50;
+
+	setBackgroundLightMin(5);
+	setBackgroundLightMax(100);
+	setBackgroundLightDelta(5);
+	setBackgroundLightSize(50);
 
 	IfxGtm_Tom_Timer_Config driverConfig;
 
@@ -114,7 +115,7 @@ void background_light_init (void)
     driverConfig.base.trigger.outputEnabled = TRUE;
     driverConfig.base.trigger.outputMode = IfxPort_OutputMode_pushPull;
     driverConfig.base.trigger.outputDriver = IfxPort_PadDriver_cmosAutomotiveSpeed1;
-    driverConfig.base.trigger.triggerPoint = BACKGROUNDLIGHT_PERIOD * backgroundlightsize; // 10ns is the resolution of GTM
+    driverConfig.base.trigger.triggerPoint = BACKGROUNDLIGHT_PERIOD * getBackgroundLightSize(); // 10ns is the resolution of GTM
     driverConfig.base.trigger.risingEdgeAtPeriod = TRUE;
     driverConfig.base.isrPriority = ISR_PRIORITY_BACKLIGHT;
     driverConfig.base.isrProvider = ISR_PROVIDER_BACKLIGHT;
@@ -123,7 +124,55 @@ void background_light_init (void)
 
 }
 
-/*************************************************************/
+/******************************************************************************/
+/*-------------------------External Interface---------------------------------*/
+/******************************************************************************/
+
+// get
+uint32 getBackgroundLightMin(void)
+{
+	return backgroundlightmin;
+}
+
+uint32 getBackgroundLightMax(void)
+{
+	return backgroundlightmax;
+}
+
+uint32 getBackgroundLightDelta(void)
+{
+	return backgroundlightdelta;
+}
+
+uint32 getBackgroundLightSize(void)
+{
+	return backgroundlightsize;
+}
+
+//set
+void setBackgroundLightMin(uint32 min)
+{
+	backgroundlightmin = min;
+}
+
+void setBackgroundLightMax(uint32 max)
+{
+	backgroundlightmax = max;
+}
+
+void setBackgroundLightDelta(uint32 delta)
+{
+	backgroundlightdelta = delta;
+}
+
+void setBackgroundLightSize(uint32 size)
+{
+	backgroundlightsize = size;
+}
+
+/******************************************************************************/
+/*-------------------------Interrupt Service Routine--------------------------*/
+/******************************************************************************/
 IFX_INTERRUPT (ISR_BACKLIGHT, 0, ISR_PRIORITY_BACKLIGHT);
 
 void ISR_BACKLIGHT(void)
@@ -132,7 +181,7 @@ void ISR_BACKLIGHT(void)
 	IfxGtm_Tom_Timer_acknowledgeTimerIrq(&driverBacklight);
 	if((touch_event.status != TOUCH_UP) && (touch_event.status != TOUCH_UNINIT))
 	{
-		IfxGtm_Tom_Timer_setTrigger (&driverBacklight, BACKGROUNDLIGHT_PERIOD * backgroundlightsize); /* load shadow register Duty  */
+		IfxGtm_Tom_Timer_setTrigger (&driverBacklight, BACKGROUNDLIGHT_PERIOD * getBackgroundLightSize()); /* load shadow register Duty  */
 		time_out_bkgrnd = 0;
 	}
 	else
@@ -140,7 +189,7 @@ void ISR_BACKLIGHT(void)
 		if(time_out_bkgrnd >= 150000 - BACKGROUNDLIGHT_PERIOD * 50)
 			IfxGtm_Tom_Timer_setTrigger (&driverBacklight, BACKGROUNDLIGHT_PERIOD * 5); /* load shadow register Duty  */
 
-		else if((time_out_bkgrnd > 150000 - backgroundlightsize*1000) && (time_out_bkgrnd < 150000 - BACKGROUNDLIGHT_PERIOD * 50))
+		else if((time_out_bkgrnd > 150000 - getBackgroundLightSize()*1000) && (time_out_bkgrnd < 150000 - BACKGROUNDLIGHT_PERIOD * 50))
 		{
 			IfxGtm_Tom_Timer_setTrigger (&driverBacklight, (150000 - time_out_bkgrnd)/10); /* load shadow register Duty  */
 			time_out_bkgrnd++;
@@ -148,7 +197,7 @@ void ISR_BACKLIGHT(void)
 
 		else
 		{
-			IfxGtm_Tom_Timer_setTrigger (&driverBacklight, BACKGROUNDLIGHT_PERIOD * backgroundlightsize); /* load shadow register Duty  */
+			IfxGtm_Tom_Timer_setTrigger (&driverBacklight, BACKGROUNDLIGHT_PERIOD * getBackgroundLightSize()); /* load shadow register Duty  */
 			time_out_bkgrnd++;
 		}
 	}

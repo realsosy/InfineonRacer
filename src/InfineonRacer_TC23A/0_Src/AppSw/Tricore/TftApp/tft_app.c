@@ -2,18 +2,20 @@
 /*----------------------------------Includes----------------------------------*/
 /******************************************************************************/
 
-#include <Cpu/Std/Ifx_Types.h>
+
 #include <Tft/conio_tft.h>
 #include <Tft/touch.h>
 #include "tft_app.h"
 #include "Configuration.h"
 #include "conio_cfg.h"
-#include "background_light.h"
-#include "Perf_Meas.h"
-#include "display_io.h"
-#include "PlotSine.h"
+#include "app/background_light.h"
 
-
+#include "tab_config/tab_config.h"
+#include "tabs/tab_0.h"
+#include "tabs/tab_1.h"
+#include "tabs/tab_2.h"
+#include "tabs/tab_3.h"
+#include "tabs/tab_4.h"
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
@@ -85,31 +87,30 @@ extern void keyboard (sint16 x, sint16 y);
 #error "Set TFT_DISPLAY_VAR_LOCATION to a valid value!"
 #endif
 
-TCONTROLMENU controlmenu;
+float32 g_cpuseconds = 0.0;
 
 extern TTOUCH_DRIVER touch_driver;
 extern TCONIO_DRIVER conio_driver;
 
-extern const TDISPLAYENTRY menulist[];
-extern const TDISPLAYENTRY stdlist[];
-
-TDISPLAY_GRAPHICS0 display_graph;
-TDISPLAY_GRAPHICS0 display_rsvd;
+extern const TDISPLAYENTRY tab0_menulist[];
+extern const TDISPLAYENTRY tab_config_list[];
 
 #ifdef TFT_OVER_DAS
 uint32 das_buffer[DAS_BUFFER_LEN >> 2];
 #endif
 
-TDISPLAYBAR display_bar;
-TDISPLAYBARCOLOR displaycolor_bar;
-TDISPLAY display_menu;
-TDISPLAYCOLOR displaycolor_menu;
-TDISPLAY display_stdio0;
-TDISPLAYCOLOR displaycolor_stdio0;
-TDISPLAY display_stdio1;
-TDISPLAYCOLOR displaycolor_stdio1;
-//TDISPLAY display_rsvd;
-//TDISPLAYCOLOR displaycolor_rsvd;
+TDISPLAYBAR display_menu_config;
+TDISPLAYBARCOLOR displaycolor_menu_config;
+TDISPLAY display_tab0;
+TDISPLAYCOLOR displaycolor_tab0;
+TDISPLAY display_tab1;
+TDISPLAYCOLOR displaycolor_tab1;
+TDISPLAY display_tab2;
+TDISPLAYCOLOR displaycolor_tab2;
+
+TDISPLAY_GRAPHICS0 display_tab3;
+TDISPLAY_GRAPHICS0 display_tab4;
+
 
 #if defined(__GNUC__)
 #pragma section
@@ -133,12 +134,12 @@ const TCONIODLGENTRY conio_dialog_list[CONIO_DLG_ENTRIES] =
 
 const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
 {
-    { DISPLAY_BAR, {(uint8 *) & display_bar, (uint8 *) & displaycolor_bar, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
-    { DISPLAY_MENU, {(uint8 *) & display_menu, (uint8 *) & displaycolor_menu, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_IO0, {(uint8 *) & display_stdio0, (uint8 *) & displaycolor_stdio0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_IO1, {(uint8 *) & display_stdio1, (uint8 *) & displaycolor_stdio1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-    { DISPLAY_GRAPH, {(uint8 *) & display_graph, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
-    { DISPLAY_RSVD, {(uint8 *) & display_rsvd,  0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
+    { DISPLAY_TAB_CONFIG, {(uint8 *) & display_menu_config, (uint8 *) & displaycolor_menu_config, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
+    { DISPLAY_TAB0, {(uint8 *) & display_tab0, (uint8 *) & displaycolor_tab0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB1, {(uint8 *) & display_tab1, (uint8 *) & displaycolor_tab1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB2, {(uint8 *) & display_tab2, (uint8 *) & displaycolor_tab2, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
+    { DISPLAY_TAB4, {(uint8 *) & display_tab4,  0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
 };
 
 
@@ -155,9 +156,26 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-    conio_driver.pmenulist = (TDISPLAYENTRY *)&menulist[0];
-    conio_driver.pstdlist = (TDISPLAYENTRY *)&stdlist[0];
+	// tab config
+    conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
 
+    // tab0_init
+    conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
+    tab0_init();
+
+    // tab1_init
+    tab1_init();
+
+    // tab2_init
+    tab2_init();
+
+    // tab3_init
+    tab3_init();
+
+    // tab4_init
+    tab4_init();
+
+    // low-level driver initialization
     tft_init ();                //initializes tft driver
     touch_init ();
     conio_init ((const pTCONIODMENTRY)conio_displaymode_list);
@@ -166,29 +184,51 @@ void tft_app_init (uint8 RtcRunning)
     conio_driver.dasstatus = 0; //we can update
 #endif
 
-    controlmenu.cpusecondsdelta = 0.1f;
     tft_ready = TRUE;
 
-    background_light_init();
-    graph_drawInfineonLogo();
-    drawPlot_Background();
-    drawPlot_Axis();
-    display_io_init();
-
-    g_curtime = 0;
-    g_yLCD_old = 120;
-    g_xLCD_old = X0_POS_LCD;
 }
 
 extern void tft_app_run(void){
-	display_io_run();
+	// Operating time
+	float32 tmp = getCpuSeconds();
+	tmp = tmp + REFRESH_TFT*0.1;
+	setCpuSeconds(tmp);
 
-	g_curtime = g_curtime + 0.2;
-	drawPlot_Function();
+	// tab0_run
+	tab0_run();
 
-	controlmenu.cpuseconds = controlmenu.cpuseconds + REFRESH_TFT*0.1;
+	// tab1_run
+	tab1_run();
+
+	// tab2_run
+	tab2_run();
+
+	// tab3_run
+	tab3_run();
+
+	// tab4_run
+	tab4_run();
+
 	IfxSrc_setRequest(&TFT_UPDATE_IRQ);    //trigger the tft lib
 }
+
+/******************************************************************************/
+/*-------------------------External Interface---------------------------------*/
+/******************************************************************************/
+
+float32 getCpuSeconds(void)
+{
+	return g_cpuseconds;
+}
+
+void setCpuSeconds(float32 sec)
+{
+	g_cpuseconds = sec;
+}
+
+/******************************************************************************/
+/*-------------------------Interrupt Service Routine--------------------------*/
+/******************************************************************************/
 
 /** \brief periodic function to get touch values and to change the conio displays
  *
@@ -201,6 +241,6 @@ void cpu_service0Irq(void)
 	__enable();
 	if (tft_ready == 0) return;
     touch_periodic ();
-    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.pmenulist, conio_driver.pstdlist);
+    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.p_tab0_menulist, conio_driver.p_tab_config);
     conio_driver.blinky += 1;
 }

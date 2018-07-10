@@ -28,6 +28,7 @@
 #include "font_8_12.h"
 #include "tfthw.h"
 #include <stdarg.h>
+#include <Ifx_Types.h>
 
 
 #define BLACK 0
@@ -156,8 +157,8 @@ typedef struct DISPLAYENTRY
 //the conio driver structure
 typedef struct CONIO_DRIVER
 {
-    TDISPLAYENTRY *pmenulist;
-    TDISPLAYENTRY *pstdlist;
+	TDISPLAYENTRY *p_tab_config;
+    TDISPLAYENTRY *p_tab0_menulist;
     TDISPLAY_INFO display[CONIO_MAXDISPLAYS]; //contains the infos for the different displays, and pointers to buffers
     uint32 *pdasmirror;
     uint32 dasstatus;
@@ -289,5 +290,7 @@ void tft_graphic (TMODE mode, uint8 * pdisplay, uint8 * pdisplaycolor);
 void tft_ascii_bar (uint8 * pdisplay, uint8 * pdisplaycolor);
 void tft_ascii (TMODE mode, uint8 * pdisplay, uint8 * pdisplaycolor);
 
+void tft_tab_display (sint32 ind, TDISPLAYENTRY * pentry);
+void tft_show_entry(sint16 x, sint16 y, TDISPLAYENTRY * pentry);
 
 #endif /* CONIO_TFT_H */

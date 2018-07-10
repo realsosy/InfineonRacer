@@ -90,25 +90,12 @@ typedef uint8 TDISPLAY_GRAPHICS0[GRAPHICSWIDTH/2];      //16 color
 #error "Set TFT_DISPLAY_VAR_LOCATION to a valid value!"
 #endif
 
+extern TTOUCH_DRIVER touch_driver;
+extern TCONIO_DRIVER conio_driver;
+
 #ifdef TFT_OVER_DAS
 uint32 das_buffer[DAS_BUFFER_LEN >> 2];
 #endif
-
-#if defined(__GNUC__)
-#pragma section
-#endif
-#if defined(__TASKING__)
-#pragma section farbss restore
-#pragma section fardata restore
-#endif
-#if defined(__DCC__)
-#pragma section DATA RW
-#endif
-
-float32 g_cpuseconds = 0.0;
-
-extern TTOUCH_DRIVER touch_driver;
-extern TCONIO_DRIVER conio_driver;
 
 TDISPLAYBAR display_menu_config;
 TDISPLAYBARCOLOR displaycolor_menu_config;
@@ -122,7 +109,18 @@ TDISPLAYCOLOR displaycolor_tab2;
 TDISPLAY_GRAPHICS0 display_tab3;
 TDISPLAY_GRAPHICS0 display_tab4;
 
+#if defined(__GNUC__)
+#pragma section
+#endif
+#if defined(__TASKING__)
+#pragma section farbss restore
+#pragma section fardata restore
+#endif
+#if defined(__DCC__)
+#pragma section DATA RW
+#endif
 
+float32 g_cpuseconds = 0.0;
 volatile boolean tft_ready = FALSE;
 
 /******************************************************************************/
@@ -157,35 +155,35 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-    // low-level driver initialization
-    tft_init ();                //initializes tft driver
-    touch_init ();
-    conio_init ((const pTCONIODMENTRY)conio_displaymode_list);
-
 	// tab config
     conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
 
     // tab0_init
     conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
-    tab0_init();
 
-    // tab1_init
-    //tab1_init();
-
-    // tab2_init
-    //tab2_init();
-
-    // tab3_init
-    //tab3_init();
-
-    // tab4_init
-    //tab4_init();
-
+    // low-level driver initialization
+    tft_init ();                //initializes tft driver
+    touch_init ();
+    conio_init ((const pTCONIODMENTRY)conio_displaymode_list);
 
 #ifdef TFT_OVER_DAS
     conio_driver.pdasmirror = &das_buffer[0];   //a buffer is available for PC sharing
     conio_driver.dasstatus = 0; //we can update
 #endif
+
+    tab0_init();
+
+    // tab1_init
+    tab1_init();
+
+    // tab2_init
+    tab2_init();
+
+    // tab3_init
+    tab3_init();
+
+    // tab4_init
+    tab4_init();
 
     tft_ready = TRUE;
 
@@ -198,19 +196,19 @@ extern void tft_app_run(void){
 	setCpuSeconds(tmp);
 
 	// tab0_run
-	//tab0_run();
+	tab0_run();
 
 	// tab1_run
-	//tab1_run();
+	tab1_run();
 
 	// tab2_run
-	//tab2_run();
+	tab2_run();
 
 	// tab3_run
-	//tab3_run();
+	tab3_run();
 
 	// tab4_run
-	//tab4_run();
+	tab4_run();
 
 	IfxSrc_setRequest(&TFT_UPDATE_IRQ);    //trigger the tft lib
 }

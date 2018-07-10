@@ -167,13 +167,13 @@ void tft_app_init (uint8 RtcRunning)
 
     // tab0_init
     conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
-    //tab0_init();
+    tab0_init();
 
     // tab1_init
     //tab1_init();
 
     // tab2_init
-    tab2_init();
+    //tab2_init();
 
     // tab3_init
     //tab3_init();
@@ -244,6 +244,6 @@ void cpu_service0Irq(void)
 	__enable();
 	if (tft_ready == 0) return;
     touch_periodic ();
-    //conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.p_tab0_menulist, conio_driver.p_tab_config);
+    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.p_tab0_menulist, conio_driver.p_tab_config);
     conio_driver.blinky += 1;
 }

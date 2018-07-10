@@ -16,8 +16,8 @@
 #include "tabs/tab_0.h"
 #include "tabs/tab_1.h"
 #include "tabs/tab_2.h"
-//#include "tabs/tab_3.h"
-//#include "tabs/tab_4.h"
+#include "tabs/tab_3.h"
+#include "tabs/tab_4.h"
 
 /******************************************************************************/
 /*-----------------------------------Macros-----------------------------------*/
@@ -169,10 +169,10 @@ void tft_app_init (uint8 RtcRunning)
     tab2_init();
 
     // tab3_init
-    //tab3_init();
+    tab3_init();
 
     // tab4_init
-    //tab4_init();
+    tab4_init();
 
     // low-level driver initialization
     tft_init ();                //initializes tft driver
@@ -204,10 +204,10 @@ extern void tft_app_run(void){
 	tab2_run();
 
 	// tab3_run
-	//tab3_run();
+	tab3_run();
 
 	// tab4_run
-	//tab4_run();
+	tab4_run();
 
 	IfxSrc_setRequest(&TFT_UPDATE_IRQ);    //trigger the tft lib
 }

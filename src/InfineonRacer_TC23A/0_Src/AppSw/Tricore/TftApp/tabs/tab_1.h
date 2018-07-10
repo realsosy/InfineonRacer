@@ -11,7 +11,7 @@
 #include <Tft/conio_tft.h>
 #include <Ifx_Types.h>
 
-extern TDISPLAYENTRY tab1_DIS1list[0];
+extern TDISPLAYENTRY tab1_DIS0list[0];
 
 void tab1_init(void);
 void tab1_run(void);

@@ -5,9 +5,41 @@
  *      Author: Sujin
  */
 
+/******************************************************************************/
+/*----------------------------------Includes----------------------------------*/
+/******************************************************************************/
+
 #include "tab_config.h"
 #include "touch.h"
 #include "conio_cfg.h"
+#include <Ifx_Types.h>
+
+/******************************************************************************/
+/*-----------------------------------Macros-----------------------------------*/
+/******************************************************************************/
+
+/******************************************************************************/
+/*--------------------------------Enumerations--------------------------------*/
+/******************************************************************************/
+
+/******************************************************************************/
+/*-----------------------------Data Structures--------------------------------*/
+/******************************************************************************/
+
+/******************************************************************************/
+/*-------------------------Function Prototypes--------------------------------*/
+/******************************************************************************/
+
+void tab_select_menu (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+void tab_select_stdio0 (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+void tab_select_stdio1 (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+void tab_select_graph (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+void tab_select_rsvd (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+sint32 tab_input (sint32 ind, TDISPLAYENTRY * pdisplayentry);
+
+/******************************************************************************/
+/*------------------------------Global variables------------------------------*/
+/******************************************************************************/
 
 TDISPLAYENTRY tab_config_list[6] = {
   {(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 1, 6, (TERMINAL_MAXY-1), &tab_select_menu, 0, &tab_input, " Main "},      // tab 0
@@ -43,7 +75,6 @@ void tab_select_stdio0 (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     {
         conio_driver.displaymode = DISPLAY_TAB1;
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
-
     }
 }
 
@@ -56,7 +87,6 @@ void tab_select_stdio1 (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     {
         conio_driver.displaymode = DISPLAY_TAB2;
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
-
     }
 }
 

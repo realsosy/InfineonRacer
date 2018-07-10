@@ -27,7 +27,7 @@
 /*------------------------------Global variables------------------------------*/
 /******************************************************************************/
 // *INDENT-OFF*
-TDISPLAYENTRY tab1_DIS1list[0] = {
+TDISPLAYENTRY tab1_DIS0list[0] = {
 {0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
 };
 // *INDENT-ON*

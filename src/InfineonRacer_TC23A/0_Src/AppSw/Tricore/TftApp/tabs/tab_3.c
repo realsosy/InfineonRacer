@@ -31,6 +31,21 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/*-------------------------Function Prototypes--------------------------------*/
+/******************************************************************************/
+
+void draw_Background(void);
+void plot_Axis(void);
+
+void plotFunction(uint32 x_LCD, uint32 y_LCD, uint8 color);
+void MeastoLCD(float32 ymin, float32 ymax, float32 measX, float32 measY,
+		uint32 *rtLCD_X, uint32 *rtLCD_Y);
+
+// application
+float32 calSin(float32 input);
+float32 calCos(float32 input);
+
+/******************************************************************************/
 /*------------------------------Global variables------------------------------*/
 /******************************************************************************/
 
@@ -39,9 +54,7 @@ uint32 g_xLCD_old = 0;
 
 uint32 g_xLCD_Index = 0;
 
-/******************************************************************************/
-/*-------------------------Function Prototypes--------------------------------*/
-/******************************************************************************/
+uint32 g_xLCD_clearIndex = 0;
 
 /******************************************************************************/
 /*------------------------Private Variables/Constants-------------------------*/
@@ -57,15 +70,27 @@ void tab3_init(void){
 
     g_xLCD_Index = 0;
 
-    drawPlot_Background();
-	drawPlot_Axis();
+    draw_Background();
+    plot_Axis();
 }
 
 void tab3_run(void){
-	drawPlot_Function();
+
+	float32 ymin, ymax;
+	uint32	LCD_X, LCD_Y;
+
+	float32	measuredX = getCpuSeconds();
+	float32 measuredY = calSin(measuredX);
+//	float32 measuredY = calCos(measuredX);
+
+	ymin = -1;
+	ymax = 1;
+
+	MeastoLCD(ymin, ymax, measuredX, measuredY, &LCD_X, &LCD_Y);
+	plotFunction(LCD_X, LCD_Y, RED);
 }
 
-void drawPlot_Background(void)
+void draw_Background(void)
 {
     uint32 i, j;
 
@@ -79,7 +104,7 @@ void drawPlot_Background(void)
     }
 }
 
-void drawPlot_Axis(void)
+void plot_Axis(void)
 {
     uint32 i, j;
     uint32 centerY;
@@ -105,35 +130,19 @@ void drawPlot_Axis(void)
     }
 }
 
-void drawPlot_Function(void)
+void plotFunction(uint32 x_LCD, uint32 y_LCD, uint8 color)
 {
-	// origin setup
-	// configuration parameters
-	// - x_min, x_max
-	// - y_min, y_max
+	uint32 	i, j;
 
-	uint32 i, j;
+	// plot
 
-	float32 amplitude, yscale, xscale;
-	uint32 y_LCD;
-	uint32 x_LCD;
-	float32 ysine;
-
-	amplitude = 1;
-	yscale = ((TFT_YSIZE / 2) - 40) / amplitude;
-	xscale = 10;
-
-	ysine = sin(getCpuSeconds());
-
-	// coordinate conversion
-	y_LCD = (uint32) floor(yscale * ysine + TFT_YSIZE/2);
-	x_LCD = (uint32) floor(xscale * getCpuSeconds());
-
-	if(floor(x_LCD/TFT_XSIZE) != g_xLCD_Index)
+	// if xLCD > n* TFTXSIZE, LCD clear
+	if(floor(x_LCD/TFT_XSIZE) != g_xLCD_clearIndex)
 	{
-		g_xLCD_Index = floor(x_LCD/TFT_XSIZE);
-		drawPlot_Background();
-		drawPlot_Axis();
+		// LCD clear index update
+		g_xLCD_clearIndex = floor(x_LCD/TFT_XSIZE);
+		draw_Background();	// clear background
+		plot_Axis();
 	}
 
 	x_LCD = x_LCD % (TFT_XSIZE);
@@ -144,7 +153,7 @@ void drawPlot_Function(void)
 	    {
 	        for(j = g_xLCD_old; j < x_LCD; j++)
 	        {
-	            conio_graphics_set(DISPLAY_TAB3, j, i, RED);
+	            conio_graphics_set(DISPLAY_TAB3, j, i, color);
 	        }
 	    }
 	}
@@ -154,12 +163,47 @@ void drawPlot_Function(void)
 	    {
 	        for(j = g_xLCD_old; j < x_LCD; j++)
 	        {
-	            conio_graphics_set(DISPLAY_TAB3, j, i, RED);
+	            conio_graphics_set(DISPLAY_TAB3, j, i, color);
 	        }
 	    }
 	}
+
     g_yLCD_old = y_LCD;
     g_xLCD_old = x_LCD;
+}
+
+void MeastoLCD(float32 ymin, float32 ymax, float32 measX, float32 measY,
+		uint32 *rtLCD_X, uint32 *rtLCD_Y)
+{
+	float32 yrange;
+	float32 yscale, xscale;
+
+	uint32 	yLCDorgin = TFT_YSIZE / 2;
+
+	//Customize
+	uint32 yPlotMargin = 80;
+	xscale = 15;
+
+	// coordinate conversion
+	yrange = ymax - ymin;
+	yscale = (TFT_YSIZE - yPlotMargin) / yrange;
+
+	*rtLCD_X = (uint32) floor(xscale * measX);
+	*rtLCD_Y = (uint32) floor(yscale * measY + yLCDorgin);
+}
+
+float32 calSin(float32 input)
+{
+	float32 tmp;
+	tmp = sin(input);
+	return tmp;
+}
+
+float32 calCos(float32 input)
+{
+	float32 tmp;
+	tmp = cos(input);
+	return tmp;
 }
 
 

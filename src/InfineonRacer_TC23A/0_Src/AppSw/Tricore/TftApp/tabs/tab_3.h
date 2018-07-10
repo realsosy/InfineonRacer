@@ -13,8 +13,4 @@
 void tab3_init(void);
 void tab3_run(void);
 
-void drawPlot_Background(void);
-void drawPlot_Axis(void);
-void drawPlot_Function(void);
-
 #endif /* 0_SRC_APPSW_TRICORE_TFTAPP_TABS_TAB_3_H_ */

@@ -159,6 +159,8 @@ typedef struct CONIO_DRIVER
 {
 	TDISPLAYENTRY *p_tab_config;
     TDISPLAYENTRY *p_tab0_menulist;
+    TDISPLAYENTRY *p_tab1_list;
+    TDISPLAYENTRY *p_tab2_list;
     TDISPLAY_INFO display[CONIO_MAXDISPLAYS]; //contains the infos for the different displays, and pointers to buffers
     uint32 *pdasmirror;
     uint32 dasstatus;

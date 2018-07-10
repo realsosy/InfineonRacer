@@ -11,7 +11,6 @@
 
 #include "tft_app.h"
 
-//#include "app/background_light.h"
 #include "tab_config/tab_config.h"
 #include "tabs/tab_0.h"
 #include "tabs/tab_1.h"
@@ -90,9 +89,6 @@ typedef uint8 TDISPLAY_GRAPHICS0[GRAPHICSWIDTH/2];      //16 color
 #error "Set TFT_DISPLAY_VAR_LOCATION to a valid value!"
 #endif
 
-extern TTOUCH_DRIVER touch_driver;
-extern TCONIO_DRIVER conio_driver;
-
 #ifdef TFT_OVER_DAS
 uint32 das_buffer[DAS_BUFFER_LEN >> 2];
 #endif
@@ -155,11 +151,17 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-	// tab config
+	// tab_config_handler
     conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
 
-    // tab0_init
+    // tab0_handler
     conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
+
+    // tab1_handler
+    conio_driver.p_tab1_list = (TDISPLAYENTRY *)&tab1_DIS0list[0];
+
+    // tab2_handler
+    conio_driver.p_tab2_list = (TDISPLAYENTRY *)&tab2_DIS1list[0];
 
     // low-level driver initialization
     tft_init ();                //initializes tft driver
@@ -171,6 +173,7 @@ void tft_app_init (uint8 RtcRunning)
     conio_driver.dasstatus = 0; //we can update
 #endif
 
+    // tab0_init
     tab0_init();
 
     // tab1_init
@@ -238,7 +241,6 @@ void setCpuSeconds(float32 sec)
 IFX_INTERRUPT (cpu_service0Irq, 0, ISR_PRIORITY_CPUSRV0);
 void cpu_service0Irq(void)
 {
-
 	__enable();
 	if (tft_ready == FALSE) return;
     touch_periodic ();

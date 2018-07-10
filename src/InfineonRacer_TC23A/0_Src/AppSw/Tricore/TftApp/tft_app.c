@@ -112,19 +112,17 @@ extern TCONIO_DRIVER conio_driver;
 //extern const TDISPLAYENTRY tab0_menulist[];
 //extern const TDISPLAYENTRY tab_config_list[];
 
-//TDISPLAYBAR display_menu_config;
-//TDISPLAYBARCOLOR displaycolor_menu_config;
-//TDISPLAY display_tab0;
-//TDISPLAYCOLOR displaycolor_tab0;
-//TDISPLAY display_tab1;
-//TDISPLAYCOLOR displaycolor_tab1;
-//TDISPLAY display_tab2;
-//TDISPLAYCOLOR displaycolor_tab2;
-//
-//TDISPLAY_GRAPHICS0 display_tab3;
-//TDISPLAY_GRAPHICS0 display_tab4;
+TDISPLAYBAR display_menu_config;
+TDISPLAYBARCOLOR displaycolor_menu_config;
+TDISPLAY display_tab0;
+TDISPLAYCOLOR displaycolor_tab0;
+TDISPLAY display_tab1;
+TDISPLAYCOLOR displaycolor_tab1;
+TDISPLAY display_tab2;
+TDISPLAYCOLOR displaycolor_tab2;
 
-
+TDISPLAY_GRAPHICS0 display_tab3;
+TDISPLAY_GRAPHICS0 display_tab4;
 
 
 volatile boolean tft_ready;
@@ -136,15 +134,15 @@ volatile boolean tft_ready;
 //    { KEYBOARDON, &keyboard },
 //};
 
-//const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
-//{
-//    { DISPLAY_TAB_CONFIG, {(uint8 *) & display_menu_config, (uint8 *) & displaycolor_menu_config, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
-//    { DISPLAY_TAB0, {(uint8 *) & display_tab0, (uint8 *) & displaycolor_tab0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-//    { DISPLAY_TAB1, {(uint8 *) & display_tab1, (uint8 *) & displaycolor_tab1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-//    { DISPLAY_TAB2, {(uint8 *) & display_tab2, (uint8 *) & displaycolor_tab2, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
-//    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
-//    { DISPLAY_TAB4, {(uint8 *) & display_tab4,  0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
-//};
+const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
+{
+    { DISPLAY_TAB_CONFIG, {(uint8 *) & display_menu_config, (uint8 *) & displaycolor_menu_config, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
+    { DISPLAY_TAB0, {(uint8 *) & display_tab0, 				(uint8 *) & displaycolor_tab0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB1, {(uint8 *) & display_tab1, 				(uint8 *) & displaycolor_tab1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB2, {(uint8 *) & display_tab2, 				(uint8 *) & displaycolor_tab2, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 										    0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
+    { DISPLAY_TAB4, {(uint8 *) & display_tab4,  										0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
+};
 
 
 /******************************************************************************/

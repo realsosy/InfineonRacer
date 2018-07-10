@@ -5,8 +5,8 @@
  *      Author: Sujin
  */
 
-#ifndef TAB_3_H_
-#define TAB_3_H_
+#ifndef _TAB_3_H_
+#define _TAB_3_H_
 
 #include <Cpu/Std/Ifx_Types.h>
 

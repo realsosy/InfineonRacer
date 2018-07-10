@@ -5,8 +5,8 @@
  *      Author: Sujin
  */
 
-#ifndef TAB_1_H_
-#define TAB_1_H_
+#ifndef _TAB_1_H_
+#define _TAB_1_H_
 
 #include <Tft/conio_tft.h>
 #include <Ifx_Types.h>

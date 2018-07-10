@@ -1,0 +1,23 @@
+/*
+ * tab_2.h
+ *
+ *  Created on: 2018. 7. 9.
+ *      Author: Sujin
+ */
+
+#ifndef TAB_2_H_
+#define TAB_2_H_
+
+#include <Tft/conio_tft.h>
+#include <Ifx_Types.h>
+
+// *INDENT-OFF*
+const TDISPLAYENTRY tab2_DIS1list[0] = {
+{0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
+};
+// *INDENT-ON*
+
+void tab2_init(void);
+void tab2_run(void);
+
+#endif /* 0_SRC_APPSW_TRICORE_TFTAPP_TABS_TAB_2_H_ */

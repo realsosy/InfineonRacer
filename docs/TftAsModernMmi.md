@@ -100,7 +100,6 @@ date: 2018-06-08
     - 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
       ![TftAsModernMmi_SPI_Register](./images/TftAsModernMmi_SPI_Register.png)
 
-    
 
 
 ## iLLD - related
@@ -120,19 +119,19 @@ date: 2018-06-08
 
   ![TftAsModernMmi_GUIconfigruation](./images/TftAsModernMmi_TABConfig.png)
 
-* 예제의 구조
+* 예제의 폴더 구조
 
   * **app**
     * GUI를 구성하는 함수를 호출합니다. 
     * 이 때, 크게 두 가지 함수 호출 방법을 모두 사용합니다.
       * 일정 시간마다 주기적으로 함수를 호출하는 방법이 있습니다. 
-      * 스크린을 터치했을 때 인터룹트로 호출하는 방법이 있습니다.
-    * 각 TAB을 구성하기 위한 함수들은 **tabs** 하단에 개별적으로 정의되어 있습니다.
+      * 스크린을 터치했을 때 인터럽트로 호출하는 방법이 있습니다.
+    * 각 TAB에 관련된 함수들은 **tabs** 하단에 개별적으로 정의되어 있습니다. (tab__#.h, tab_#.c)
   * **tab_config**
     * 하단 TAB 메뉴를 구성할 수 있습니다.
   * **tabs**
     * 각 TAB의 GUI를 구성하기 위한 함수들이 개별적으로 정의되어 있습니다. 
-    * 인터룹트 형식으로 호출되는 함수들은 Handler 형태로 정의되어 있습니다.
+    * 인터럽트 형식으로 호출되는 함수들은 Handler 형태로 정의되어 있습니다.
 
 
 
@@ -271,7 +270,7 @@ extern void tft_app_run(void){
 	IfxSrc_setRequest(&TFT_UPDATE_IRQ);    //trigger the tft lib
 }
 
-// 스크린을 터치했을 때 인터룹트로 호출
+// 스크린을 터치했을 때 인터럽트로 호출
 void cpu_service0Irq(void)
 {
 	__enable();
@@ -281,7 +280,7 @@ void cpu_service0Irq(void)
     
     // 사용자가 스크린을 터치하거나 display 내용이 바뀌었을 때 호출되는 함수
     // 위의 'tft_app_init' 함수에서 저장한 handler의 pointer가 아래 함수의 input이 된다.
-    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.pmenulist, conio_driver.pstdlist);
+    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.p_tab0_menulist, conio_driver.p_tab_config);
     conio_driver.blinky += 1;
 }
 ```

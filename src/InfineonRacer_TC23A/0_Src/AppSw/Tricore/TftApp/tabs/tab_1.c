@@ -28,6 +28,7 @@
 /******************************************************************************/
 // *INDENT-OFF*
 TDISPLAYENTRY tab1_DIS0list[0] = {
+// standard display color, select display color, x_min, x_max, y, select->function, standard display, input func, "String"
 {0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
 };
 // *INDENT-ON*

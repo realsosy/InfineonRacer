@@ -28,7 +28,7 @@ date: 2018-06-08
 
 **[Example Code]**
 
-* MyIlldModule_TC23A - Tft
+* InfineonRacer_TC23A - TftApp
 
 ------
 
@@ -106,22 +106,32 @@ date: 2018-06-08
 
 ## iLLD - related
 
-* MyiLLD의 GUI 구성
+* InfineonRacer_TC23A의 GUI 구성
 
   * 많은 내용을 담기에는 Display 크기에 한계가 있습니다.
-  * 한계를 해결하고자 5개의 탭으로 구성되어 있습니다.
+  * 한계를 해결하기 위하여 여러개의 탭으로 GUI를 구성할 수 있습니다. 이 때, InfineonRacer는 5개의 탭으로 구성되어 있습니다.
+  * 각 탭은 화면 하단바를 터치함으로써 선택할 수 있습니다.
+  * InfineonRacer TAB의 구성
+    * TAB0: 초기 화면이자 하단바의 Main을 터치했을 때 나타나는 화면입니다. Touch를 통해 motor를 켜고 끄고, 구동 속도를 높이는 등 간단한 설정을 할 수 있습니다.
+    * TAB1: Text를 출력할 수 있는 빈 페이지입니다.
+    * TAB2: 현재 motor의 속도, ADC의 값, Port에서 출력되는 값과 같은 내부 변수를 text로 관측하기 위한 창입니다.
+    * TAB3: 내부 변수의 변화를 실시간으로 plot하여 관측할 수 있습니다.  
+    * TAB4: Reserved page 입니다.
 
-  ![TftAsModernMmi_GUIconfigruation](./images/TftAsModernMmi_GUIconfigruation.png)
+  ![TftAsModernMmi_GUIconfigruation](./images/TftAsModernMmi_TABConfig.png)
 
   * TFT 구동 방식
     * iLLD 에서는 Conio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
 
+
+
 ### Module Configuration
 
 ```c
+// Cpu0_Mainc.
 int core0_main(void)
 {
-	// 기타 기능 Configuration 생략
+	// 기타 Configuration 생략
 
     // TFT를 사용하기 위한 Port 설정
     // CS to touch
@@ -135,28 +145,24 @@ int core0_main(void)
     IfxPort_setPinModeOutput(BACKGROUND_LIGHT.pin.port, BACKGROUND_LIGHT.pin.pinIndex, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_alt1);
 
   // 생략
-    
-    /* Init TFT-display */
-    tft_appl_init(1);	// Menu	창을 display하고 input을 받음
-
-    /* Init the backroundlight */
-    background_light_init();	// Background 의 밝기변화
-
-    graph_drawInfineonLogo();	//인피니온 로고를 그리는 함수
-
-   
-    perf_meas_init();	// CPU load measurement를 위한 초기화
-
-    display_io_init();	
-
-    /* background endless loop */
-    while (TRUE)
-    {
-    	perf_meas_idle();		// CPU load measurement를 위한 idle counter
-    }
-
-    return 0;
 }
+
+// tft_app.c
+
+// 각 TAB의 Display 모드와 구조를 설정을 한다
+const TCONIODMENTRY conio_displaymode_list[CONIO_MAXDISPLAYS] =
+{
+    // 구조: {Display mode의 이름, Display Info}
+    // TAB_CONFIG: 화면 하단바를 구성
+    // TAB0, TAB1, TAB2는 글자를 출력할 수 있도록 TEXTMODE로 설정
+    // TAB3, TAB4는 그래픽요소를 출력할 수 있도록 GRAPHICMODE_16COLOR 설정
+    { DISPLAY_TAB_CONFIG, {(uint8 *) & display_menu_config, (uint8 *) & displaycolor_menu_config, TEXTMODE, WHITE, TERMINAL_MAXX, 1, 0, 0} },
+    { DISPLAY_TAB0, {(uint8 *) & display_tab0, (uint8 *) & displaycolor_tab0, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB1, {(uint8 *) & display_tab1, (uint8 *) & displaycolor_tab1, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB2, {(uint8 *) & display_tab2, (uint8 *) & displaycolor_tab2, TEXTMODE, WHITE, TERMINAL_MAXX, TERMINAL_MAXY-1, 0, 0} },
+    { DISPLAY_TAB3, {(uint8 *) & display_tab3, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} },
+    { DISPLAY_TAB4, {(uint8 *) & display_tab4, 0, GRAPHICMODE_16COLOR, WHITE, TERMINAL_MAXX, TERMINAL_MAXY, 0, 0} }
+};
 
 void tft_app_init (uint8 RtcRunning)
 {
@@ -164,25 +170,47 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-    conio_driver.pmenulist = (TDISPLAYENTRY *)&menulist[0];	// Menu에 들어갈 entry
-    conio_driver.pstdlist = (TDISPLAYENTRY *)&stdlist[0];   // Base bar에 들어갈 entry
+    // Handler를 통해 screen을 touch했을 때 특정 function을 호출시킬 수 있습니다.
+    // conio_driver에 각 TAB의 handler의 pointer를 저장합니다.
+	// tab_config_handler
+    conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
 
-    // TFT driver를 초기화한다
-    tft_init ();                
+    // tab0_handler
+    conio_driver.p_tab0_menulist = (TDISPLAYENTRY *)&tab0_menulist[0];
+
+    // tab1_handler
+    conio_driver.p_tab1_list = (TDISPLAYENTRY *)&tab1_DIS0list[0];
+
+    // tab2_handler
+    conio_driver.p_tab2_list = (TDISPLAYENTRY *)&tab2_DIS1list[0];
+
+    // low-level driver initialization
+    tft_init ();                //initializes tft driver
     touch_init ();
     conio_init ((const pTCONIODMENTRY)conio_displaymode_list);
+
 #ifdef TFT_OVER_DAS
     conio_driver.pdasmirror = &das_buffer[0];   //a buffer is available for PC sharing
     conio_driver.dasstatus = 0; //we can update
 #endif
 
-    controlmenu.cpusecondsdelta = 0.1f;
-    tft_ready = TRUE;
+    // 각 TAB을 초기화
+    // tab0_init
+    tab0_init();
 
-    // LCD Background 밝기 초기화, 초기 diplay 설정
-    background_light_init();
-    graph_drawInfineonLogo();
-    display_io_init();
+    // tab1_init
+    tab1_init();
+
+    // tab2_init
+    tab2_init();
+
+    // tab3_init
+    tab3_init();
+
+    // tab4_init
+    tab4_init();
+
+    tft_ready = TRUE;
 }
 ```
 
@@ -197,6 +225,9 @@ void cpu_service0Irq(void)
 	if (tft_ready == 0) return;
     touch_periodic ();
     // touch periodic 에서 받은 x좌표, y좌표가 conio periodic의 입력이 됨
+    
+    // 사용자가 screen을 touch하거나 display 내용이 바뀌었을 때 호출되는 함수
+    // 위에서 저장한 handler의 pointer가 아래 함수의 input이 된다.
     conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.pmenulist, conio_driver.pstdlist);
     conio_driver.blinky += 1;
 }
@@ -206,53 +237,69 @@ void cpu_service0Irq(void)
 
 ### Module Behavior
 
-* Main 탭 설정
-
-  ![TftAsModernMmi_Menu](./images/TftAsModernMmi_Menu.png)
+* TAB0
+  * InfineonRacer GUI의 초기 화면입니다.
+  * 화면 하단바의 Main을 눌렀을 때 나타나는 화면입니다.
+  * 사용자의 touch를 통해 Motor를 enable 시키거나, 속도를 높이는 등의 간단한 조작을 할 수 있습니다.
 
 ```c
-// menu.c 참조
+// tab_0.c
 
-// DISPLAYENTRY구조체의 구조
+// Handler의 기본 구조
 // {Display color, 터치되었을 때 color, entry의 x위치 시작점, entry의 x위치 끝점, entry의 y위치.
 //  터치되었을 때 동작하는 함수, 기본 display할 함수, input 함수, 출력할 test, symbol}
-const TDISPLAYENTRY menulist[19] = {
-{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 7, 31, 0, &menu_select, &menu_display, &menu_input,"TFT Demo for App Kit XC237"},
 
-{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 30, 39, 1, &menu_select_cpusec, &menu_display_cpusec, &menu_input,"cpusec"},
-{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 0, 10, 3, &menu_select_cpusecdelta, &menu_display_cpusecdelta, &menu_input_cpusecdelta,"delta: "},
+// tab0의 handler
+TDISPLAYENTRY tab0_menulist[20] = {
+{(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 2, 31, 0, &menu_select_title, &menu_display, &menu_input,"[Infineon Racer with App-Kit XC237]"},
+
+// 생략
 
 {(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 0, 16, 17, &menu_select_background_light, &menu_display_background_light, &menu_input_background_light, "Background Light: "},
 {(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 30, 32, 17, &menu_select_background_lightminus, &menu_display, &menu_input, "-<<"},
 {(CYAN << 4) | BLACK, (BLACK << 4) | YELLOW, 34, 36, 17, &menu_select_background_lightplus, &menu_display, &menu_input, ">>+"},
 
-{0, 0, 0, 0, 0, 0, 0, 0, " "},
-{0, 0, 0, 0, 0, 0, 0, 0, " "},
-{0, 0, 0, 0, 0, 0, 0, 0, " "},
-{0, 0, 0, 0, 0, 0, 0, 0, " "},
-{0, 0, 0, 0, 0, 0, 0, 0, " "},
 {0, 0, 0, 0, 0, 0, 0, 0, " "}  //LAST ENTRY
 };
 
+// tab0의 초기화를 위한 function
+void tab0_init(void){
+
+}
+
+// TFT가 update될 때마다 (현재 200ms) 동작하는 function
+void tab0_run(void){
+
+}
+
 // 아래는 Main 창의 맨 첫 번째 줄인 "TFT Demo for App Kit XC237"을 출력하기 위한 3개의 함수
+
+// 기본 display할 함수
 void menu_display (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
-    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_display); // Display color 설정
-    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y); // 출력될 좌표 설정
-    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]); // String 출력
-}// 기본 display할 함수
+    // Display color 설정, 설정하고자 하는 color는 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_display); 
+	// 출력될 좌표 설정, 설정하고자 하는 좌표는 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y); 
+    // String 출력, 출력하고자 하는 string은 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]); 
+}
 
+// 터치되었을 때 동작하는 함수
 void menu_select (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
-    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select); // touch했을 때 color 설정
-    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y); // 출력될 좌표 설정
-    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]); // String 출력
+    // touch했을 때 color 설정, 설정하고자 하는 color는 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select); 
+    // 출력될 좌표 설정, 설정하고자 하는 좌표는 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y); 
+    // String 출력, 출력하고자 하는 string은 위의 TDISPLAYENTRY 구조체에 입력한다.
+    conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]); 
     if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
     {
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
         // 현 entry는 touch되었을 때 특별한 동작이 없다
     }
-}// 터치되었을 때 동작하는 함수
+}
 
 sint32 menu_input (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
@@ -260,15 +307,21 @@ sint32 menu_input (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     return (0);
 }// input 함수
 
+
 // 아래는 Main 창에서 Background light를 설정하기 위한 함수
+
+// 기본적으로 출력되는 함수
 void menu_display_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_display); // Display color 설정
     conio_ascii_printfxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y, (const uint8 *)"Background Light: %u", (unsigned int) backgroundlightsize); // xmin, y에 해당 string 출력
-} // 기본적으로 출력되는 함수
+} 
+
 
 sint32 menu_input_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
+    // conio_driver를 통해 받은 background light input을 'backgroundlightsize' 변수에 저장한다.
+    // 'backgroundlightsize' 변수는 위의 display 함수에 의해 출력 된다.
     uint32 temp;
     sint32 result;
     result = sscanf ((char *) &conio_driver.scanftext[0], "%u", (unsigned int *) &temp);
@@ -282,9 +335,9 @@ sint32 menu_input_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
     backgroundlightsize = temp;
 
     return (0);
-} // conio_driver를 통해 받은 background light input을 'backgroundlightsize' 변수에 저장한다.
-// 'backgroundlightsize' 변수는 위의 display 함수에 의해 출력 된다.
+} 
 
+// 해당 위치를 눌렀을 때, Keyboard가 나타나게 되고 Keyboard input mode가 된다.
 void menu_select_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);    //MENUE
@@ -299,10 +352,12 @@ void menu_select_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
         conio_driver.inputid = ind;
         touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
     }
-} // 해당 위치를 눌렀을 때, Keyboard가 나타나게 되고 Keyboard input mode가 된다.
+} 
 
+// ">>+" 를 눌렀을 때 동작하는 함수
 void menu_select_background_lightplus (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
+    // Backgroundlight delta 만큼 'backgroundlightsize' 변수를 증가시킨다.
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);
     conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
     conio_ascii_cputs (DISPLAY_MENU, (uint8 *) ">>+");
@@ -312,11 +367,12 @@ void menu_select_background_lightplus (sint32 ind, TDISPLAYENTRY * pdisplayentry
         if (backgroundlightsize < backgroundlightmax)
             backgroundlightsize += backgroundlightdelta;
     }
-} // ">>+" 를 눌렀을 때 동작하는 함수
-// Backgroundlight delta 만큼 'backgroundlightsize' 변수를 증가시킨다.
+} 
 
+// "-<<" 를 눌렀을 때 동작하는 함수
 void menu_select_background_lightminus (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
+    // Backgroundlight delta 만큼 'backgroundlightsize' 변수를 감소시킨다.
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);
     conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
     conio_ascii_cputs (DISPLAY_MENU, (uint8 *) "-<<");
@@ -326,54 +382,130 @@ void menu_select_background_lightminus (sint32 ind, TDISPLAYENTRY * pdisplayentr
         if (backgroundlightsize > backgroundlightmin)
             backgroundlightsize -= backgroundlightdelta;
     }
-}// "-<<" 를 눌렀을 때 동작하는 함수
-// Backgroundlight delta 만큼 'backgroundlightsize' 변수를 감소시킨다.
+}
 ```
 
 
 
-* Display 탭 설정
-
-  ![TftAsModernMmi_DIS1](./images/TftAsModernMmi_DIS1.png)
+* TAB1
+  * 화면 하단바의 DIS0을 눌렀을 때 나타나는 화면입니다.
+  * 관측하고 싶은 내부 변수를 text로 출력할 수 있습니다. 현재 빈 페이지입니다.
 
 ```c
-// display_io.c 참조
-void display_io_init(void)
-{
-	// Display IO 0,1 에 기본적으로 출력되는 string 설정
-    conio_ascii_printfxy (DISPLAY_IO0, 10, 0, (uint8 *)"<<DISPLAY 0>>");
-    conio_ascii_printfxy (DISPLAY_IO1, 10, 0, (uint8 *)"<<DISPLAY 1>>");
+// tab_1.c 참조
+
+// 사용자가 Touch했을 때 호출시킬 function이 없으므로 현재 reserved 상태
+TDISPLAYENTRY tab1_DIS0list[0] = {
+{0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
+};
+
+// tab1의 초기화를 위한 function
+void tab1_init(void){
+    // string을 출력하기 위한 함수
+    // input: 출력하고자 하는 TAB이름, string이 시작할 x좌표, y좌표, 출력하고자하는 string
+    conio_ascii_printfxy (DISPLAY_TAB1, 10, 0, (uint8 *)"<<DISPLAY INFO 0>>"); // TAB1에 10번째 x칸, 0번째 y칸부터 "<<DISPLAY INFO 0>>"를 출력합니다.
 }
 
-// Perf_Meas.c 참조
-// Interrupt에 의해 실행된다.
-void ISR_perf_meas_call(void)
-{
- 	// 생략
+// TFT가 update될 때마다 (현재 200ms) 동작하는 function
+void tab1_run(void){
+
+}
+```
+
+
+
+* TAB2
+  * 화면 하단바의 DIS0을 눌렀을 때 나타나는 화면입니다.
+  * 관측하고 싶은 내부 변수를 text로 출력할 수 있습니다. 현재 모터의 구동 여부와 속도, ADC의 output 값과 같은 내부 변수를 관측할 수 있습니다.
+
+```c
+// tab_2.c 참조
+
+// 사용자가 Touch했을 때 호출시킬 function이 없으므로 현재 reserved 상태
+TDISPLAYENTRY tab2_DIS0list[0] = {
+{0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
+};
+
+// tab2의 초기화를 위한 function
+void tab2_init(void){
+    conio_ascii_printfxy (DISPLAY_TAB2, 10, 0, (uint8 *)"<<DISPLAY INFO 1>>");
+}
+
+// TFT가 update될 때마다 (현재 200ms) 동작하는 function
+void tab2_run(void){
     
-    cpu_load = 100.0f - (float32)counter_diff/(g_AppCpu0.info.cpuFreq/100.0f/(float32)cpu0_ccnt_diff_min);
-    // we printout if TFT is ready and conio initialized
-    if (tft_ready == TRUE)
-    {
-        if (cpu_load < 0.0f) cpu_load = 0.0f;
-        //DISPLAY_IO1 창에 글자를 Print
-    	conio_ascii_printfxy (DISPLAY_IO1, 1,  2, (uint8 *)"CPU0 Load %.3f %c ", cpu_load, 0x25);
-    	CpuLoad0.counter_diff = counter_diff;
-        CpuLoad0.cpu_load = cpu_load;
-    }
+    // 관측하고 싶은 내부 변수가 text형식으로 출력됩니다.
+	conio_ascii_printfxy (DISPLAY_TAB2, 1,  2, (uint8 *)"CPU0 Load %.3f %c ", getCpuLoad(), 0x25);
 
+	conio_ascii_printfxy (DISPLAY_TAB2, 0,  4, (uint8 *)" Motor0En : %4d     Motor1En : %4d", IR_getMotor0En(), IR_getMotor1En());
+	conio_ascii_printfxy (DISPLAY_TAB2, 0,  5, (uint8 *)" Motor0Vol: %4.2f     Motor1En: %4.2f", IR_getMotor0Vol(), IR_getMotor1Vol());
+	 // 생략
 }
 ```
 
 
 
-* Graph 탭 설정
-
-  ![TftAsModernMmi_Graph](./images/TftAsModernMmi_Graph.jpg)
+* TAB3
+  * 화면 하단바의 GRAPH을 눌렀을 때 나타나는 화면입니다.
+  * 내부 변수의 변화를 실시간으로 plot하여 관측할 수 있습니다.
+  * 현재 시간에 대한 함수를 plot 할 수 있도록 구성되어 있습니다.
+  * X축은 TFT operating time을 의미하고, Y축은 관측하고자 하는 값을 나타냅니다.
 
 ```c
-// DrawLogo.c 참조
-// Description: Infineon logo를 GRAPH 창에 그려줌
+// tab_3.c 참조
+
+// tab3의 초기화를 위한 function
+void tab3_init(void){
+	g_xLCD_old = 0;
+	g_yLCD_old = TFT_YSIZE/2;
+
+    g_xLCD_Index = 0;
+    
+    draw_Background();
+    plot_Axis();
+}
+
+// TFT가 update될 때마다 (현재 200ms) 동작하는 function
+void tab3_run(void){
+
+	float32 ymin, ymax;
+	uint32	LCD_X, LCD_Y;
+
+    // measuredX: 관측하고자 하는 x, 현재 TFT operating time
+    // measuredY: 관측하고자 하는 y, 현재 operating time에 대한 sin함수 값
+	float32	measuredX = getCpuSeconds();
+	float32 measuredY = calSin(measuredX);
+//	float32 measuredY = calCos(measuredX);
+
+    // plot하고자 하는 y의 min, max 값을 저장
+	ymin = -1;
+	ymax = 1;
+
+	MeastoLCD(ymin, ymax, measuredX, measuredY, &LCD_X, &LCD_Y); // LCD에 출력하기 위한 좌표로 변환하는 함수
+	plotFunction(LCD_X, LCD_Y, RED); // plot하는 함수, input: LCD에 출력하기 위한 x좌표, y좌표, graph의 color
+}
+
+```
+
+
+
+- TAB4
+  - 화면 하단바의 RSVD을 눌렀을 때 나타나는 화면입니다.
+  - 현재 Infineon logo가 출력되고 있습니다.
+
+```c
+// tab_4.c 참조
+
+// tab4의 초기화를 위한 function
+void tab4_init(void){
+	drawInfineonLogo();
+}
+
+// TFT가 update될 때마다 (현재 200ms) 동작하는 function
+void tab4_run(void){
+
+}
+
 void graph_drawInfineonLogo(void)
 {
     uint32 i, j, idx, width, height;
@@ -425,7 +557,7 @@ void graph_drawInfineonLogo(void)
         {
             if(count == 0)
             {
-                // Drawlogo.c 에서 미리 RGB 배열 형식으로 입력해둔 infineon logo 출력한다
+                // Drawlogo.c 에서 미리 RGB 배열 형식으로 입력해둔 infineon logo 출력
                 count = infineon_logo[idx++];
                 color = infineon_logo[idx++];
             }

@@ -36,7 +36,7 @@ date: 2018-06-08
 
 ## Example Description
 
-* TFT 드라이버를 이용하여 Text, Bar, Menu, Graph 등을 LCD에 출력하고, Touch screen으로 정보를 입력할 수 있습니다.
+* TFT 드라이버를 이용하여 Text, Bar, Menu, Graph 등을 LCD에 출력하고, 터치 스크린으로 정보를 입력할 수 있습니다.
 
 
 
@@ -54,74 +54,76 @@ date: 2018-06-08
     * 추가적인 **Debugger**가 필요없습니다.
     * 간단하게 **입력을 바꿀 수 있고**, 그 때마다 다시 프로그램을 다운로드 할 필요가 없습니다.
 
-  * TC237의 TFT-LCD와 Screen감압 센서를 이용하여 GUI를 구성할 수 있습니다.
 
-    
 
-* Infineon TC237의 GUI 구성
+* Application Kit TC2X7의 GUI 하드웨어 구성요소: 터치 스크린
 
-  * 사용자로부터 입력을 받는 요소: Screen감압 센서
-    * 사용자의 touch 입력을 받기 위한 Screen감압 센서가 존재합니다.
-    * 사용자가 Screen을 누르면 touch screen controller(ADS7843E) 가 압력받은 위치를 알려줍니다.
-  * 사용자에게 출력하는 요소: TFT-LCD
+  ![TftAsModernMmi_TC2X7](images/TftAsModernMmi_TC2X7.png)
+
+  * 사용자 **입력**: 스크린 감압 센서
+    * 사용자의 터치 입력을 받기 위한 스크린감압 센서가 존재합니다.
+    * 사용자가 스크린을 누르면 터치 스크린 controller (ADS7843E) 가 압력받은 위치를 알려줍니다.
+  * 사용자 **출력**: TFT 스크린
     * Text, Graph, Picture, .. 등 다양한 그래픽 요소들을 출력할 수 있습니다.
+  * 터치 스크린과 마이크로프로세서는 **SPI 통신**으로 정보를 주고 받습니다.
 
 
 
-- TC237의 GUI를 구성하기 위한 Driver
-  - Conio TFT Driver
-    - 사용자가 직접 구현하기 어려운 Display 기능이나 Touch screen 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
+- AURIX 기반 GUI 소프트웨어 라이브러리: Conio TFT
+  - Conio TFT driver
+    - 사용자가 직접 구현하기 어려운 Display 기능이나 터치 스크린 정보를 받아오는 기능을 손쉽게 이용할 수 있도록 함수가 구현되어 있습니다.
   - Conoi TFT driver를 사용하기 위해 필요한 files
-    - InfineonRacer_TC23A 기준
-      - 0_Src/CDrv/Tricore/Qspi
-      - 0_Src/CDrv/Tricore/Tft
+    - 0_Src/CDrv/Tricore/Qspi
+    - 0_Src/CDrv/Tricore/Tft
   - GUI를 구성하기 필요한 application files
-    - InfineonRacer_TC23A 기준
-      - 0_Src/AppSw/Tricore/TftApp
+    - 0_Src/AppSw/Tricore/TftApp
+
+      ​
 
 
+#### 추가 설명
 
-- TFT의 I/O 설정
+- SPI 통신 (Serial Peripheral Interface)
 
-  - Infineon TC237의 TFT는 SPI 통신을 이용하여 AURIX와 정보를 주고 받습니다.
+    - SPI 통신은 동기화된 시리얼 통신 방법입니다.
 
-    - SPI 통신 (Serial Peripheral Interface)
+    - 주로, 근거리 통신에 사용됩니다.
 
-      - SPI 통신은 동기화된 시리얼 통신 방법입니다.
+    - 1980년대 모토롤라에 의해 개발되었습니다.
 
-      - 주로, 근거리 통신에 사용됩니다.
+    - 특징으로는 Master-Slave 구조의 양방향 구조이며, 하나의 Master와 다수 개의 Slave가 존재하게 됩니다.
 
-      - 1980년대 모토롤라에 의해 개발되었습니다.
+    - SPI는 four-wire 시리얼 버스라고도 불리는 데, 그 이유는 통신에 총 4개의 선을 사용하기 때문입니다. (SCLK: Serial Clock, MOSI: Master Output Slave Input, MISO: Master Input Slave Output, Slave Select)
 
-      - 특징으로는 Master-Slave 구조의 양방향 구조이며, 하나의 Master와 다수 개의 Slave가 존재하게 됩니다.
+      ![TftAsModernMmi](./images/TftAsModernMmi_SPI.jpg)
 
-      - SPI는 four-wire 시리얼 버스라고도 불리는 데, 그 이유는 통신에 총 4개의 선을 사용하기 때문입니다. (SCLK: Serial Clock, MOSI: Master Output Slave Input, MISO: Master Input Slave Output, Slave Select)
+    - 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
+      ![TftAsModernMmi_SPI_Register](./images/TftAsModernMmi_SPI_Register.png)
 
-        ![TftAsModernMmi](./images/TftAsModernMmi_SPI.jpg)
-
-      - 데이터 저장 및 전송을 위해 shift register가 사용됩니다.
-        ![TftAsModernMmi_SPI_Register](./images/TftAsModernMmi_SPI_Register.png)
-
+    ​
 
 
 ## iLLD - related
 
-* InfineonRacer_TC23A의 GUI 구성
+* AURIX 기반 GUI 구성 예제
 
   * 많은 내용을 담기에는 Display 크기에 한계가 있습니다.
-  * 한계를 해결하기 위하여 여러개의 탭으로 GUI를 구성할 수 있습니다. 이 때, InfineonRacer는 5개의 탭으로 구성되어 있습니다.
-  * 각 탭은 화면 하단바를 터치함으로써 선택할 수 있습니다.
-  * InfineonRacer TAB의 구성
-    * TAB0: 초기 화면이자 하단바의 Main을 터치했을 때 나타나는 화면입니다. Touch를 통해 motor를 켜고 끄고, 구동 속도를 높이는 등 간단한 설정을 할 수 있습니다.
-    * TAB1: Text를 출력할 수 있는 빈 페이지입니다.
-    * TAB2: 현재 motor의 속도, ADC의 값, Port에서 출력되는 값과 같은 내부 변수를 text로 관측하기 위한 창입니다.
-    * TAB3: 내부 변수의 변화를 실시간으로 plot하여 관측할 수 있습니다.  
-    * TAB4: Reserved page 입니다.
+  * 그러한 한계를 해결하기 위하여 여러 개의 탭으로 GUI를 구성할 수 있습니다. 본 예제 코드에서는 5개의 탭으로 화면을 구성하였습니다.
+  * 각 TAB은 화면 하단 TAB 메뉴를 터치함으로써 선택할 수 있습니다.
+
+* 하단 TAB 메뉴 구성
+  * TAB0: 초기 화면이자 하단 TAB  메뉴 중 **[Main]**을 터치했을 때 나타나는 화면입니다. 터치를 통해 motor를 켜고 끄고, 구동 속도를 높이는 등 간단한 설정을 할 수 있습니다.
+  * TAB1: 하단 TAB  메뉴 중 **[DIS0]**를 터치했을 때 나타나는 화면입니다. 이 TAB에는 Text를 출력할 수 있도록 구성되어 있습니다.
+  * TAB2: 하단 TAB  메뉴 중 **[DIS1]**을 터치했을 때 나타나는 화면입니다. 이 TAB에는 내부변수를 모니터링하는 예제로 구성되어 있습니다. 현재 motor의 속도, ADC의 값, Port에서 출력되는 값 등이 예시로 출력됩니다.
+  * TAB3: 하단 TAB  메뉴 중 **[GRAPH]**를 터치했을 때 나타나는 화면입니다. 내부 변수를 시간 축에 대해 실시간으로 plot하도록 구성된 예제입니다.
+  * TAB4: 하단 TAB  메뉴 중 **[RSVD]**를 터치했을 때 나타나는 화면입니다. 그래픽을 출력할 수 있도록 설정되어 있으며, 그림 파일을 불러와서 출력하는 예제입니다.
 
   ![TftAsModernMmi_GUIconfigruation](./images/TftAsModernMmi_TABConfig.png)
 
-  * TFT 구동 방식
-    * iLLD 에서는 Conio Interrupt service가 주기적으로 돌면서 Display를 하고 Touch 정보를 받아옵니다.
+  ​
+
+* GUI 구동 방식
+  * iLLD 에서는 Conio Interrupt service가 주기적으로 돌면서 Display를 하고 터치 정보를 받아옵니다.
 
 
 
@@ -134,12 +136,12 @@ int core0_main(void)
 	// 기타 Configuration 생략
 
     // TFT를 사용하기 위한 Port 설정
-    // CS to touch
-    IfxPort_setPinModeInput(TOUCH_USE_CHIPSELECT.pin.port, TOUCH_USE_CHIPSELECT.pin.pinIndex, IfxPort_Mode_inputPullUp);
+    // CS to 터치
+    IfxPort_setPinModeInput(터치_USE_CHIPSELECT.pin.port, 터치_USE_CHIPSELECT.pin.pinIndex, IfxPort_Mode_inputPullUp);
     // CS to tft
     IfxPort_setPinModeInput(TFT_USE_CHIPSELECT.pin.port, TFT_USE_CHIPSELECT.pin.pinIndex, IfxPort_Mode_inputPullUp);
-    // INT from touch
-    IfxPort_setPinModeInput(TOUCH_USE_INT.port, TOUCH_USE_INT.pinIndex, IfxPort_Mode_inputPullUp);
+    // INT from 터치
+    IfxPort_setPinModeInput(터치_USE_INT.port, 터치_USE_INT.pinIndex, IfxPort_Mode_inputPullUp);
     // Background light는 Gtm TOM을 이용하여 조절한다
     // PWM Port Out 설정이 필요
     IfxPort_setPinModeOutput(BACKGROUND_LIGHT.pin.port, BACKGROUND_LIGHT.pin.pinIndex, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_alt1);
@@ -170,7 +172,7 @@ void tft_app_init (uint8 RtcRunning)
     IfxSrc_init(&TFT_UPDATE_IRQ, ISR_PROVIDER_CPUSRV0, ISR_PRIORITY_CPUSRV0);
     IfxSrc_enable(&TFT_UPDATE_IRQ);
 
-    // Handler를 통해 screen을 touch했을 때 특정 function을 호출시킬 수 있습니다.
+    // Handler를 통해 스크린을 터치했을 때 특정 function을 호출시킬 수 있습니다.
     // conio_driver에 각 TAB의 handler의 pointer를 저장합니다.
 	// tab_config_handler
     conio_driver.p_tab_config = (TDISPLAYENTRY *)&tab_config_list[0];
@@ -186,7 +188,7 @@ void tft_app_init (uint8 RtcRunning)
 
     // low-level driver initialization
     tft_init ();                //initializes tft driver
-    touch_init ();
+    터치_init ();
     conio_init ((const pTCONIODMENTRY)conio_displaymode_list);
 
 #ifdef TFT_OVER_DAS
@@ -223,12 +225,12 @@ void cpu_service0Irq(void)
 {
 	__enable();
 	if (tft_ready == 0) return;
-    touch_periodic ();
-    // touch periodic 에서 받은 x좌표, y좌표가 conio periodic의 입력이 됨
+    터치_periodic ();
+    // 터치 periodic 에서 받은 x좌표, y좌표가 conio periodic의 입력이 됨
     
-    // 사용자가 screen을 touch하거나 display 내용이 바뀌었을 때 호출되는 함수
+    // 사용자가 스크린을 터치하거나 display 내용이 바뀌었을 때 호출되는 함수
     // 위에서 저장한 handler의 pointer가 아래 함수의 input이 된다.
-    conio_periodic (touch_driver.xdisp, touch_driver.ydisp, conio_driver.pmenulist, conio_driver.pstdlist);
+    conio_periodic (터치_driver.xdisp, 터치_driver.ydisp, conio_driver.pmenulist, conio_driver.pstdlist);
     conio_driver.blinky += 1;
 }
 ```
@@ -240,7 +242,7 @@ void cpu_service0Irq(void)
 * TAB0
   * InfineonRacer GUI의 초기 화면입니다.
   * 화면 하단바의 Main을 눌렀을 때 나타나는 화면입니다.
-  * 사용자의 touch를 통해 Motor를 enable 시키거나, 속도를 높이는 등의 간단한 조작을 할 수 있습니다.
+  * 사용자의 터치를 통해 Motor를 enable 시키거나, 속도를 높이는 등의 간단한 조작을 할 수 있습니다.
 
 ```c
 // tab_0.c
@@ -288,16 +290,16 @@ void menu_display (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 // 터치되었을 때 동작하는 함수
 void menu_select (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
-    // touch했을 때 color 설정, 설정하고자 하는 color는 위의 TDISPLAYENTRY 구조체에 입력한다.
+    // 터치했을 때 color 설정, 설정하고자 하는 color는 위의 TDISPLAYENTRY 구조체에 입력한다.
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select); 
     // 출력될 좌표 설정, 설정하고자 하는 좌표는 위의 TDISPLAYENTRY 구조체에 입력한다.
     conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y); 
     // String 출력, 출력하고자 하는 string은 위의 TDISPLAYENTRY 구조체에 입력한다.
     conio_ascii_cputs (DISPLAY_MENU, &pdisplayentry->text[0]); 
-    if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
+    if ((터치_driver.터치mode & MASK_터치_UP) != 0)
     {
-        touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
-        // 현 entry는 touch되었을 때 특별한 동작이 없다
+        터치_driver.터치mode &= ~MASK_터치_UP;   //clear
+        // 현 entry는 터치되었을 때 특별한 동작이 없다
     }
 }
 
@@ -342,7 +344,7 @@ void menu_select_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
 {
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);    //MENUE
     conio_ascii_printfxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y, (const uint8 *)"Change Light: %u", (unsigned int) backgroundlightsize);   //MENUE
-    if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
+    if ((터치_driver.터치mode & MASK_터치_UP) != 0)
     {
         strcpy ((char *) &conio_driver.scanfdescr[0], "Light: ");    //PREP of Keyboard Mode
         sprintf ((char *) &conio_driver.scanftext[0], "%u", (unsigned int) backgroundlightsize); //right upper value
@@ -350,7 +352,7 @@ void menu_select_background_light (sint32 ind, TDISPLAYENTRY * pdisplayentry)
         conio_driver.dialogmode = KEYBOARDON; //Keyboard input mode
         conio_driver.input = pdisplayentry->input;
         conio_driver.inputid = ind;
-        touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+        터치_driver.터치mode &= ~MASK_터치_UP;   //clear
     }
 } 
 
@@ -361,9 +363,9 @@ void menu_select_background_lightplus (sint32 ind, TDISPLAYENTRY * pdisplayentry
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);
     conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
     conio_ascii_cputs (DISPLAY_MENU, (uint8 *) ">>+");
-    if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
+    if ((터치_driver.터치mode & MASK_터치_UP) != 0)
     {
-        touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+        터치_driver.터치mode &= ~MASK_터치_UP;   //clear
         if (backgroundlightsize < backgroundlightmax)
             backgroundlightsize += backgroundlightdelta;
     }
@@ -376,9 +378,9 @@ void menu_select_background_lightminus (sint32 ind, TDISPLAYENTRY * pdisplayentr
     conio_ascii_textattr (DISPLAY_MENU, pdisplayentry->color_select);
     conio_ascii_gotoxy (DISPLAY_MENU, pdisplayentry->xmin, pdisplayentry->y);
     conio_ascii_cputs (DISPLAY_MENU, (uint8 *) "-<<");
-    if ((touch_driver.touchmode & MASK_TOUCH_UP) != 0)
+    if ((터치_driver.터치mode & MASK_터치_UP) != 0)
     {
-        touch_driver.touchmode &= ~MASK_TOUCH_UP;   //clear
+        터치_driver.터치mode &= ~MASK_터치_UP;   //clear
         if (backgroundlightsize > backgroundlightmin)
             backgroundlightsize -= backgroundlightdelta;
     }
@@ -394,7 +396,7 @@ void menu_select_background_lightminus (sint32 ind, TDISPLAYENTRY * pdisplayentr
 ```c
 // tab_1.c 참조
 
-// 사용자가 Touch했을 때 호출시킬 function이 없으므로 현재 reserved 상태
+// 사용자가 터치했을 때 호출시킬 function이 없으므로 현재 reserved 상태
 TDISPLAYENTRY tab1_DIS0list[0] = {
 {0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
 };
@@ -421,7 +423,7 @@ void tab1_run(void){
 ```c
 // tab_2.c 참조
 
-// 사용자가 Touch했을 때 호출시킬 function이 없으므로 현재 reserved 상태
+// 사용자가 터치했을 때 호출시킬 function이 없으므로 현재 reserved 상태
 TDISPLAYENTRY tab2_DIS0list[0] = {
 {0, 0, 0, 0, 0, 0, 0, 0, " "}  // RESERVED ENTRY
 };

@@ -81,7 +81,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 12.  [Chronos ruler(수정중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
 13.  [Synchronized PWM(수정중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
 14.  [Where are you?(수정중)](./WhereAreYou.md) Gpt12 + Encoder
-15.  [TFT as modern Man-Machine Interface(작성중)](./TftAsModernMmi.md)
+15.  [TFT as modern Man-Machine Interface(중)](./TftAsModernMmi.md)
 16.  [Simulink as a programming language](./SimulinkAsAProgrammingLanguage.md)
 17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./OsekCertificedErikaOsRtDruid.md)
 

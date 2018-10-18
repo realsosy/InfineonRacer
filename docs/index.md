@@ -23,7 +23,7 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 **[NOTE]**
 
 * /src 에 있는 프로젝트들은 다운로드 받으셔서 사용하셔도 됩니다.  사소한 오류는 있을 것으로 예상됩니다만 참고용으로 사용할 수 있을 수준의 코드입니다.
-* /docs 와 /references 에 있는 파일들은 인터넷을 사용하여 접근하시기 바랍니다. 2018년 6월을 마감시간으로 이곳에 있는 문서들을 작업하는 중입니다.  수시로 지속적인 변경이 발생할 수 있으므로 다운로드 받지 마시고 browser나 git 을 통해서 접근하시기를 바랍니다.
+* /docs 와 /references 에 있는 파일들은 인터넷을 사용하여 접근하시기 바랍니다. 수시로 지속적인 변경이 발생할 수 있으므로 다운로드 받지 마시고 browser나 git 을 통해서 접근하시기를 바랍니다.
 * 각 문서들은 상태에 따라서 (작성중), (수정중) 이라는 표시를 하여 참고하시는 분들의 불편을 최소화 하도록 하겠습니다.
 * (작성중) 표시가 없는 챕터들은 [ReadTheDocs](http://infineonracer.readthedocs.io/ko/latest/)에서 좀 더 편하게 보실 수 있습니다.
 
@@ -78,9 +78,9 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 9.  [Multi channel voltmeter](./MultiChannelVoltmeter.md)  Vadc Background Scan
 10.  [My own cheap oscilloscope](./MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
 11.  [Line Scan Camera](./LineScanCamera.md) TSL1401
-12.  [Chronos ruler(작성중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
-13.  [Synchronized PWM(작성중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
-14.  [Where are you?(작성중)](./WhereAreYou.md) Gpt12 + Encoder
+12.  [Chronos ruler(수정중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
+13.  [Synchronized PWM(수정중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
+14.  [Where are you?(수정중)](./WhereAreYou.md) Gpt12 + Encoder
 15.  [TFT as modern Man-Machine Interface(작성중)](./TftAsModernMmi.md)
 16.  [Simulink as a programming language](./SimulinkAsAProgrammingLanguage.md)
 17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./OsekCertificedErikaOsRtDruid.md)

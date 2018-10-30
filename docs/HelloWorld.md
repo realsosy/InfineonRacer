@@ -90,7 +90,7 @@ date: 2018-05-03
 - Data를 송신할 때
     1. 송신하려는 데이터가 들어옴 (ATX)
     2. FIFO기반 packaging (TxFIFO)
-    3. handshake 응답을  (ACTS)
+    3. handshake 응답을 기다림 (ACTS)
 
 * Handshake
   	- Data를 송수신할때 통신이 가능한지 상태를 주고받아 원활한 통신을 가능하게 한다.

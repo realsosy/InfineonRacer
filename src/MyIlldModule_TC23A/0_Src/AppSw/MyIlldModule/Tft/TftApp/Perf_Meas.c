@@ -189,12 +189,6 @@ IFX_INTERRUPT(ISR_perf_meas_call, 0, ISR_PRIORITY_PERF_MEAS);
 void ISR_perf_meas_call(void)
 {
     uint32 act_cpu0_idle_counter=cpu0_idle_counter;
-#if IFXCPU_NUM_MODULES > 1
-    uint32 act_cpu1_idle_counter=cpu1_idle_counter;
-#endif
-#if IFXCPU_NUM_MODULES > 2
-    uint32 act_cpu2_idle_counter=cpu2_idle_counter;
-#endif
     uint32 counter_diff;
     float32 cpu_load;
 
@@ -209,44 +203,9 @@ void ISR_perf_meas_call(void)
     {
         if (cpu_load < 0.0f) cpu_load = 0.0f;
     	conio_ascii_printfxy (DISPLAY_IO1, 1,  2, (uint8 *)"CPU0 Load %.3f %c ", cpu_load, 0x25);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  3, (uint8 *)"CPU0 Idle Counter-Diff %.10u ", counter_diff);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  4, (uint8 *)"CPU0 in use for %.3e Cycles/s ", g_AppCpu0.info.cpuFreq/100.0f*cpu_load);
-        CpuLoad0.counter_diff = counter_diff;
+    	CpuLoad0.counter_diff = counter_diff;
         CpuLoad0.cpu_load = cpu_load;
     }
-#if IFXCPU_NUM_MODULES > 1
-    counter_diff = act_cpu1_idle_counter-cpu1_last_count_value;
-    cpu1_last_count_value = act_cpu1_idle_counter;
-    cpu_load = 100.0f - (float32)counter_diff/(g_AppCpu1.info.cpuFreq/100.0f/(float32)cpu1_ccnt_diff_min);
-    // we printout if TFT is ready and conio initialized
-    if (tft_ready == TRUE)
-    {
-    	if (cpu_load < 0.0f) cpu_load = 0.0f;
-        conio_ascii_printfxy (DISPLAY_IO1, 1,  6, (uint8 *)"CPU1 Load %.3f %c ", cpu_load, 0x25);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  7, (uint8 *)"CPU1 Idle Counter-Diff %.10u ", counter_diff);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  8, (uint8 *)"CPU1 in use for %.3e Cycles/s ", g_AppCpu1.info.cpuFreq/100.0f*cpu_load);
-        CpuLoad1.counter_diff = counter_diff;
-        CpuLoad1.cpu_load = cpu_load;
-    }
-#endif
-#if IFXCPU_NUM_MODULES > 2
-    counter_diff = act_cpu2_idle_counter-cpu2_last_count_value;
-    cpu2_last_count_value = act_cpu2_idle_counter;
-    cpu_load = 100.0f - (float32)counter_diff/(g_AppCpu2.info.cpuFreq/100.0f/(float32)cpu2_ccnt_diff_min);
-    // we printout if TFT is ready and conio initialized
-    if (tft_ready == TRUE)
-    {
-    	if (cpu_load < 0.0f) cpu_load = 0.0f;
-        conio_ascii_printfxy (DISPLAY_IO1, 1, 10, (uint8 *)"CPU2 Load %.3f %c ", cpu_load, 0x25);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1, 11, (uint8 *)"CPU2 Idle Counter-Diff %.10u ", counter_diff);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1, 12, (uint8 *)"CPU2 in use for %.3e Cycles/s ", g_AppCpu2.info.cpuFreq/100.0f*cpu_load);
-        CpuLoad2.counter_diff = counter_diff;
-        CpuLoad2.cpu_load = cpu_load;
-    }
-#endif
-#if !defined(__DCC__)
-    // we need this restore here because we add a bisr instruction manually, Windriver add this automatically
-    __rslcx();
-#endif
+
 }
 

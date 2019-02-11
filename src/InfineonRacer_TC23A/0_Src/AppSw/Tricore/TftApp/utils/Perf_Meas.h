@@ -8,6 +8,8 @@
 #ifndef PERF_MEAS_H_
 #define PERF_MEAS_H_
 
+#include <Cpu/Std/Ifx_Types.h>
+
 typedef struct{
     uint32 counter_diff;
     float32 cpu_load;
@@ -27,5 +29,8 @@ extern volatile uint32 cpu0_ccnt_diff_min;
 
 void perf_meas_init(void);
 void perf_meas_idle(void);
+
+float32 getCpuLoad(void);
+void setCpuLoad(float32 load);
 
 #endif /* PERF_MEAS_H_ */

@@ -77,9 +77,7 @@ extern TCOLORTABLEASCII colortable_ascii;
 /******************************************************************************/
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
-void bar_display (sint32 ind, TDISPLAYENTRY * pdisplayentry);
 
-extern void showmenu (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist);
 
 /******************************************************************************/
 /*-------------------------Function Implementations---------------------------*/
@@ -91,7 +89,7 @@ inline void memcpy32 (uint32 * pdst, uint32 * psrc, uint32 cnt)
         *pdst++ = *psrc++;
 }
 
-void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTRY * pstdlist)
+void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * p_tab0_menulist, TDISPLAYENTRY * p_tab_config_list)
 {
     sint32 i;
 #ifdef TFT_OVER_DAS
@@ -100,9 +98,9 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
         i = 0;
         memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) &colortable_ascii, sizeof (TCOLORTABLEASCII) >> 2);
         i += sizeof (TCOLORTABLEASCII) >> 2;
-        memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) conio_driver.display[DISPLAY_BAR].pdisplay, sizeof (TDISPLAYBAR) >> 2);
+        memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) conio_driver.display[DISPLAY_TAB_CONFIG].pdisplay, sizeof (TDISPLAYBAR) >> 2);
         i += sizeof (TDISPLAYBAR) >> 2;
-        memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) conio_driver.display[DISPLAY_BAR].pdisplaycolor, sizeof (TDISPLAYBARCOLOR) >> 2);
+        memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) conio_driver.display[DISPLAY_TAB_CONFIG].pdisplaycolor, sizeof (TDISPLAYBARCOLOR) >> 2);
         i += sizeof (TDISPLAYBARCOLOR) >> 2;
         memcpy32 (&conio_driver.pdasmirror[i], (uint32 *) conio_driver.display[conio_driver.displaymode].pdisplay, sizeof (TDISPLAY) >> 2);
         i += sizeof (TDISPLAY) >> 2;
@@ -137,34 +135,34 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
 
     control.timebeg[0] = __mfcr (CPU_CCNT);
 
-    //BAR
+    //tab
     //***********************************************************
     if (conio_driver.dialogmode == DIALOGOFF)
     {
-        conio_ascii_gotoxy (DISPLAY_BAR, 0, 0);
-        conio_ascii_textbackground (DISPLAY_BAR, BAR_BACKGRND);
-        conio_ascii_clreol (DISPLAY_BAR);
-        conio_ascii_gotoxy (DISPLAY_BAR, 0, 0);
-        for (i = 0; pstdlist[i].select != 0; i += 1)
+        conio_ascii_gotoxy (DISPLAY_TAB_CONFIG, 0, 0);
+        conio_ascii_textbackground (DISPLAY_TAB_CONFIG, BAR_BACKGRND);
+        conio_ascii_clreol (DISPLAY_TAB_CONFIG);
+        conio_ascii_gotoxy (DISPLAY_TAB_CONFIG, 0, 0);
+        for (i = 0; p_tab_config_list[i].select != 0; i += 1)
         {
-            if ((x >= pstdlist[i].xmin) && (x <= pstdlist[i].xmax) && (y == pstdlist[i].y))
+            if ((x >= p_tab_config_list[i].xmin) && (x <= p_tab_config_list[i].xmax) && (y == p_tab_config_list[i].y))
             {
-                pstdlist[i].select (i, (struct DISPLAYENTRY *) &pstdlist[i]);
+                p_tab_config_list[i].select (i, (struct DISPLAYENTRY *) &p_tab_config_list[i]);
             }
             else
             {
-                if (pstdlist[i].display == 0)
-                    bar_display (i, (struct DISPLAYENTRY *) &pstdlist[i]);
+                if (p_tab_config_list[i].display == 0)
+                    tft_tab_display (i, (struct DISPLAYENTRY *) &p_tab_config_list[i]);
                 else
                 {
-                    pstdlist[i].display (i, (struct DISPLAYENTRY *) &pstdlist[i]);
+                    p_tab_config_list[i].display (i, (struct DISPLAYENTRY *) &p_tab_config_list[i]);
                 }
             }
         }
         if (y == (TERMINAL_MAXY-1))
         {
-            conio_ascii_gotoxy (DISPLAY_BAR, x, 0);
-            conio_ascii_textchangebackground (DISPLAY_BAR, RED);
+            conio_ascii_gotoxy (DISPLAY_TAB_CONFIG, x, 0);
+            conio_ascii_textchangebackground (DISPLAY_TAB_CONFIG, RED);
         }
     }
 
@@ -179,21 +177,21 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
     //***********************************************************
     if (conio_driver.dialogmode == DIALOGOFF)
     {
-        if ((conio_driver.displaymode) == DISPLAY_MENU)
+        if ((conio_driver.displaymode) == DISPLAY_TAB0)
         {
-        	showmenu(x, y, pmenulist);
+        	tft_show_entry(x, y, p_tab0_menulist);
         	if (y < (TERMINAL_MAXY-1))
              {
-                 conio_ascii_gotoxy (DISPLAY_MENU, x, y);
-                 conio_ascii_textchangebackground (DISPLAY_MENU, RED);
+                 conio_ascii_gotoxy (DISPLAY_TAB0, x, y);
+                 conio_ascii_textchangebackground (DISPLAY_TAB0, RED);
              }
          }
          else
         {
             if (y < (TERMINAL_MAXY-1))
             {
-                conio_ascii_gotoxy (DISPLAY_BAR, x, 0);
-                conio_ascii_textchangebackground (DISPLAY_BAR, RED);
+                conio_ascii_gotoxy (DISPLAY_TAB_CONFIG, x, 0);
+                conio_ascii_textchangebackground (DISPLAY_TAB_CONFIG, RED);
             }
         }
     }
@@ -523,8 +521,8 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
         {
             /* we send new data to the display only when the last transfer to display is finished */
         	tft_display_setxy (0, 0);
-            tft_ascii_bar (conio_driver.display[DISPLAY_BAR].pdisplay,
-            		    conio_driver.display[DISPLAY_BAR].pdisplaycolor);
+            tft_ascii_bar (conio_driver.display[DISPLAY_TAB_CONFIG].pdisplay,
+            		    conio_driver.display[DISPLAY_TAB_CONFIG].pdisplaycolor);
             /* we wait here until our the bar is transfered to display */
             while (tft_status != 0);
             tft_display_setxy (0, FONT_YSIZE);
@@ -540,8 +538,8 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
         {
             /* we send new data to the display only when the last transfer to display is finished */
             tft_display_setxy (0, 0);
-            tft_ascii_bar (conio_driver.display[DISPLAY_BAR].pdisplay,
-           		           conio_driver.display[DISPLAY_BAR].pdisplaycolor);
+            tft_ascii_bar (conio_driver.display[DISPLAY_TAB_CONFIG].pdisplay,
+           		           conio_driver.display[DISPLAY_TAB_CONFIG].pdisplaycolor);
             /* we wait here until our the bar is transfered to display */
             while (tft_status != 0);
             tft_display_setxy (0, FONT_YSIZE);
@@ -558,14 +556,6 @@ void conio_periodic (sint16 x, sint16 y, TDISPLAYENTRY * pmenulist, TDISPLAYENTR
     control.timeus[1] /= 200.0f;
     control.timeus[6] = control.timeend[6] - control.timebeg[6];
     control.timeus[6] /= 200.0f;
-}
-
-
-void bar_display (sint32 ind, TDISPLAYENTRY * pdisplayentry)
-{
-    conio_ascii_textattr (DISPLAY_BAR, pdisplayentry->color_display);
-    conio_ascii_gotoxy (DISPLAY_BAR, pdisplayentry->xmin, 0);
-    conio_ascii_cputs (DISPLAY_BAR, &pdisplayentry->text[0]);
 }
 
 void conio_init (const pTCONIODMENTRY dm_list)
@@ -597,9 +587,50 @@ void conio_init (const pTCONIODMENTRY dm_list)
         }
     }
     //menu is standard start
-    conio_driver.displaymode = DISPLAY_MENU;
-    conio_driver.dasdisplaymode = DISPLAY_MENU;
+    conio_driver.displaymode = DISPLAY_TAB0;
+    conio_driver.dasdisplaymode = DISPLAY_TAB0;
     conio_driver.blinky = 0;
+}
+
+void tft_tab_display (sint32 ind, TDISPLAYENTRY * pentry)
+{
+    conio_ascii_textattr (DISPLAY_TAB_CONFIG, pentry->color_display);
+    conio_ascii_gotoxy (DISPLAY_TAB_CONFIG, pentry->xmin, 0);
+    conio_ascii_cputs (DISPLAY_TAB_CONFIG, &pentry->text[0]);
+}
+
+
+void tft_show_entry (sint16 x, sint16 y, TDISPLAYENTRY * pentry)
+{
+    sint32 i;
+    conio_ascii_textbackground (DISPLAY_TAB0, MENU_BACKGRND);
+    conio_ascii_clrscr (DISPLAY_TAB0);
+    conio_ascii_textcolor (DISPLAY_TAB0, BLACK);
+    conio_ascii_textbackground (DISPLAY_TAB0, CYAN);
+    for (i = 0; pentry[i].select != 0; i += 1)
+    {
+        if ((x >= pentry[i].xmin) && (x <= pentry[i].xmax) && (y == pentry[i].y))
+        {
+            if (conio_driver.dialogmode == DIALOGOFF)
+            {
+                if (pentry[i].display == 0)
+                    menu_select (i, (struct DISPLAYENTRY *) &pentry[i]);
+                else
+                {
+                	pentry[i].select (i, (struct DISPLAYENTRY *) &pentry[i]);
+                }
+            }
+        }
+        else
+        {
+            if (pentry[i].display == 0)
+                menu_display (i, (struct DISPLAYENTRY *) &pentry[i]);
+            else
+            {
+            	pentry[i].display (i, (struct DISPLAYENTRY *) &pentry[i]);
+            }
+        }
+    }
 }
 
 

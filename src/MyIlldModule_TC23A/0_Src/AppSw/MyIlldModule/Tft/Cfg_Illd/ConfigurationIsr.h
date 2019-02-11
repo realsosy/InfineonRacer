@@ -54,7 +54,9 @@
  * \{
  */
 
-//#define ISR_PRIORITY_MEASUREMENT    1  /**< \brief Define the GPT compare match interrupt priority.  */
+#define ISR_PRIORITY_MEASUREMENT    10  /**< \brief Define the GPT compare match interrupt priority.  */
+
+#define ISR_PRIORITY_TIMER_1MS      1  /**< \brief Define the 1ms timer interrupt priority.  */
 
 #define ISR_PRIORITY_CPUSRV0        2  /**< \brief Define the conio periodic interrupt priority must be lower than QSPIx priorities.  */
 
@@ -69,6 +71,8 @@
 #define ISR_PRIORITY_OS_TICK        64  /**< \brief Define the TFT refresh interrupt priority.  */
 
 #define ISR_PRIORITY_PERF_MEAS      255 /**< \brief Define the TOMx_x interrupt priority.  */
+
+#define ISR_PROVIDER_TIMER_1MS      IfxSrc_Tos_cpu0 /**< \brief Define the 1ms timer interrupt provider.  */
 
 /** \} */
 
@@ -97,6 +101,9 @@
 #define ISR_PROVIDER_OS_TICK        0     /**< \brief Define the tft refresh interrupt provider.  */
 
 /** \} */
+
+#define INTERRUPT_TIMER_1MS         ISR_ASSIGN(ISR_PRIORITY_TIMER_1MS, ISR_PROVIDER_TIMER_1MS)           /**< \brief Define the 1ms timer interrupt priority.  */
+
 
 //------------------------------------------------------------------------------
 

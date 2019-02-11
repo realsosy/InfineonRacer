@@ -5,8 +5,6 @@
 
 #include "Basic.h"
 #include "AsclinShellInterface.h"
-#include "tft_app.h"
-#include "Perf_Meas.h"
 #include "InfineonRacer.h"
 #include "IR_Controller.h"
 

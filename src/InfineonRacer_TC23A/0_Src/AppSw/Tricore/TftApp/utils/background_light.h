@@ -8,6 +8,17 @@
 
 void background_light_init(void);
 
+uint32 getBackgroundLightMin(void);
+uint32 getBackgroundLightMax(void);
+uint32 getBackgroundLightDelta(void);
+uint32 getBackgroundLightSize(void);
+
+void setBackgroundLightMin(uint32 min);
+void setBackgroundLightMax(uint32 max);
+void setBackgroundLightDelta(uint32 delta);
+void setBackgroundLightSize(uint32 size);
+
+
 #if defined(__DCC__)
     #if ISR_PROVIDER_BACKLIGHT == 0
 	#pragma section DATA ".data_cpu0" ".bss_cpu0" far-absolute RW
@@ -17,10 +28,5 @@ void background_light_init(void);
 	#pragma section DATA ".data_cpu2" ".bss_cpu2" far-absolute RW
 	#endif
 #endif
-
-extern uint32 backgroundlightmin;
-extern uint32 backgroundlightmax;
-extern uint32 backgroundlightdelta;
-extern uint32 backgroundlightsize;
 
 #endif

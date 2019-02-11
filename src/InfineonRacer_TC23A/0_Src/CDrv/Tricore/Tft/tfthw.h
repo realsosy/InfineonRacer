@@ -7,6 +7,8 @@
 #ifndef TFTHW_H
 #define TFTHW_H
 
+#include <Ifx_Types.h>
+
 #define TFT_XSIZE 320             //!< x dimension of tft display
 #define TFT_YSIZE 240             //!< y dimension of tft display
 

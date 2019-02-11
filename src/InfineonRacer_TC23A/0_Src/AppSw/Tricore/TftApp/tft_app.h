@@ -8,18 +8,17 @@
 #ifndef TFTAPP_H_
 #define TFTAPP_H_
 
-//a structure to measure the runtime and to handle sdcard
-typedef struct CONTROLMENU
-{
-    float32 cpuseconds;
-    float32 cpusecondsdelta;
-} TCONTROLMENU;
+#include <Cpu/Std/Ifx_Types.h>
 
-extern TCONTROLMENU controlmenu;
+//a structure to measure the runtime and to handle sdcard
+
 extern volatile boolean tft_ready;
 
-extern void tft_app_init (uint8 RtcRunning);
-extern void tft_app_run(void);
-extern void graph_drawInfineonLogo(void);
+void tft_app_init (uint8 RtcRunning);
+void tft_app_run(void);
+
+float32 getCpuSeconds(void);
+void setCpuSeconds(float32 sec);
+
 
 #endif

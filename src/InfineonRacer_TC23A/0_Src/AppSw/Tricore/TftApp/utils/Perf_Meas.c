@@ -5,7 +5,6 @@
  *      Author: dienst
  */
 
-#include <Cpu/Std/Ifx_Types.h>
 #include <_Impl/IfxCpu_cfg.h>
 #include "IfxCbs_reg.h"
 #include "Configuration.h"
@@ -32,6 +31,8 @@
 /******************************************************************************/
 /*------------------------------Global variables------------------------------*/
 /******************************************************************************/
+float32 g_cpu_load;
+
 #if IFXCPU_NUM_MODULES > 2
     #if defined(__GNUC__)
     #pragma section ".bss_cpu2" awc2
@@ -187,6 +188,23 @@ void perf_meas_idle(void){
 	cpu0_idle_counter++;
 }
 
+/******************************************************************************/
+/*-------------------------External Interface---------------------------------*/
+/******************************************************************************/
+
+float32 getCpuLoad(void)
+{
+	return g_cpu_load;
+}
+void setCpuLoad(float32 load)
+{
+	g_cpu_load = load;
+}
+
+/******************************************************************************/
+/*-------------------------Interrupt Service Routine--------------------------*/
+/******************************************************************************/
+
 IFX_INTERRUPT(ISR_perf_meas_call, 0, ISR_PRIORITY_PERF_MEAS);
 
 void ISR_perf_meas_call(void)
@@ -211,11 +229,9 @@ void ISR_perf_meas_call(void)
     if (tft_ready == TRUE)
     {
         if (cpu_load < 0.0f) cpu_load = 0.0f;
-    	conio_ascii_printfxy (DISPLAY_IO1, 1,  2, (uint8 *)"CPU0 Load %.3f %c ", cpu_load, 0x25);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  3, (uint8 *)"CPU0 Idle Counter-Diff %.10u ", counter_diff);
-//        conio_ascii_printfxy (DISPLAY_IO1, 1,  4, (uint8 *)"CPU0 in use for %.3e Cycles/s ", g_AppCpu0.info.cpuFreq/100.0f*cpu_load);
         CpuLoad0.counter_diff = counter_diff;
         CpuLoad0.cpu_load = cpu_load;
+        setCpuLoad(cpu_load);
     }
 #if IFXCPU_NUM_MODULES > 1
     counter_diff = act_cpu1_idle_counter-cpu1_last_count_value;
@@ -230,6 +246,7 @@ void ISR_perf_meas_call(void)
 //        conio_ascii_printfxy (DISPLAY_IO1, 1,  8, (uint8 *)"CPU1 in use for %.3e Cycles/s ", g_AppCpu1.info.cpuFreq/100.0f*cpu_load);
         CpuLoad1.counter_diff = counter_diff;
         CpuLoad1.cpu_load = cpu_load;
+        setCpuLoad(cpu_load);
     }
 #endif
 #if IFXCPU_NUM_MODULES > 2
@@ -245,6 +262,7 @@ void ISR_perf_meas_call(void)
 //        conio_ascii_printfxy (DISPLAY_IO1, 1, 12, (uint8 *)"CPU2 in use for %.3e Cycles/s ", g_AppCpu2.info.cpuFreq/100.0f*cpu_load);
         CpuLoad2.counter_diff = counter_diff;
         CpuLoad2.cpu_load = cpu_load;
+        setCpuLoad(cpu_load);
     }
 #endif
 #if !defined(__DCC__)

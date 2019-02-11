@@ -6,6 +6,8 @@
 #ifndef _CONIO_CFG_H
 #define _CONIO_CFG_H
 
+#include <Ifx_Types.h>
+
 typedef enum
 {
     DIALOGOFF=0,                  /*!< \brief No extra dialog open (show menu if display selected) */
@@ -28,12 +30,12 @@ extern const TCONIODLGENTRY conio_dialog_list[CONIO_DLG_ENTRIES];
  */
 typedef enum
 {
-    DISPLAY_BAR=0,                 //!< DISPLAY_BAR is the bottom character line of the TFT, always needed and must be 0
-    DISPLAY_MENU=1,                //!< DISPLAY_MENU is the menu view to make selections and change parameters
-    DISPLAY_IO0=2,             //!< DISPLAY_STDIO0 is a standard text output window
-    DISPLAY_IO1=3,             //!< DISPLAY_STDIO1 is a standard text output window
-    DISPLAY_GRAPH=4,            //!< DISPLAY_GRAPH first graphics window
-    DISPLAY_RSVD=5            //!< DISPLAY_RSVD is a standard text output window
+    DISPLAY_TAB_CONFIG=0,                 //!< DISPLAY_TAB_CONFIG is the bottom character line of the TFT, always needed and must be 0
+    DISPLAY_TAB0=1,                //!< DISPLAY_TAB0 is the menu view to make selections and change parameters
+    DISPLAY_TAB1=2,             //!< DISPLAY_TAB1 is a standard text output window
+    DISPLAY_TAB2=3,             //!< DISPLAY_TAB2 is a standard text output window
+    DISPLAY_TAB3=4,            //!< DISPLAY_TAB3 first graphics window
+    DISPLAY_TAB4=5            //!< DISPLAY_TAB4 is second graphics window
 } TDISPLAYMODE;
 
 /*!< \enum Mode of TFT */

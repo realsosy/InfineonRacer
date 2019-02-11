@@ -1,5 +1,9 @@
 #include "AppTaskFu.h"
 
+#include "tft_app.h"
+#include "utils/Perf_Meas.h"
+#include "utils/background_light.h"
+
 static sint32 task_cnt_1m = 0;
 static sint32 task_cnt_10m = 0;
 static sint32 task_cnt_100m = 0;
@@ -20,6 +24,7 @@ void appTaskfu_init(void){
 
     tft_app_init(1);
     perf_meas_init();
+    background_light_init();
 
 #ifdef CODE_ERT
     IR_Controller_initialize();

@@ -4,7 +4,19 @@ author: Wootaik Lee (wootaik@gmail.com)
 date: 2018-01-30
 ---
 
+# [알림]
+
+2018년에 시작한 [InfineonRacer](https://github.com/realsosy/InfineonRacer)를 다음의 두가지 프로젝트로 나누기로 하였습니다.
+
+- [AurixRacer](https://github.com/realsosy/AurixRacer): 2019년 지능형 모형차 대회의 Software Platform
+- [AurixTutorial](https://github.com/realsosy/AurixTutorial): Aurix를 활용한 마이크로컨트롤러 교육용 자료
+
+개선된 Aurix 관련 자료를 찾으시려면 위의 두 사이트를 이용하시기 바랍니다.
+
+ 
+
 ## Purpose & Scope
+
 지능형 모형차 대회에 사용할 수 있는 Software Platform 을 제공하는 것을 목적으로 합니다.
 
 특히 다음의 사항을 고려하였습니다.
@@ -78,13 +90,11 @@ Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 �
 9.  [Multi channel voltmeter](./MultiChannelVoltmeter.md)  Vadc Background Scan
 10.  [My own cheap oscilloscope](./MyOwnCheapOscilloscope.md)  Vadc Auto Scan + Serial Plot
 11.  [Line Scan Camera](./LineScanCamera.md) TSL1401
-12.  [Chronos ruler(수정중)](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
-13.  [Synchronized PWM(수정중)](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
-14.  [Where are you?(수정중)](./WhereAreYou.md) Gpt12 + Encoder
-15.  [TFT as modern Man-Machine Interface(중)](./TftAsModernMmi.md)
+12.  [Chronos ruler](./ChronosRuler.md) GtmTomTimer + Beeper, Servo
+13.  [Synchronized PWM](./SynchronizedPwm.md) GtmTomPwmHl + H-Bridge
+14.  [Where are you?](./WhereAreYou.md) Gpt12 + Encoder
+15.  [TFT as modern Man-Machine Interface](./TftAsModernMmi.md)
 16.  [Simulink as a programming language](./SimulinkAsAProgrammingLanguage.md)
-17.  [OSEK-Certified ErikaOS & RT-Druid(작성중)](./OsekCertificedErikaOsRtDruid.md)
-
 
 ### etc
 

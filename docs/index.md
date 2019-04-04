@@ -28,16 +28,10 @@ date: 2018-01-30
 Software Platform를 분석하면 자연스럽게 Infineon AURIX를 이해할 수 있도록 하고,
 마이크로컨트롤러 전공자로서 성장해 나갈 수 있는 첫 걸음이 될 수 있도록 구성하였습니다.
 
-## Links
+### Links
+
 * [Github](https://github.com/realsosy/InfineonRacer): 문서와 프로그램 소스
 * [ReadTheDocs](http://infineonracer.readthedocs.io/ko/latest/) : 메뉴얼 스타일로 열람
-
-**[NOTE]**
-
-* /src 에 있는 프로젝트들은 다운로드 받으셔서 사용하셔도 됩니다.  사소한 오류는 있을 것으로 예상됩니다만 참고용으로 사용할 수 있을 수준의 코드입니다.
-* /docs 와 /references 에 있는 파일들은 인터넷을 사용하여 접근하시기 바랍니다. 수시로 지속적인 변경이 발생할 수 있으므로 다운로드 받지 마시고 browser나 git 을 통해서 접근하시기를 바랍니다.
-* 각 문서들은 상태에 따라서 (작성중), (수정중) 이라는 표시를 하여 참고하시는 분들의 불편을 최소화 하도록 하겠습니다.
-* (작성중) 표시가 없는 챕터들은 [ReadTheDocs](http://infineonracer.readthedocs.io/ko/latest/)에서 좀 더 편하게 보실 수 있습니다.
 
 
 
